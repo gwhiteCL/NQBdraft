@@ -162,7 +162,7 @@ please see http://xml.resource.org/authoring/README.html. -->
     
         <t>It is possible that due to an implementation error or misconfiguration, a QB flow would end up getting mismarked as NQB, or vice versa.  In the case of an NQB flow that isn't marked as NQB and ends up in the QB queue, it would only impact its own quality of service, and so it seems to be of lesser concern.  However, a QB flow that is mismarked as NQB would cause queuing delays for all of the other flows that are sharing the NQB queue.</t>
 
-        <t>To prevent this situation from harming the performance of the real NQB flows, network elements that support differentiating NQB traffic SHOULD support a "traffic protection" function that can identify QB flows that are mismarked as NQB, and reclassify those flows/packets to the QB queue. This benefits the reclassified flow by giving it access to a large buffer (and thus lower packet loss rate), and benefits the actual NQB flows by preventing harm (increased latency variability) to them. Such a function SHOULD be implemented in an objective and verifiable manner, basing its decisions upon the behavior of the flow rather than on application-layer constructs. One example algorithm can be found in <xref target="reference.I-D.briscoe-docsis-q-protection" />.</t>
+        <t>To prevent this situation from harming the performance of the real NQB flows, network elements that support differentiating NQB traffic SHOULD support a "traffic protection" function that can identify QB flows that are mismarked as NQB, and reclassify those flows/packets to the QB queue. This benefits the reclassified flow by giving it access to a large buffer (and thus lower packet loss rate), and benefits the actual NQB flows by preventing harm (increased latency variability) to them. Such a function SHOULD be implemented in an objective and verifiable manner, basing its decisions upon the behavior of the flow rather than on application-layer constructs. One example algorithm can be found in <xref target="I-D.briscoe-docsis-q-protection" />.</t>
 
         <t>The NQB queue SHOULD (editor's note: SHOULD vs MUST is TBD) support a latency-based traffic protection mechanism that is able to identify queue-building behavior in flows that are classified into the queue, and to redirect flows causing queue build-up to a different queue.  </t>
 
@@ -182,7 +182,7 @@ please see http://xml.resource.org/authoring/README.html. -->
         <section title="Mobile Networks">
           <t>Today's mobile networks are configured to bundle all flows to and from the Internet into a single "default" EPS bearer whose buffering characteristics are not compatible with low-latency traffic.  The established behaviour is partly rooted in the desire to prioritise operators' voice services over competing over-the-top services.  Of late, said business consideration seems to have lost momentum and the incentives might now be aligned towards allowing a more suitable treatment of Internet real-time flows.</t>
 
-          <t>To support the NQB PHB, the mobile network MUST be configured to give UEs a dedicated, low-latency, non-GBR, EPS bearer, e.g. one with QCI 7, in addition to the default EPS bearer; or a Data Radio Bearer with 5QI 7 in a 5G system (see Table 5.7.4-1: Standardized 5QI to QoS characteristics mapping in <xref target="5GSA"/>).</t>
+          <t>To support the NQB PHB, the mobile network MUST be configured to give UEs a dedicated, low-latency, non-GBR, EPS bearer, e.g. one with QCI 7, in addition to the default EPS bearer; or a Data Radio Bearer with 5QI 7 in a 5G system (see Table 5.7.4-1: Standardized 5QI to QoS characteristics mapping in <xref target="SA-5G"/>).</t>
 
           <t>A packet carrying the NQB DSCP SHOULD be routed through the dedicated low-latency EPS bearer.  A packet that has no associated NQB marking SHOULD be routed through the default EPS bearer.</t>
         </section>
@@ -228,77 +228,11 @@ please see http://xml.resource.org/authoring/README.html. -->
      &RFC8033;
      &RFC8034;
      &RFC8289;
-     &RFC8290;
      &RFC2119;
      &RFC8325;
-     &RFC6817;
      <?rfc include="reference.I-D.ietf-tsvwg-l4s-arch" ?>
      <?rfc include="reference.I-D.ietf-tsvwg-aqm-dualq-coupled" ?>
-     <?rfc include="reference.I-D.fossati-tsvwg-lola" ?>     
-     <?rfc include="reference.I-D.ietf-rmcat-cc-requirements" ?>
      <?rfc include="reference.I-D.briscoe-docsis-q-protection" ?>
-
-     <reference anchor="HHF" target="https://lwn.net/Articles/577208/">
-      <front>
-        <title>net-qdisc-hhf: Heavy-Hitter Filter (HHF) qdisc</title>
-        <author fullname="Terry Lam">
-          <organization>Google</organization>
-        </author>
-        <date day="15" month="December" year="2013" />
-      </front>
-    </reference>
-
-    <reference anchor="Estan" target="https://dl.acm.org/citation.cfm?id=859719">
-      <front>
-        <title>New directions in traffic measurement and accounting: Focusing on the elephants, ignoring the mice</title>
-        <author initials="C." surname="Estan" fullname="Christian Estan">
-          <organization>UCSD</organization>
-        </author>
-        <author initials="G." surname="Varghese" fullname="George Varghese">
-          <organization>UCSD</organization>
-        </author>
-        <date  month="August" year="2003" />
-      </front>
-      <seriesInfo name="ACM Transactions on Computer Systems" value="Vol.23, Iss.3"/>
-    </reference>
-
-    
-    <reference anchor="DPP" target="https://www.cisco.com/c/en/us/products/collateral/switches/nexus-9000-series-switches/white-paper-c11-738488.html">
-      <front>
-        <title>Intelligent Buffer Management on Cisco Nexus 9000 Series Switches White Paper</title>
-        <author>
-          <organization>Cisco</organization>
-        </author>
-        <date day="6" month="June" year="2017" />
-      </front>
-    </reference>
-    
-    <reference anchor="DOCSIS-MULPIv3.1" target="https://specification-search.cablelabs.com/CM-SP-MULPIv3.1">
-      <front>
-        <title>MAC and Upper Layer Protocols Interface Specification, CM-SP-MULPIv3.1-I18-190422</title>
-        <author><organization>Cable Television Laboratories, Inc. </organization></author>
-        <date year="April 22, 2019" /> 
-      </front></reference>
-
-      <reference anchor="Podlesny" target="http://people.networks.imdea.org/~sergey_gorinsky/pdf/RD_Services_SIGCOMM_2008.pdf">
-        <front>
-          <title>Rd Network Services: Differentiation Through Performance Incentives</title>
-          <author initials="M." surname="Podlesny" fullname="Maxim Podlesny" />
-          <author initials="S." surname="Gorinsky" fullname="Sergey Gorinsky" />
-          <date year="2008" />
-        </front>
-        <seriesInfo name="SIGCOMM" value=""/>
-      </reference>
-
-      <reference anchor="Claffy" target="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2587262">
-        <front>
-          <title>Adding Enhanced Services to the Internet: Lessons from History</title>
-          <author initials="KC" surname="Claffy" fullname="KC Claffy" />
-          <author initials="D." surname="Clark" fullname="David D. Clark" />
-          <date year="2015" />
-        </front>
-        <seriesInfo name="TPRC" value=""/>
-      </reference>
 
       <reference anchor="Custura">
         <front>
@@ -311,10 +245,11 @@ please see http://xml.resource.org/authoring/README.html. -->
         <seriesInfo name="TMA" value="" />
       </reference>
 
-      <reference anchor="5GSA">
+      <reference anchor="SA-5G">
         <front>
           <title>System Architecture for 5G</title>
           <author><organization>3GPP</organization></author>
+          <date year="2019" />
         </front>
         <seriesInfo name="TS" value="23.501" />
       </reference>
