@@ -5,7 +5,7 @@
 <head profile="http://www.w3.org/2006/03/hcard http://dublincore.org/documents/2008/08/04/dc-html/">
   <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 
-  <title>Identifying and Handling Non Queue Building Flows in a Bottleneck Link</title>
+  <title>A Non-Queue-Building Per-Hop Behavior (NQB PHB) for Differentiated Services</title>
 
   <style type="text/css" title="Xml2Rfc (sans serif)">
   /*<![CDATA[*/
@@ -376,7 +376,7 @@
   <link href="#rfc.toc" rel="Contents">
 <link href="#rfc.section.1" rel="Chapter" title="1 Introduction">
 <link href="#rfc.section.2" rel="Chapter" title="2 Requirements Language">
-<link href="#rfc.section.3" rel="Chapter" title="3 Non-Queue Building Flows">
+<link href="#rfc.section.3" rel="Chapter" title="3 Overview: Non-Queue Building Flows">
 <link href="#rfc.section.4" rel="Chapter" title="4 DSCP Marking of NQB Traffic">
 <link href="#rfc.section.5" rel="Chapter" title="5 Non Queue Building PHB Requirements">
 <link href="#rfc.section.6" rel="Chapter" title="6 Relationship to L4S">
@@ -432,7 +432,7 @@
     </tbody>
   </table>
 
-  <p class="title">Identifying and Handling Non Queue Building Flows in a Bottleneck Link<br />
+  <p class="title">A Non-Queue-Building Per-Hop Behavior (NQB PHB) for Differentiated Services<br />
   <span class="filename">draft-ietf-tsvwg-nqb-00</span></p>
   
   <h1 id="rfc.abstract"><a href="#rfc.abstract">Abstract</a></h1>
@@ -455,7 +455,7 @@
 </li>
 <li>2.   <a href="#rfc.section.2">Requirements Language</a>
 </li>
-<li>3.   <a href="#rfc.section.3">Non-Queue Building Flows</a>
+<li>3.   <a href="#rfc.section.3">Overview: Non-Queue Building Flows</a>
 </li>
 <li>4.   <a href="#rfc.section.4">DSCP Marking of NQB Traffic</a>
 </li>
@@ -496,9 +496,9 @@
 <a href="#rfc.section.2">2.</a> Requirements Language</h1>
 <p id="rfc.section.2.p.1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <a href="#RFC2119" class="xref">RFC 2119</a>.</p>
 <h1 id="rfc.section.3">
-<a href="#rfc.section.3">3.</a> Non-Queue Building Flows</h1>
-<p id="rfc.section.3.p.1">There are many applications that send traffic at relatively low data rates and/or in a fairly smooth and consistent manner such that they are highly unlikely to exceed the available capacity of the network path between source and sink.  These applications do not extensive use of network buffers, but nonetheless can be subjected to packet delay and delay variation as a result of sharing a network buffer with those that do make use of them.  Many of these applications are negatively affected by excessive packet delay and delay variation. Such applications are ideal candidates to be queued separately from the capacity-seeking applications that are the cause of queue buildup, latency and loss.</p>
-<p id="rfc.section.3.p.2">These Non-queue-building (NQB) flows are typically UDP flows that send traffic at a lower data rate and don't seek the capacity of the link (examples: online games, voice chat, DNS lookups). Here the data rate is essentially limited by the Application itself.  In contrast, Queue-building (QB) flows include traffic which uses the Traditional TCP or QUIC, with BBR or other TCP congestion controllers. </p>
+<a href="#rfc.section.3">3.</a> Overview: Non-Queue Building Flows</h1>
+<p id="rfc.section.3.p.1">There are many applications that send traffic at relatively low data rates and/or in a fairly smooth and consistent manner such that they are highly unlikely to exceed the available capacity of the network path between source and sink.  These applications do not make extensive use of network buffers, but nonetheless can be subjected to packet delay and delay variation as a result of sharing a network buffer with those that do make use of them.  Many of these applications are negatively affected by excessive packet delay and delay variation. Such applications are ideal candidates to be queued separately from the capacity-seeking applications that are the cause of queue buildup, latency and loss.</p>
+<p id="rfc.section.3.p.2">These Non-queue-building (NQB) flows are typically UDP flows that don't seek the capacity of the link (examples: online games, voice chat, DNS lookups). Here the data rate is essentially limited by the Application itself.  In contrast, Queue-building (QB) flows include traffic which uses the Traditional TCP or QUIC, with BBR or other TCP congestion controllers. </p>
 <p id="rfc.section.3.p.3">There are many application flows that fall very neatly into one or the other of these categories, but there are also application flows that may be in a gray area in between (e.g. they are NQB on higher-speed links, but QB on lower-speed links).</p>
 <h1 id="rfc.section.4">
 <a href="#rfc.section.4">4.</a> DSCP Marking of NQB Traffic </h1>
@@ -532,14 +532,14 @@
 <p id="rfc.section.7.2.p.3">A packet carrying the NQB DSCP SHOULD be routed through the dedicated low-latency EPS bearer.  A packet that has no associated NQB marking SHOULD be routed through the default EPS bearer.</p>
 <h1 id="rfc.section.7.3">
 <a href="#rfc.section.7.3">7.3.</a> WiFi Networks</h1>
-<p id="rfc.section.7.3.p.1">WiFi networking equipment compliant with 802.11e generally supports either four or eight transmit queues and four sets of associated EDCA parameters (corresponding to the four WiFi Multimedia Access Categories) that are used to enable differentiated media access characteristics. Implementations typically utilize the IP DSCP field to select a transmit queue.</p>
+<p id="rfc.section.7.3.p.1">WiFi networking equipment compliant with 802.11e generally supports either four or eight transmit queues and four sets of associated EDCA parameters (corresponding to the four WiFi Multimedia Access Categories) that are used to enable differentiated media access characteristics. Implementations typically utilize the IP DSCP field to select a transmit queue, but should be considered as Non-Differentiated Services-Compliant Nodes as described in Section 4 of <a href="#RFC2475" class="xref">[RFC2475]</a>.  As a result this document discusses interoperability with WiFi networks, as opposed to PHB compliance.</p>
 <p id="rfc.section.7.3.p.2">As discussed in <a href="#RFC8325" class="xref">[RFC8325]</a>, most existing implementations use a default DSCP to User Priority mapping that utilizes the most significant three bits of the DiffServ Field to select "User Priority" which then maps to the four WMM Access Categories.  In order to increase the likelihood that NQB traffic is provided a separate queue from QB traffic in existing WiFi equipment, the 0x2A codepoint is preferred for NQB. This would map NQB to UP_5 which is in the "Video" Access Category.</p>
 <p id="rfc.section.7.3.p.3">Systems that utilize <a href="#RFC8325" class="xref">[RFC8325]</a>, SHOULD map the NQB codepoint to UP_5 in the "Video" Access Category.</p>
 <p id="rfc.section.7.3.p.4">WiFi systems that support the NQB PHB SHOULD configure the EDCA parameters for the Video Access Category to match those of the Best Effort Access Category.</p>
 <h1 id="rfc.section.8">
 <a href="#rfc.section.8">8.</a> <a href="#Acknowledgements" id="Acknowledgements">Acknowledgements</a>
 </h1>
-<p id="rfc.section.8.p.1">Thanks to Bob Briscoe, Greg Skinner, Toke Hoeiland-Joergensen, Luca Muscariello, David Black, Sebastian Moeller, Ruediger Geib, Jerome Henry, Steven Blake, Jonathan Morton for their review comments.</p>
+<p id="rfc.section.8.p.1">Thanks to Bob Briscoe, Greg Skinner, Toke Hoeiland-Joergensen, Luca Muscariello, David Black, Sebastian Moeller, Ruediger Geib, Jerome Henry, Steven Blake, Jonathan Morton, Roland Bless, and Kyle Rose for their review comments.</p>
 <h1 id="rfc.section.9">
 <a href="#rfc.section.9">9.</a> <a href="#IANA" id="IANA">IANA Considerations</a>
 </h1>
@@ -576,6 +576,11 @@
 <td class="reference"><b id="RFC2119">[RFC2119]</b></td>
 <td class="top">
 <a>Bradner, S.</a>, "<a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>", BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC2475">[RFC2475]</b></td>
+<td class="top">
+<a>Blake, S.</a>, <a>Black, D.</a>, <a>Carlson, M.</a>, <a>Davies, E.</a>, <a>Wang, Z.</a> and <a>W. Weiss</a>, "<a href="https://tools.ietf.org/html/rfc2475">An Architecture for Differentiated Services</a>", RFC 2475, DOI 10.17487/RFC2475, December 1998.</td>
 </tr>
 <tr>
 <td class="reference"><b id="RFC8033">[RFC8033]</b></td>

@@ -13,6 +13,7 @@ which is available here: http://xml.resource.org. -->
     <!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">    
     <!ENTITY RFC8325 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8325.xml">
     <!ENTITY RFC6817 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6817.xml">
+    <!ENTITY RFC2475 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2475.xml">
     ]>
     <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
     <!-- used by XSLT processors -->
@@ -52,7 +53,7 @@ please see http://xml.resource.org/authoring/README.html. -->
    <!-- The abbreviated title is used in the page header - it is only necessary if the 
    full title is longer than 39 characters -->
 
-   <title abbrev="Non Queue Building Flows">Identifying and Handling Non Queue Building Flows in a Bottleneck Link</title>
+   <title abbrev="Non-Queue-Building PHB">A Non-Queue-Building Per-Hop Behavior (NQB PHB) for Differentiated Services</title>
 
    <!-- add 'role="editor"' below for the editors if appropriate -->
 
@@ -124,11 +125,11 @@ please see http://xml.resource.org/authoring/README.html. -->
       </section>
 
 
-      <section title="Non-Queue Building Flows">
+      <section title="Overview: Non-Queue Building Flows">
 
-        <t>There are many applications that send traffic at relatively low data rates and/or in a fairly smooth and consistent manner such that they are highly unlikely to exceed the available capacity of the network path between source and sink.  These applications do not extensive use of network buffers, but nonetheless can be subjected to packet delay and delay variation as a result of sharing a network buffer with those that do make use of them.  Many of these applications are negatively affected by excessive packet delay and delay variation. Such applications are ideal candidates to be queued separately from the capacity-seeking applications that are the cause of queue buildup, latency and loss.</t>
+        <t>There are many applications that send traffic at relatively low data rates and/or in a fairly smooth and consistent manner such that they are highly unlikely to exceed the available capacity of the network path between source and sink.  These applications do not make extensive use of network buffers, but nonetheless can be subjected to packet delay and delay variation as a result of sharing a network buffer with those that do make use of them.  Many of these applications are negatively affected by excessive packet delay and delay variation. Such applications are ideal candidates to be queued separately from the capacity-seeking applications that are the cause of queue buildup, latency and loss.</t>
 
-        <t>These Non-queue-building (NQB) flows are typically UDP flows that send traffic at a lower data rate and don't seek the capacity of the link (examples: online games, voice chat, DNS lookups). Here the data rate is essentially limited by the Application itself.  In contrast, Queue-building (QB) flows include traffic which uses the Traditional TCP or QUIC, with BBR or other TCP congestion controllers. </t>
+        <t>These Non-queue-building (NQB) flows are typically UDP flows that don't seek the capacity of the link (examples: online games, voice chat, DNS lookups). Here the data rate is essentially limited by the Application itself.  In contrast, Queue-building (QB) flows include traffic which uses the Traditional TCP or QUIC, with BBR or other TCP congestion controllers. </t>
 
         <t>There are many application flows that fall very neatly into one or the other of these categories, but there are also application flows that may be in a gray area in between (e.g. they are NQB on higher-speed links, but QB on lower-speed links).</t>
 
@@ -188,7 +189,7 @@ please see http://xml.resource.org/authoring/README.html. -->
         </section>
 
         <section title="WiFi Networks">
-          <t>WiFi networking equipment compliant with 802.11e generally supports either four or eight transmit queues and four sets of associated EDCA parameters (corresponding to the four WiFi Multimedia Access Categories) that are used to enable differentiated media access characteristics. Implementations typically utilize the IP DSCP field to select a transmit queue.</t>
+          <t>WiFi networking equipment compliant with 802.11e generally supports either four or eight transmit queues and four sets of associated EDCA parameters (corresponding to the four WiFi Multimedia Access Categories) that are used to enable differentiated media access characteristics. Implementations typically utilize the IP DSCP field to select a transmit queue, but should be considered as Non-Differentiated Services-Compliant Nodes as described in Section 4 of <xref target="RFC2475"/>.  As a result this document discusses interoperability with WiFi networks, as opposed to PHB compliance.</t>
 
           <t>As discussed in <xref target="RFC8325"/>, most existing implementations use a default DSCP to User Priority mapping that utilizes the most significant three bits of the DiffServ Field to select "User Priority" which then maps to the four WMM Access Categories.  In order to increase the likelihood that NQB traffic is provided a separate queue from QB traffic in existing WiFi equipment, the 0x2A codepoint is preferred for NQB. This would map NQB to UP_5 which is in the "Video" Access Category.</t>
 
@@ -199,11 +200,8 @@ please see http://xml.resource.org/authoring/README.html. -->
         </section>
       </section>
 
-
-
-
       <section anchor="Acknowledgements" title="Acknowledgements">
-       <t>Thanks to Bob Briscoe, Greg Skinner, Toke Hoeiland-Joergensen, Luca Muscariello, David Black, Sebastian Moeller, Ruediger Geib, Jerome Henry, Steven Blake, Jonathan Morton for their review comments.</t>
+       <t>Thanks to Bob Briscoe, Greg Skinner, Toke Hoeiland-Joergensen, Luca Muscariello, David Black, Sebastian Moeller, Ruediger Geib, Jerome Henry, Steven Blake, Jonathan Morton, Roland Bless, and Kyle Rose for their review comments.</t>
      </section>
 
      <!-- Possibly a 'Contributors' section ... -->
@@ -229,7 +227,8 @@ please see http://xml.resource.org/authoring/README.html. -->
      &RFC8034;
      &RFC8289;
      &RFC2119;
-     &RFC8325;
+     &RFC8325;     
+     &RFC2475;
      <?rfc include="reference.I-D.ietf-tsvwg-l4s-arch" ?>
      <?rfc include="reference.I-D.ietf-tsvwg-aqm-dualq-coupled" ?>
      <?rfc include="reference.I-D.briscoe-docsis-q-protection" ?>
