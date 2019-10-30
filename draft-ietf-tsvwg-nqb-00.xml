@@ -137,29 +137,28 @@ please see http://xml.resource.org/authoring/README.html. -->
 
       <section title="DSCP Marking of NQB Traffic "> 
 
-        <t>This document recommends a DiffServ Code Point (DSCP) of 0x2A to identify packets of NQB flows.</t>
+        <t>This document recommends a DiffServ Code Point (DSCP) of 0x2A to identify packets of NQB flows. (editor's note: this value is subject to change)</t>
 
-        <t>In contrast to the existing standard DSCPs, which are typically only meaningful within a DiffServ Domain (e.g. an AS), this DSCP would be intended for end-to-end usage across the Internet.</t>  
+        <t>It is worthwhile to note that the NQB designation and marking is intended to convey verifiable traffic behavior, not needs or wants.  Also, it would be important that incentives are aligned correctly, i.e. that there is a benefit to the application in marking its packets correctly, and no benefit for an application in intentionally mismarking its traffic.  Thus, a useful property of nodes that support separate queues for NQB and QB flows would be that for NQB flows, the NQB queue provides better performance (considering latency, loss and throughput) than the QB queue; and for QB flows, the QB queue provides better performance (considering latency, loss and throughput) than the NQB queue.</t>
 
-        <t>Some network operators bleach the Diffserv field on ingress into their network <xref target="Custura"/>, and in some cases apply their own DSCP for internal usage.  Networks that support the NQB PHB SHOULD preserve the NQB DSCP when forwarding via an interconnect from another network.</t>
+        <t>In contrast to the existing standard DSCPs, which are typically only meaningful within a DiffServ Domain (e.g. an AS), this DSCP is intended for end-to-end usage across the Internet. Some network operators typically bleach (zero out) the Diffserv field on ingress into their network <xref target="Custura"/>, and in some cases apply their own DSCP for internal usage.  Networks that support the NQB PHB SHOULD preserve the NQB DSCP when forwarding via an interconnect from another network.</t>
 
         <t>Some questions that arise when considering endpoint marking are: How can an application determine whether it is queue building or not, given that the sending application is generally not aware of the available capacity of the path to the receiving endpoint?  Even in cases where an application is aware of the capacity of the path, how can it be sure that the available capacity (considering other flows that may be sharing the path) would be sufficient to result in the application's traffic not causing a queue to form?  </t>
 
         <t>In an unmanaged environment, how can networks trust endpoint marking, and why wouldn't all applications mark their packets as NQB?</t>
 
-        <t>As an answer the last question, it is worthwhile to note that the NQB designation and marking would be intended to convey verifiable traffic behavior, not needs or wants.  Also, it would be important that incentives are aligned correctly, i.e. that there is a benefit to the application in marking its packets correctly, and no benefit for an application in intentionally mismarking its traffic.  Thus, a useful property of nodes that support separate queues for NQB and QB flows would be that for NQB flows, the NQB queue provides better performance (considering latency, loss and throughput) than the QB queue; and for QB flows, the QB queue provides better performance (considering latency, loss and throughput) than the NQB queue.</t>
+
 
       </section>
 
       <section title="Non Queue Building PHB Requirements">
+        <t>A node supporting the NQB PHB makes no guarantees on latency or data rate for NQB marked flows, but instead aims to provide a bound on queuing delay for as many such marked flows as it can, and shed load when needed.</t>
 
         <t>A node supporting the NQB PHB MUST provide a queue for non-queue-building traffic separate from the queue used for queue-building traffic.</t>
 
-        <t>NQB traffic is not rate limited or rate policed separately from queue-building traffic of the same priority.</t>
+        <t>NQB traffic SHOULD NOT be rate limited or rate policed separately from queue-building traffic of equivalent importance.</t>
 
-        <t>The node supporting the NQB PHB makes no guarantees on latency or data rate for NQB marked flows, but instead aims to provide a bound on queuing delay for as many such marked flows as it can, and shed load when needed.</t>
-
-        <t>EF is commonly used exclusively for voice traffic, for which additional functions are applied, such as admission control, accounting, prioritized delivery, etc.</t>
+        <t>The NQB queue SHOULD NOT be given priority over queue-building traffic of equivalent importance.  The node SHOULD provide a scheduler that allows QB and NQB traffic of equivalent importance to share the link in a fair manner, e.g. a deficit round-robin scheduler with equal weights. </t>
     
         <t>It is possible that due to an implementation error or misconfiguration, a QB flow would end up getting mismarked as NQB, or vice versa.  In the case of an NQB flow that isn't marked as NQB and ends up in the QB queue, it would only impact its own quality of service, and so it seems to be of lesser concern.  However, a QB flow that is mismarked as NQB would cause queuing delays for all of the other flows that are sharing the NQB queue.</t>
 
@@ -167,12 +166,11 @@ please see http://xml.resource.org/authoring/README.html. -->
 
         <t>The NQB queue SHOULD (editor's note: SHOULD vs MUST is TBD) support a latency-based traffic protection mechanism that is able to identify queue-building behavior in flows that are classified into the queue, and to redirect flows causing queue build-up to a different queue.  </t>
 
-
       </section>
 
      
       <section title="Relationship to L4S">
-        <t>The dual-queue mechanism described in this draft is intended to be compatible with <xref target="I-D.ietf-tsvwg-l4s-arch"/>, with the result being that NQB traffic and L4S traffic can share the low-latency queue in an L4S dual-queue node.</t>
+        <t>The dual-queue mechanism described in this draft is intended to be compatible with <xref target="I-D.ietf-tsvwg-l4s-arch"/>, with the result being that NQB traffic and L4S traffic can share the low-latency queue in an L4S dual-queue node <xref target="I-D.ietf-tsvwg-aqm-dualq-coupled"/>.</t>
       </section>
 
       <section title="Use Cases">
@@ -190,9 +188,14 @@ please see http://xml.resource.org/authoring/README.html. -->
         </section>
 
         <section title="WiFi Networks">
-          <t> WiFi networking equipment compliant with 802.11e generally supports either four or eight transmit queues and four sets of associated CSMA parameters that are used to enable differentiated media access characteristics. Implementations typically utilize the IP DSCP field to select a transmit queue.</t>  
-          <t>As discussed in <xref target="RFC8325"/>, most implementations use a default DSCP to User Priority mapping that utilizes the most significant three bits of the DiffServ Field to select User Priority.  In the case of the 0x2A codepoint, this would map to UP_5 which is in the "Video" Access Category (one level above "Best Effort").</t>
-          <t>Systems that utilize <xref target="RFC8325"/>, SHOULD map the 0x2A codepoint to UP_6 in the "Voice" Access Category.</t>
+          <t>WiFi networking equipment compliant with 802.11e generally supports either four or eight transmit queues and four sets of associated EDCA parameters (corresponding to the four WiFi Multimedia Access Categories) that are used to enable differentiated media access characteristics. Implementations typically utilize the IP DSCP field to select a transmit queue.</t>
+
+          <t>As discussed in <xref target="RFC8325"/>, most existing implementations use a default DSCP to User Priority mapping that utilizes the most significant three bits of the DiffServ Field to select "User Priority" which then maps to the four WMM Access Categories.  In order to increase the likelihood that NQB traffic is provided a separate queue from QB traffic in existing WiFi equipment, the 0x2A codepoint is preferred for NQB. This would map NQB to UP_5 which is in the "Video" Access Category.</t>
+
+          <t>Systems that utilize <xref target="RFC8325"/>, SHOULD map the NQB codepoint to UP_5 in the "Video" Access Category.</t>
+
+          <t>WiFi systems that support the NQB PHB SHOULD configure the EDCA parameters for the Video Access Category to match those of the Best Effort Access Category.</t>
+
         </section>
       </section>
 
@@ -200,7 +203,7 @@ please see http://xml.resource.org/authoring/README.html. -->
 
 
       <section anchor="Acknowledgements" title="Acknowledgements">
-       <t>Thanks to Bob Briscoe, Greg Skinner, Dave Taht, Toke Hoeiland-Joergensen and Luca Muscariello for their review comments.</t>
+       <t>Thanks to Bob Briscoe, Greg Skinner, Toke Hoeiland-Joergensen, Luca Muscariello, David Black, Sebastian Moeller, Ruediger Geib, Jerome Henry, Steven Blake, Jonathan Morton for their review comments.</t>
      </section>
 
      <!-- Possibly a 'Contributors' section ... -->
@@ -210,7 +213,7 @@ please see http://xml.resource.org/authoring/README.html. -->
      </section>
 
      <section anchor="Security" title="Security Considerations">
-      <t>There is no incentive for an application to mismark its packets as NQB (or vice versa).  If a queue-building flow were to mark its packets as NQB, it could experience excessive packet loss (in the case that queue-protection is not supported by a node) or it could receive no benefit (in the case that queue-protection is supported).  If a non-queue-building flow were to fail to mark its packets as NQB, it could suffer the latency and loss typical of sharing a queue with capacity seeking traffic.</t> 
+      <t>There is no incentive for an application to mismark its packets as NQB (or vice versa).  If a queue-building flow were to mark its packets as NQB, it could experience excessive packet loss (in the case that traffic-protection is not supported by a node) or it could receive no benefit (in the case that traffic-protection is supported).  If a non-queue-building flow were to fail to mark its packets as NQB, it could suffer the latency and loss typical of sharing a queue with capacity seeking traffic.</t> 
 
       <t>The NQB signal is not integrity protected and could be flipped by an on-path attacker.  This might negatively affect the QoS of the tampered flow. </t>
     </section>
@@ -230,6 +233,7 @@ please see http://xml.resource.org/authoring/README.html. -->
      &RFC8325;
      &RFC6817;
      <?rfc include="reference.I-D.ietf-tsvwg-l4s-arch" ?>
+     <?rfc include="reference.I-D.ietf-tsvwg-aqm-dualq-coupled" ?>
      <?rfc include="reference.I-D.fossati-tsvwg-lola" ?>     
      <?rfc include="reference.I-D.ietf-rmcat-cc-requirements" ?>
      <?rfc include="reference.I-D.briscoe-docsis-q-protection" ?>
