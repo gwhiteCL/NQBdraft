@@ -163,9 +163,7 @@ please see http://xml.resource.org/authoring/README.html. -->
 
         <t>It is possible that due to an implementation error or misconfiguration, a QB flow would end up getting mismarked as NQB, or vice versa.  In the case of an NQB flow that isn't marked as NQB and ends up in the QB queue, it would only impact its own quality of service, and so it seems to be of lesser concern.  However, a QB flow that is mismarked as NQB would cause queuing delays for all of the other flows that are sharing the NQB queue.</t>
 
-        <t>To prevent this situation from harming the performance of the real NQB flows, network elements that support differentiating NQB traffic SHOULD support a "traffic protection" function that can identify QB flows that are mismarked as NQB, and reclassify those flows/packets to the QB queue. This benefits the reclassified flow by giving it access to a large buffer (and thus lower packet loss rate), and benefits the actual NQB flows by preventing harm (increased latency variability) to them. Such a function SHOULD be implemented in an objective and verifiable manner, basing its decisions upon the behavior of the flow rather than on application-layer constructs. One example algorithm can be found in <xref target="I-D.briscoe-docsis-q-protection" />.</t>
-
-        <t>The NQB queue SHOULD (editor's note: SHOULD vs MUST is TBD) support a latency-based traffic protection mechanism that is able to identify queue-building behavior in flows that are classified into the queue, and to redirect flows causing queue build-up to a different queue.  </t>
+        <t>To prevent this situation from harming the performance of the real NQB flows, network elements that support differentiating NQB traffic SHOULD (editor's note: SHOULD vs MUST is TBD) support a "traffic protection" function that can identify QB flows that are mismarked as NQB, and reclassify those flows/packets to the QB queue.  Such a function SHOULD be implemented in an objective and verifiable manner, basing its decisions upon the behavior of the flow rather than on application-layer constructs. One example algorithm can be found in <xref target="I-D.briscoe-docsis-q-protection" />.</t>
 
       </section>
 
@@ -180,7 +178,7 @@ please see http://xml.resource.org/authoring/README.html. -->
         </section>
 
         <section title="Mobile Networks">
-          <t>Today's mobile networks are configured to bundle all flows to and from the Internet into a single "default" EPS bearer whose buffering characteristics are not compatible with low-latency traffic.  The established behaviour is partly rooted in the desire to prioritise operators' voice services over competing over-the-top services.  Of late, said business consideration seems to have lost momentum and the incentives might now be aligned towards allowing a more suitable treatment of Internet real-time flows.</t>
+          <t>Historically, mobile networks have been configured to bundle all flows to and from the Internet into a single "default" EPS bearer whose buffering characteristics are not compatible with low-latency traffic.  The established behaviour is partly rooted in the desire to prioritise operators' voice services over competing over-the-top services, partly to the fact that the addition of bearers was prohibitive due to expense, partly due to Net Neutrality considerations.  Of late, said consideration seems to have lost momentum (e.g., with the rise in Multi-RAB (Radio Access Bearer) devices) and the incentives might now be aligned towards allowing a more suitable treatment of Internet real-time flows.</t>
 
           <t>To support the NQB PHB, the mobile network MUST be configured to give UEs a dedicated, low-latency, non-GBR, EPS bearer, e.g. one with QCI 7, in addition to the default EPS bearer; or a Data Radio Bearer with 5QI 7 in a 5G system (see Table 5.7.4-1: Standardized 5QI to QoS characteristics mapping in <xref target="SA-5G"/>).</t>
 
@@ -200,7 +198,7 @@ please see http://xml.resource.org/authoring/README.html. -->
       </section>
 
       <section anchor="Acknowledgements" title="Acknowledgements">
-       <t>Thanks to Bob Briscoe, Greg Skinner, Toke Hoeiland-Joergensen, Luca Muscariello, David Black, Sebastian Moeller, Ruediger Geib, Jerome Henry, Steven Blake, Jonathan Morton, Roland Bless, and Kyle Rose for their review comments.</t>
+       <t>Thanks to Bob Briscoe, Greg Skinner, Toke Hoeiland-Joergensen, Luca Muscariello, David Black, Sebastian Moeller, Ruediger Geib, Jerome Henry, Steven Blake, Jonathan Morton, Roland Bless, Kevin Smith, and Kyle Rose for their review comments.</t>
      </section>
 
      <!-- Possibly a 'Contributors' section ... -->
