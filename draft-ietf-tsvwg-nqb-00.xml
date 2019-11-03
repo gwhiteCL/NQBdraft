@@ -196,6 +196,16 @@ please see http://xml.resource.org/authoring/README.html. -->
         </section>
       </section>
 
+      <section title="Open Points">
+        <t><list style="symbols">
+        <t>Traffic Protection: SHOULD or MUST?</t>
+        <t>Traffic Protection: what are the detailed requirements?</t>
+        <t>DSCP value vis a vis WMM: VideoAC or BestEffortAC?</t>
+        <t>Are there hidden requirements in Section 9 of the individual draft?</t>
+        <t>Is more discussion needed around applicability in order to give guidance to application devs?</t>
+      </list></t>
+      </section>
+
       <section anchor="Acknowledgements" title="Acknowledgements">
        <t>Thanks to Bob Briscoe, Greg Skinner, Toke Hoeiland-Joergensen, Luca Muscariello, David Black, Sebastian Moeller, Ruediger Geib, Jerome Henry, Steven Blake, Jonathan Morton, Roland Bless, Kevin Smith, Martin Dolly, and Kyle Rose for their review comments.</t>
      </section>

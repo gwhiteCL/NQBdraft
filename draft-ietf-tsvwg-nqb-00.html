@@ -384,10 +384,11 @@
 <link href="#rfc.section.7.1" rel="Chapter" title="7.1 DOCSIS Access Networks">
 <link href="#rfc.section.7.2" rel="Chapter" title="7.2 Mobile Networks">
 <link href="#rfc.section.7.3" rel="Chapter" title="7.3 WiFi Networks">
-<link href="#rfc.section.8" rel="Chapter" title="8 Acknowledgements">
-<link href="#rfc.section.9" rel="Chapter" title="9 IANA Considerations">
-<link href="#rfc.section.10" rel="Chapter" title="10 Security Considerations">
-<link href="#rfc.references" rel="Chapter" title="11 Informative References">
+<link href="#rfc.section.8" rel="Chapter" title="8 Open Points">
+<link href="#rfc.section.9" rel="Chapter" title="9 Acknowledgements">
+<link href="#rfc.section.10" rel="Chapter" title="10 IANA Considerations">
+<link href="#rfc.section.11" rel="Chapter" title="11 Security Considerations">
+<link href="#rfc.references" rel="Chapter" title="12 Informative References">
 <link href="#rfc.authors" rel="Chapter">
 
 
@@ -471,13 +472,15 @@
 </li>
 <li>7.3.   <a href="#rfc.section.7.3">WiFi Networks</a>
 </li>
-</ul><li>8.   <a href="#rfc.section.8">Acknowledgements</a>
+</ul><li>8.   <a href="#rfc.section.8">Open Points</a>
 </li>
-<li>9.   <a href="#rfc.section.9">IANA Considerations</a>
+<li>9.   <a href="#rfc.section.9">Acknowledgements</a>
 </li>
-<li>10.   <a href="#rfc.section.10">Security Considerations</a>
+<li>10.   <a href="#rfc.section.10">IANA Considerations</a>
 </li>
-<li>11.   <a href="#rfc.references">Informative References</a>
+<li>11.   <a href="#rfc.section.11">Security Considerations</a>
+</li>
+<li>12.   <a href="#rfc.references">Informative References</a>
 </li>
 <li><a href="#rfc.authors">Authors' Addresses</a>
 </li>
@@ -536,20 +539,31 @@
 <p id="rfc.section.7.3.p.3">Systems that utilize <a href="#RFC8325" class="xref">[RFC8325]</a>, SHOULD map the NQB codepoint to UP_5 in the "Video" Access Category.</p>
 <p id="rfc.section.7.3.p.4">In order to preserve the incentives principle, WiFi systems SHOULD configure the EDCA parameters for the Video Access Category to match those of the Best Effort Access Category.</p>
 <h1 id="rfc.section.8">
-<a href="#rfc.section.8">8.</a> <a href="#Acknowledgements" id="Acknowledgements">Acknowledgements</a>
-</h1>
-<p id="rfc.section.8.p.1">Thanks to Bob Briscoe, Greg Skinner, Toke Hoeiland-Joergensen, Luca Muscariello, David Black, Sebastian Moeller, Ruediger Geib, Jerome Henry, Steven Blake, Jonathan Morton, Roland Bless, Kevin Smith, Martin Dolly, and Kyle Rose for their review comments.</p>
+<a href="#rfc.section.8">8.</a> Open Points</h1>
+<p></p>
+
+<ul>
+<li>Traffic Protection: SHOULD or MUST?</li>
+<li>Traffic Protection: what are the detailed requirements?</li>
+<li>DSCP value vis a vis WMM: VideoAC or BestEffortAC?</li>
+<li>Are there hidden requirements in Section 9 of the individual draft?</li>
+<li>Is more discussion needed around applicability in order to give guidance to application devs?</li>
+</ul>
 <h1 id="rfc.section.9">
-<a href="#rfc.section.9">9.</a> <a href="#IANA" id="IANA">IANA Considerations</a>
+<a href="#rfc.section.9">9.</a> <a href="#Acknowledgements" id="Acknowledgements">Acknowledgements</a>
 </h1>
-<p id="rfc.section.9.p.1">This draft proposes the registration of a standardized DSCP = 0x2A to denote Non-Queue-Building behavior.</p>
+<p id="rfc.section.9.p.1">Thanks to Bob Briscoe, Greg Skinner, Toke Hoeiland-Joergensen, Luca Muscariello, David Black, Sebastian Moeller, Ruediger Geib, Jerome Henry, Steven Blake, Jonathan Morton, Roland Bless, Kevin Smith, Martin Dolly, and Kyle Rose for their review comments.</p>
 <h1 id="rfc.section.10">
-<a href="#rfc.section.10">10.</a> <a href="#Security" id="Security">Security Considerations</a>
+<a href="#rfc.section.10">10.</a> <a href="#IANA" id="IANA">IANA Considerations</a>
 </h1>
-<p id="rfc.section.10.p.1">There is no incentive for an application to mismark its packets as NQB (or vice versa).  If a queue-building flow were to mark its packets as NQB, it could experience excessive packet loss (in the case that traffic-protection is not supported by a node) or it could receive no benefit (in the case that traffic-protection is supported).  If a non-queue-building flow were to fail to mark its packets as NQB, it could suffer the latency and loss typical of sharing a queue with capacity seeking traffic.</p>
-<p id="rfc.section.10.p.2">The NQB signal is not integrity protected and could be flipped by an on-path attacker.  This might negatively affect the QoS of the tampered flow. </p>
+<p id="rfc.section.10.p.1">This draft proposes the registration of a standardized DSCP = 0x2A to denote Non-Queue-Building behavior.</p>
+<h1 id="rfc.section.11">
+<a href="#rfc.section.11">11.</a> <a href="#Security" id="Security">Security Considerations</a>
+</h1>
+<p id="rfc.section.11.p.1">There is no incentive for an application to mismark its packets as NQB (or vice versa).  If a queue-building flow were to mark its packets as NQB, it could experience excessive packet loss (in the case that traffic-protection is not supported by a node) or it could receive no benefit (in the case that traffic-protection is supported).  If a non-queue-building flow were to fail to mark its packets as NQB, it could suffer the latency and loss typical of sharing a queue with capacity seeking traffic.</p>
+<p id="rfc.section.11.p.2">The NQB signal is not integrity protected and could be flipped by an on-path attacker.  This might negatively affect the QoS of the tampered flow. </p>
 <h1 id="rfc.references">
-<a href="#rfc.references">11.</a> Informative References</h1>
+<a href="#rfc.references">12.</a> Informative References</h1>
 <table><tbody>
 <tr>
 <td class="reference"><b id="Custura">[Custura]</b></td>
