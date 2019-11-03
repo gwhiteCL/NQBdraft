@@ -157,6 +157,8 @@ please see http://xml.resource.org/authoring/README.html. -->
 
         <t>The NQB queue SHOULD be given equal priority compared to queue-building traffic of equivalent importance.  The node SHOULD provide a scheduler that allows QB and NQB traffic of equivalent importance to share the link in a fair manner, e.g. a deficit round-robin scheduler with equal weights. </t>
 
+        <t>A node supporting the NQB PHB SHOULD treat traffic marked as Default (DSCP=0x00) as QB traffic having equivalent importance to the NQB marked traffic.</t>
+
         <t>The NQB queue SHOULD have a buffer size that is significantly smaller than the buffer provided for QB traffic.</t>
 
         <t>It is possible that due to an implementation error or misconfiguration, a QB flow would end up getting mismarked as NQB, or vice versa.  In the case of an NQB flow that isn't marked as NQB and ends up in the QB queue, it would only impact its own quality of service, and so it seems to be of lesser concern.  However, a QB flow that is mismarked as NQB would cause queuing delays for all of the other flows that are sharing the NQB queue.</t>
