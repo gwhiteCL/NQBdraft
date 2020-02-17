@@ -114,7 +114,7 @@ please see http://xml.resource.org/authoring/README.html. -->
 
         <t>In contrast to traditional congestion-controlled applications, there are a variety of relatively low data rate applications that do not materially contribute to queueing delay and loss, but are nonetheless subjected to it by sharing the same bottleneck link in the access network.  Many of these applications may be sensitive to latency or latency variation, as well as packet loss, and thus produce a poor quality of experience in such conditions.</t>  
 
-        <t>Active Queue Management (AQM) mechanisms (such as <xref target="RFC8033">PIE</xref>, <xref target="RFC8034">DOCSIS-PIE</xref>, or  <xref target="RFC8289">CoDel</xref>) can improve the quality of experience for latency sensitive applications, but there are practical limits to the amount of improvement that can be achieved without impacting the throughput of capacity-seeking applications, particuarly when only a few of such flows are present.</t>
+        <t>Active Queue Management (AQM) mechanisms (such as <xref target="RFC8033">PIE</xref>, <xref target="RFC8034">DOCSIS-PIE</xref>, or  <xref target="RFC8289">CoDel</xref>) can improve the quality of experience for latency sensitive applications, but there are practical limits to the amount of improvement that can be achieved without impacting the throughput of capacity-seeking applications, particularly when only a few of such flows are present.</t>
 
         <t>The NQB PHB supports differentiating between these two classes of traffic in bottleneck links and queuing them separately in order that both classes can deliver satisfactory quality of experience for their applications.</t>
 
@@ -181,7 +181,7 @@ please see http://xml.resource.org/authoring/README.html. -->
         <section title="Mobile Networks">
           <t>Historically, mobile networks have been configured to bundle all flows to and from the Internet into a single "default" EPS bearer whose buffering characteristics are not compatible with low-latency traffic.  The established behaviour is rooted partly in the desire to prioritise operators' voice services over competing over-the-top services and partly in the fact that the addition of bearers was prohibitive due to expense.  Of late, said consideration seems to have lost momentum (e.g., with the rise in Multi-RAB (Radio Access Bearer) devices) and the incentives might now be aligned towards allowing a more suitable treatment of Internet real-time flows.</t>
 
-          <t>To support the NQB PHB, the mobile network MUST be configured to give UEs a dedicated, low-latency, non-GBR, EPS bearer, e.g. one with QCI 7, in addition to the default EPS bearer; or a Data Radio Bearer with 5QI 7 in a 5G system (see Table 5.7.4-1: Standardized 5QI to QoS characteristics mapping in <xref target="SA-5G"/>).</t>
+          <t>To support the NQB PHB, the mobile network SHOULD be configured to give UEs a dedicated, low-latency, non-GBR, EPS bearer, e.g. one with QCI 7, in addition to the default EPS bearer; or a Data Radio Bearer with 5QI 7 in a 5G system (see Table 5.7.4-1: Standardized 5QI to QoS characteristics mapping in <xref target="SA-5G"/>).</t>
 
           <t>A packet carrying the NQB DSCP SHOULD be routed through the dedicated low-latency EPS bearer.  A packet that has no associated NQB marking SHOULD be routed through the default EPS bearer.</t>
         </section>
@@ -191,7 +191,7 @@ please see http://xml.resource.org/authoring/README.html. -->
 
           <t>As discussed in <xref target="RFC8325"/>, most existing WiFi implementations use a default DSCP to User Priority mapping that utilizes the most significant three bits of the DiffServ Field to select "User Priority" which is then mapped to the four WMM Access Categories.  In order to increase the likelihood that NQB traffic is provided a separate queue from QB traffic in existing WiFi equipment, the 0x2A codepoint is preferred for NQB. This would map NQB to UP_5 which is in the "Video" Access Category. Similarly, systems that utilize <xref target="RFC8325"/>, SHOULD map the NQB codepoint to UP_5 in the "Video" Access Category.</t>
 
-          <t>The preceding requirements are intended to enable WiFi systems to support the NQB PHB requirement for segregated queuing, however many currently deployed WiFi systems may not be capable of supporting the remaining NQB PHB requirements, and as a result there is a potential for misuse of the NQB codepoint and/or for unintended behaviors to occur in such systems. Certain steps should be taken to minimze the risk of deleterious behavior in these systems, as described below.</t> 
+          <t>The preceding requirements are intended to enable WiFi systems to support the NQB PHB requirement for segregated queuing, however many currently deployed WiFi systems may not be capable of supporting the remaining NQB PHB requirements, and as a result there is a potential for misuse of the NQB codepoint and/or for unintended behaviors to occur in such systems. Certain steps should be taken to minimize the risk of deleterious behavior in these systems, as described below.</t>
 
           <t>Existing WiFi devices are unlikely to support a traffic protection algorithm, so mismarked QB traffic is not likely to be detected and remedied by such devices.</t>  
 
