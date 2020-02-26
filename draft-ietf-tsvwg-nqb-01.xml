@@ -148,7 +148,7 @@ please see http://xml.resource.org/authoring/README.html. -->
 
       </section>
 
-      <section title="Non Queue Building PHB Requirements">
+      <section anchor="phb_requirements" title="Non Queue Building PHB Requirements">
         <t>A node supporting the NQB PHB makes no guarantees on latency or data rate for NQB marked flows, but instead aims to provide a bound on queuing delay for as many such marked flows as it can, and shed load when needed.</t>
 
         <t>A node supporting the NQB PHB MUST provide a queue for non-queue-building traffic separate from the queue used for queue-building traffic.</t>
@@ -191,7 +191,7 @@ please see http://xml.resource.org/authoring/README.html. -->
 
           <t>As discussed in <xref target="RFC8325"/>, most existing WiFi implementations use a default DSCP to User Priority mapping that utilizes the most significant three bits of the DiffServ Field to select "User Priority" which is then mapped to the four WMM Access Categories.  In order to increase the likelihood that NQB traffic is provided a separate queue from QB traffic in existing WiFi equipment, the 0x2A codepoint is preferred for NQB. This would map NQB to UP_5 which is in the "Video" Access Category. Similarly, systems that utilize <xref target="RFC8325"/>, SHOULD map the NQB codepoint to UP_5 in the "Video" Access Category.</t>
 
-          <t>While the preceding statements are intended to enable WiFi systems to support the NQB PHB requirement for segregated queuing, many currently deployed WiFi systems may not be capable of supporting the remaining NQB PHB requirements, and as a result there is a potential for misuse of the NQB codepoint and/or for unintended behaviors to occur in such systems. Certain steps should be taken to minimize the risk of deleterious behavior in these systems, as described below.</t>
+          <t>While the DSCP to User Priority mapping can enable WiFi systems to support the NQB PHB requirement for segregated queuing, many currently deployed WiFi systems may not be capable of supporting the remaining NQB PHB requirements in <xref target="phb_requirements"/>.  This is discussed further below.</t>
 
           <t>Existing WiFi devices are unlikely to support a traffic protection algorithm, so traffic mismarked as NQB is not likely to be detected and remedied by such devices.</t>  
 
