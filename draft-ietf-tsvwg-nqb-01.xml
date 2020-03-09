@@ -15,6 +15,7 @@ which is available here: http://xml.resource.org. -->
     <!ENTITY RFC8325 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8325.xml">
     <!ENTITY RFC6817 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6817.xml">
     <!ENTITY RFC2475 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2475.xml">
+    <!ENTITY RFC8085 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8085.xml">
     ]>
     <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
     <!-- used by XSLT processors -->
@@ -129,11 +130,11 @@ please see http://xml.resource.org/authoring/README.html. -->
 
         <t>There are many applications that send traffic at relatively low data rates and/or in a fairly smooth and consistent manner such that they are highly unlikely to exceed the available capacity of the network path between source and sink.  These applications do not cause queues to form in network buffers, but nonetheless can be subjected to packet delay and delay variation as a result of sharing a network buffer with applications that do cause queues.  Many of these applications are negatively affected by excessive packet delay and delay variation. Such applications are ideal candidates to be queued separately from the capacity-seeking applications that are the cause of queue buildup, latency and loss.</t>
 
-        <t>These Non-queue-building (NQB) flows are typically UDP flows that don't seek the capacity of the link (examples: online games, voice chat, DNS lookups, real-time IoT analytics data). Here the data rate is limited by the Application itself rather than by network capacity.  In contrast, Queue-building (QB) flows include traffic which uses the Traditional TCP or QUIC, with BBR or other TCP congestion controllers. </t>
+        <t>Applications that align with the above description are thus ideal candidates to identify themselves to the network such that they can be queued separately in network nodes that support this functionality.</t>
+
+        <t>These Non-queue-building (NQB) flows are typically UDP flows that don't seek the capacity of the link (examples: online games, voice chat, DNS lookups, real-time IoT analytics data). Here the data rate is limited by the Application itself rather than by network capacity. In many cases these applications only send a few packets per RTT. In contrast, Queue-building (QB) flows include traffic which uses the Traditional TCP or QUIC, with BBR or other TCP congestion controllers.</t>
 
         <t>There are many application flows that fall very neatly into one or the other of these categories, but there are also application flows that may be in a gray area in between (e.g. they are NQB on higher-speed links, but QB on lower-speed links).</t>
-
-        <t>Editor's Note: Do we need to answer the following questions? How can an application determine whether it is queue building or not, given that the sending application is generally not aware of the available capacity of the path to the receiving endpoint?  Even if the application were to be aware of the capacity of the path, how could it be sure that the available capacity (considering other flows that may be sharing the path) would be sufficient to result in the application's traffic not causing a queue to form?  </t>
 
       </section>
 
@@ -203,15 +204,6 @@ please see http://xml.resource.org/authoring/README.html. -->
         </section>
       </section>
 
-      <section title="Open Points">
-        <t><list style="symbols">
-        <t>Traffic Protection: SHOULD or MUST?</t>
-        <t>Traffic Protection: what are the detailed requirements?</t>
-        <t>Are there hidden requirements in Section 9 of the individual draft?</t>
-        <t>Is more discussion needed around applicability in order to give guidance to application devs?</t>
-      </list></t>
-      </section>
-
       <section anchor="Acknowledgements" title="Acknowledgements">
        <t>Thanks to Bob Briscoe, Greg Skinner, Toke Hoeiland-Joergensen, Luca Muscariello, David Black, Sebastian Moeller, Ruediger Geib, Jerome Henry, Steven Blake, Jonathan Morton, Roland Bless, Kevin Smith, Martin Dolly, and Kyle Rose for their review comments.</t>
      </section>
@@ -235,6 +227,7 @@ please see http://xml.resource.org/authoring/README.html. -->
 
    <references title="Informative References">
      <!-- Here we use entities that we defined at the beginning. -->
+     &RFC8085;
      &RFC8033;
      &RFC8034;
      &RFC8289;
