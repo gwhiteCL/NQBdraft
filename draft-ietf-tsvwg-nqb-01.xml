@@ -100,7 +100,7 @@ please see http://xml.resource.org/authoring/README.html. -->
         keywords will be used for the search engine. -->
 
         <abstract>
-         <t> This document specifies properties and characteristics of a Non-Queue-Building Per-Hop Behavior (NQB PHB). The purpose of this NQB PHB is to provide a separate queue that enables low latency and, when possible, low loss for application-limited traffic flows that would ordinarily share a queue with capacity-seeking traffic. The PHB provides low latency and, when possible, low loss without prioritization and without rate policing, making it suitable for environments where the use of either these features may be restricted. The NQB PHB has been developed primarily for use by access network segments, where queuing delays and queuing loss caused by Queue-Building protocols are manifested, but its use is not limited to such segments. In particular, applications to cable broadband links and mobile network radio and core segments are discussed. This document defines a standard Differentiated Services Code Point (DSCP) to identify Non-Queue-Building flows.</t>
+         <t> This document specifies properties and characteristics of a Non-Queue-Building Per-Hop Behavior (NQB PHB). The purpose of this NQB PHB is to provide a separate queue that enables low latency and, when possible, low loss for application-limited traffic flows that would ordinarily share a queue with capacity-seeking traffic. This PHB is implemented without prioritization and without rate policing, making it suitable for environments where the use of either these features may be restricted. The NQB PHB has been developed primarily for use by access network segments, where queuing delays and queuing loss caused by Queue-Building protocols are manifested, but its use is not limited to such segments. In particular, applications to cable broadband links and mobile network radio and core segments are discussed. This document defines a standard Differentiated Services Code Point (DSCP) to identify Non-Queue-Building flows.</t>
        </abstract>
      </front>
 
@@ -126,32 +126,32 @@ please see http://xml.resource.org/authoring/README.html. -->
       </section>
 
 
-      <section title="Overview: Non-Queue Building Flows">
+      <section title="Overview: Non-Queue-Building Flows">
 
         <t>There are many applications that send traffic at relatively low data rates and/or in a fairly smooth and consistent manner such that they are highly unlikely to exceed the available capacity of the network path between source and sink. These applications do not cause queues to form in network buffers, but nonetheless can be subjected to packet delay and delay variation as a result of sharing a network buffer with applications that do cause queues. Many of these applications are negatively affected by excessive packet delay and delay variation. Such applications are ideal candidates to be queued separately from the capacity-seeking applications that are the cause of queue buildup, latency and loss.</t>
 
-        <t>Applications that align with the above description are thus ideal candidates to identify themselves to the network such that they can be queued separately in network nodes that support this functionality.</t>
-
-        <t>These Non-queue-building (NQB) flows are typically UDP flows that don't seek the capacity of the link (examples: online games, voice chat, DNS lookups, real-time IoT analytics data). Here the data rate is limited by the Application itself rather than by network capacity. In many cases these applications only send a few packets per RTT. In contrast, Queue-building (QB) flows include traffic which uses the Traditional TCP or QUIC, with BBR or other TCP congestion controllers.</t>
-
-        <t>There are many application flows that fall very neatly into one or the other of these categories, but there are also application flows that may be in a gray area in between (e.g. they are NQB on higher-speed links, but QB on lower-speed links).</t>
-
+        <t>These Non-queue-building (NQB) flows are typically UDP flows that don't seek the capacity of the link (examples: online games, voice chat, DNS lookups, real-time IoT analytics data). Here the data rate is limited by the Application itself rather than by network capacity - in many cases these applications only send a few packets per RTT. In contrast, Queue-building (QB) flows include traffic which uses the Traditional TCP or QUIC, with BBR or other TCP congestion controllers.</t>
       </section>
 
 
       <section title="DSCP Marking of NQB Traffic ">
+        <t>Applications that align with the above description of NQB behavior SHOULD identify themselves to the network using a DiffServ Code Point (DSCP) so that their packets can be queued separately from QB flows.</t>
 
-        <t>This document recommends a DiffServ Code Point (DSCP) of 0x2A to identify packets of NQB flows. (editor's note: this value is subject to change)</t>
-
-        <t>It is worthwhile to note that the NQB designation and marking is intended to convey verifiable traffic behavior, not needs or wants. Also, it is important that incentives are aligned correctly, i.e. that there is a benefit to the application in marking its packets correctly, and no benefit to an application in intentionally mismarking its traffic. Thus, a useful property of nodes that support separate queues for NQB and QB flows would be that for NQB flows, the NQB queue provides better performance than the QB queue; and for QB flows, the QB queue provides better performance than the NQB queue. By adhering to these principles, there is no incentive for senders to mismark their traffic as NQB, and further, any mismarking can be identified by the network.</t>
-
-        <t>In contrast to the existing standard DSCPs, which are typically only meaningful within a DiffServ Domain (e.g. an AS or an enterprise network), this DSCP is expected to be used end-to-end across the Internet. Some network operators typically bleach (zero out) the Diffserv field on ingress into their network <xref target="Custura"/>, and in some cases apply their own DSCP for internal usage. Networks that support the NQB PHB SHOULD preserve the NQB DSCP when forwarding via an interconnect from or to another network.</t>
+        <t>There are many application flows that fall very neatly into one or the other of these categories, but there are also application flows that may be in a gray area in between (e.g. they are NQB on higher-speed links, but QB on lower-speed links).</t>
 
         <t>If there is uncertainty as to whether an application's traffic aligns with the description of NQB behavior in the preceding section, the application SHOULD NOT mark its traffic with the NQB DSCP. In such a case, the application SHOULD instead implement a congestion control mechanism, for example as described in <xref target="RFC8085"/>.</t>
 
+        <t>This document recommends a DSCP of 0x2A to identify packets of NQB flows. (editor's note: this value is subject to change)</t>
+
+        <t>It is worthwhile to note that the NQB designation and marking is intended to convey verifiable traffic behavior, not needs or wants. Also, it is important that incentives are aligned correctly, i.e. that there is a benefit to the application in marking its packets correctly, and no benefit to an application in intentionally mismarking its traffic. Thus, a useful property of nodes that support separate queues for NQB and QB flows would be that for NQB flows, the NQB queue provides better performance than the QB queue; and for QB flows, the QB queue provides better performance than the NQB queue. By adhering to these principles, there is no incentive for senders to mismark their traffic as NQB, and further, any mismarking can be identified by the network.</t>
+
+        <t>In contrast to the existing standard DSCPs, which are typically only meaningful within a DiffServ Domain (e.g. an AS or an enterprise network), this DSCP is expected to be used end-to-end across the Internet. Some network operators typically bleach (zero out) the DiffServ field on ingress into their network <xref target="Custura"/>, and in some cases apply their own DSCP for internal usage. Networks that support the NQB PHB SHOULD preserve the NQB DSCP when forwarding via an interconnect from or to another network.</t>
+
+
+
       </section>
 
-      <section anchor="phb_requirements" title="Non Queue Building PHB Requirements">
+      <section anchor="phb_requirements" title="Non-Queue-Building PHB Requirements">
         <t>A node supporting the NQB PHB makes no guarantees on latency or data rate for NQB marked flows, but instead aims to provide a bound on queuing delay for as many such marked flows as it can, and shed load when needed.</t>
 
         <t>A node supporting the NQB PHB MUST provide a queue for non-queue-building traffic separate from the queue used for queue-building traffic.</t>
@@ -171,14 +171,14 @@ please see http://xml.resource.org/authoring/README.html. -->
       </section>
 
       <section title="Relationship to L4S">
-        <t>The dual-queue mechanism described in this draft is intended to be compatible with <xref target="I-D.ietf-tsvwg-l4s-arch"/>, with the result being that NQB traffic and L4S traffic can share the low-latency queue in an L4S dual-queue node <xref target="I-D.ietf-tsvwg-aqm-dualq-coupled"/>.</t>
+        <t>Traffic flows marked with the NQB DSCP as described in this draft are intended to be compatible with <xref target="I-D.ietf-tsvwg-l4s-arch"/>, with the result being that NQB traffic and L4S traffic can share the low-latency queue in an L4S dual-queue node <xref target="I-D.ietf-tsvwg-aqm-dualq-coupled"/>.</t>
       </section>
 
       <section title="Use Cases">
         <section title="DOCSIS Access Networks">
           <t>Residential cable broadband Internet services are commonly configured with a single bottleneck link (the access network link) upon which the service definition is applied. The service definition, typically an upstream/downstream data rate tuple, is implemented as a configured pair of rate shapers that are applied to the user's traffic. In such networks, the quality of service that each application receives, and as a result, the quality of experience that it generates for the user is influenced by the characteristics of the access network link.</t>
           
-          <t> To support the NQB PHB, cable broadband services MUST be configured to provide a separate queue for NQB marked traffic. The NQB queue MUST be configured to share the service's rate shaping bandwith with the queue for QB traffic.</t>
+          <t> To support the NQB PHB, cable broadband services MUST be configured to provide a separate queue for NQB marked traffic. The NQB queue MUST be configured to share the service's rate shaping bandwidth with the queue for QB traffic.</t>
         </section>
 
         <section title="Mobile Networks">
@@ -190,7 +190,7 @@ please see http://xml.resource.org/authoring/README.html. -->
         </section>
 
         <section title="WiFi Networks">
-          <t>WiFi networking equipment compliant with 802.11e generally supports either four or eight transmit queues and four sets of associated Enhanced Multimedia Distributed Control Access (EDCA) parameters (corresponding to the four WiFi Multimedia (WMM) Access Categories) that are used to enable differentiated media access characteristics. Implementations typically utilize the IP DSCP field to select a transmit queue, but should be considered as Non-Differentiated Services-Compliant Nodes as described in Section 4 of <xref target="RFC2475"/> because this transmit queue selection is a local implementation characteristic that is not part of a consistently operated Diffserv domain or region. As a result this document discusses interoperability with WiFi networks, as opposed to PHB compliance.</t>
+          <t>WiFi networking equipment compliant with 802.11e generally supports either four or eight transmit queues and four sets of associated Enhanced Multimedia Distributed Control Access (EDCA) parameters (corresponding to the four WiFi Multimedia (WMM) Access Categories) that are used to enable differentiated media access characteristics. Implementations typically utilize the IP DSCP field to select a transmit queue, but should be considered as Non-Differentiated Services-Compliant Nodes as described in Section 4 of <xref target="RFC2475"/> because this transmit queue selection is a local implementation characteristic that is not part of a consistently operated DiffServ domain or region. As a result this document discusses interoperability with WiFi networks, as opposed to PHB compliance.</t>
 
           <t>As discussed in <xref target="RFC8325"/>, most existing WiFi implementations use a default DSCP to User Priority mapping that utilizes the most significant three bits of the DiffServ Field to select "User Priority" which is then mapped to the four WMM Access Categories. In order to increase the likelihood that NQB traffic is provided a separate queue from QB traffic in existing WiFi equipment, the 0x2A codepoint is preferred for NQB. This would map NQB to UP_5 which is in the "Video" Access Category. Similarly, systems that utilize <xref target="RFC8325"/>, SHOULD map the NQB codepoint to UP_5 in the "Video" Access Category.</t>
 
@@ -217,7 +217,7 @@ please see http://xml.resource.org/authoring/README.html. -->
      </section>
 
      <section anchor="Security" title="Security Considerations">
-      <t>There is no incentive for an application to mismark its packets as NQB (or vice versa). If a queue-building flow were to mark its packets as NQB, it could experience excessive packet loss (in the case that traffic-protection is not supported by a node) or it could receive no benefit (in the case that traffic protection is supported). If a non-queue-building flow were to fail to mark its packets as NQB, it could suffer the latency and loss typical of sharing a queue with capacity seeking traffic.</t>
+      <t>There is no incentive for an application to mismark its packets as NQB (or vice versa). If a queue-building flow were to mark its packets as NQB, it could experience excessive packet loss (in the case that traffic protection is not supported by a node) or it could receive no benefit (in the case that traffic protection is supported). If a non-queue-building flow were to fail to mark its packets as NQB, it could suffer the latency and loss typical of sharing a queue with capacity seeking traffic.</t>
 
       <t>The NQB signal is not integrity protected and could be flipped by an on-path attacker. This might negatively affect the QoS of the tampered flow. </t>
     </section>
