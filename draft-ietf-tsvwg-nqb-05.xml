@@ -1,0 +1,579 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!-- This template is for creating an Internet Draft using xml2rfc,
+which is available here: http://xml.resource.org. -->
+<!DOCTYPE rfc SYSTEM "rfc2629-xhtml.ent">
+<?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
+<!-- used by XSLT processors -->
+<!-- For a complete list and description of processing instructions (PIs), 
+please see http://xml.resource.org/authoring/README.html. -->
+<!-- Below are generally applicable Processing Instructions (PIs) that most I-Ds might want to use.
+(Here they are set differently than their defaults in xml2rfc v1.32) -->
+<?rfc strict="yes" ?>
+<!-- give errors regarding ID-nits and DTD validation -->
+<!-- control the table of contents (ToC) -->
+<?rfc toc="yes"?>
+<!-- generate a ToC -->
+<?rfc tocdepth="4"?>
+<!-- the number of levels of subsections in ToC. default: 3 -->
+<!-- control references -->
+<?rfc symrefs="yes"?>
+<!-- use symbolic references tags, i.e, [RFC2119] instead of [1] -->
+<?rfc sortrefs="yes" ?>
+<!-- sort the reference entries alphabetically -->
+<!-- control vertical white space 
+(using these PIs as follows is recommended by the RFC Editor) -->
+<?rfc compact="yes" ?>
+<!-- do not start each main section on a new page -->
+<?rfc subcompact="no" ?>
+<!-- keep one blank line between list items -->
+<!-- end of list of popular I-D processing instructions -->
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-tsvwg-nqb-04" ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true" tocDepth="4" symRefs="true" sortRefs="true" version="3" consensus="true">
+  <!-- xml2rfc v2v3 conversion 2.39.0 -->
+  <!-- category values: std, bcp, info, exp, and historic
+    ipr values: trust200902, noModificationTrust200902, noDerivativesTrust200902,
+       or pre5378Trust200902
+    you can add the attributes updates="NNNN" and obsoletes="NNNN" 
+    they will automatically be output with "(if approved)" -->
+
+    <!-- ***** FRONT MATTER ***** -->
+
+    <front>
+    <!-- The abbreviated title is used in the page header - it is only necessary if the 
+   full title is longer than 39 characters -->
+
+   <title abbrev="Non-Queue-Building PHB">A Non-Queue-Building Per-Hop Behavior (NQB PHB) for Differentiated Services</title>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-tsvwg-nqb-05"/>
+    <!-- add 'role="editor"' below for the editors if appropriate -->
+
+   <!-- Another author who claims to be an editor -->
+
+   <author fullname="Greg White" initials="G." surname="White">
+      <organization>CableLabs</organization>
+      <address>
+        <email>g.white@cablelabs.com</email>
+      </address>
+    </author>
+    <author fullname="Thomas Fossati" initials="T." surname="Fossati">
+      <organization>ARM</organization>
+      <address>
+        <email>Thomas.Fossati@arm.com</email>
+      </address>
+    </author>
+    <date year="2021"/>
+    <!-- If the month and year are both specified and are the current ones, xml2rfc will fill 
+        in the current day for you. If only the current year is specified, xml2rfc will fill 
+	 in the current day and month for you. If the year is not the current one, it is 
+	 necessary to specify at least a month (xml2rfc assumes day="1" if not specified for the 
+	 purpose of calculating the expiry date).  With drafts it is normally sufficient to 
+	 specify just the year. -->
+
+  <!-- Meta-data Declarations -->
+
+  <area>Transport</area>
+    <workgroup>Transport Area Working Group</workgroup>
+    <keyword/>
+    <!-- Keywords will be incorporated into HTML output
+        files in a meta tag but they have no effect on text or nroff
+        output. If you submit your draft to the RFC Editor, the
+        keywords will be used for the search engine. -->
+
+        <abstract>
+      <t> This document specifies properties and characteristics of a Non-Queue-Building Per-Hop Behavior (NQB PHB). The purpose of this NQB PHB is to provide a separate queue that enables low latency and, when possible, low loss for application-limited traffic flows that would ordinarily share a queue with capacity-seeking traffic. This PHB is implemented without prioritization and without rate policing, making it suitable for environments where the use of either these features may be restricted. The NQB PHB has been developed primarily for use by access network segments, where queuing delays and queuing loss caused by Queue-Building protocols are manifested, but its use is not limited to such segments. In particular, applications to cable broadband links and mobile network radio and core segments are discussed. This document defines a standard Differentiated Services Code Point (DSCP) to identify Non-Queue-Building flows.</t>
+    </abstract>
+  </front>
+  <middle>
+    <section numbered="true" toc="default">
+      <name>Introduction</name>
+      <t>This document defines a Differentiated Services (DS) per-hop behavior (PHB) called "Non-Queue-Building Per-Hop Behavior" (NQB PHB), which is intended to enable networks to provide low latency and low loss for traffic flows that are relatively low data rate and that do not themselves materially contribute to queueing delay and loss. Such Non-Queue-Building flows (for example: interactive voice and video, gaming, machine to machine applications) are application limited flows that are distinguished from traffic flows managed by an end-to-end congestion control algorithm.</t>
+      <t>The vast majority of packets that are carried by broadband access networks are, in fact, managed by an end-to-end congestion control algorithm, such as Reno, Cubic or BBR. These congestion control algorithms attempt to seek the available capacity of the end-to-end path (which can frequently be the access network link capacity), and in doing so generally overshoot the available capacity, causing a queue to build-up at the bottleneck link. This queue build up results in queuing delay (variable latency) and possibly packet loss that affects all of the applications that are sharing the bottleneck link.</t>
+      <t>In contrast to traditional congestion-controlled applications, there are a variety of relatively low data rate applications that do not materially contribute to queueing delay and loss, but are nonetheless subjected to it by sharing the same bottleneck link in the access network. Many of these applications may be sensitive to latency or latency variation, as well as packet loss, and thus produce a poor quality of experience in such conditions.</t>
+      <t>Active Queue Management (AQM) mechanisms (such as <xref target="RFC8033" format="default">PIE</xref>, <xref target="RFC8034" format="default">DOCSIS-PIE</xref>, or  <xref target="RFC8289" format="default">CoDel</xref>) can improve the quality of experience for latency sensitive applications, but there are practical limits to the amount of improvement that can be achieved without impacting the throughput of capacity-seeking applications, particularly when only a few of such flows are present.</t>
+      <t>The NQB PHB supports differentiating between these two classes of traffic in bottleneck links and queuing them separately in order that both classes can deliver satisfactory quality of experience for their applications.</t>
+    </section>
+    <section numbered="true" toc="default">
+      <name>Requirements Language</name>
+      <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 <xref target="RFC2119" format="default"/> <xref target="RFC8174" format="default"/> when, and only when, they appear in all capitals, as shown here.</t>
+    </section>
+    <section numbered="true" toc="default">
+      <name>Overview: Non-Queue-Building Flows</name>
+      <t>There are many applications that send traffic at relatively low data rates and/or in a fairly smooth and consistent manner such that they are highly unlikely to exceed the available capacity of the network path between source and sink. These applications do not cause queues to form in network buffers, but nonetheless can be subjected to packet delay and delay variation as a result of sharing a network buffer with applications that do cause queues. Many of these applications are negatively affected by excessive packet delay and delay variation. Such applications are ideal candidates to be queued separately from the capacity-seeking applications that are the cause of queue buildup, latency and loss.</t>
+      <t>These Non-queue-building (NQB) flows are typically UDP flows that don't seek the capacity of the link (examples: online games, voice chat, DNS lookups, real-time IoT analytics data). Here the data rate is limited by the application itself rather than by network capacity - in many cases these applications only send a few packets per RTT. In contrast, Queue-building (QB) flows include traffic which uses TCP or QUIC, with Cubic, Reno or other TCP congestion controllers.</t>
+    </section>
+    <section numbered="true" toc="default">
+      <name>The NQB PHB and its Relationship to the DiffServ Architecture</name>
+      <t>The IETF has defined the Differentiated Services architecture <xref target="RFC2475" format="default"/> with the intention that it allows traffic to be marked in manner that conveys the performance requirements of that traffic either quantitatively or in a relative sense (i.e. priority). The architecture defines the use of the DiffServ field <xref target="RFC2474" format="default"/> for this purpose, and numerous RFCs have been written that describe recommended interpretations of the values (DiffServ Code Points) of the field, and standardized treatments (traffic conditioning and per-hop-behaviors) that can be implemented to satisfy the performance requirements of traffic so marked.</t>
+      <t>While this architecture is powerful, and can be configured to meet the performance requirements of a variety of applications and traffic categories, or to achieve differentiated service offerings, it has proven problematic to enable its use for these purposes end-to-end across the Internet.</t>
+      <t>This difficulty is in part due to the fact that meeting (in an end-to-end context) the performance requirements of an application involves all of the networks in the path agreeing on what those requirements are, and sharing an interest in meeting them. In many cases this is made more difficult due to the fact that the performance "requirements" are not hard ones (e.g. applications will degrade in some manner as loss/latency/jitter increase), so the importance of meeting them for any particular application involves a judgment as to the value of avoiding some amount of degradation in quality for that application in exchange for an increase in the degradation of another application.</t>
+      <t>Further, in many cases the implementation of DiffServ PHBs involves prioritization of service classes with respect to one another, which results in the need to limit access to higher priority classes via mechanisms such as access control, admission control, traffic conditioning and rate policing, and/or to meter and bill for carriage of such traffic. These mechanisms can be difficult or impossible to implement in an end-to-end context.</t>
+      <t>Finally, some jurisdictions impose regulations that limit the ability of networks to provide differentiation of services, in large part based on the understanding that doing so ordinarily involves prioritization or privileged access to bandwidth, and thus a benefit to one class of traffic always comes at the expense of another. </t>
+      <t>In contrast, the NQB PHB has been designed with the goal that it avoids many of these issues, and thus could conceivably be deployed end-to-end across the Internet. The intent of the NQB DSCP is that it signals verifiable behavior as opposed to wants and needs. Also, the NQB traffic is to be given a separate queue with equal priority as default traffic, and given no reserved bandwidth other than the bandwidth that it shares with default traffic.  As a result, the NQB PHB does not aim to meet specific application performance requirements, nor does it aim to provide a differentiated service class as defined in <xref target="RFC4594" format="default"/>. Instead the goal of the NQB PHB is to provide statistically better loss, latency, and jitter performance for traffic that is not itself the cause of those degradations. These attributes eliminate the inherent value judgments that underlie the handling of differentiated service classes in the DiffServ architecture as it has traditionally been defined, they also significantly simplify access control and admission control functions, reducing them to simple verification of behavior. </t>
+    </section>
+    <section numbered="true" toc="default">
+      <name>DSCP Marking of NQB Traffic</name>
+      <t>Applications that align with the description of NQB behavior in the preceding section SHOULD identify themselves to the network using a DiffServ Code Point (DSCP) of 42 so that their packets can be queued separately from QB flows. The choice of the value 42 is motivated in part by the desire to achieve separate queuing in existing WiFi networks (see <xref target="wifi" format="default"/>).</t>
+      <t>There are many application flows that fall very neatly into one or the other of these two categories: NQB and QB, but there are also application flows that may be in a gray area in between (e.g. they are NQB on higher-speed links, but QB on lower-speed links). If there is uncertainty as to whether an application's traffic aligns with the description of NQB behavior in the preceding section, the application SHOULD NOT mark its traffic with the NQB DSCP. In such a case, the application SHOULD instead implement a congestion control mechanism, for example as described in <xref target="RFC8085" format="default"/> or <xref target="I-D.ietf-tsvwg-ecn-l4s-id" format="default"/>.</t>
+      <t>It is worthwhile to note again that the NQB designation and marking is intended to convey verifiable traffic behavior, not needs or wants. Also, it is important that incentives are aligned correctly, i.e. that there is a benefit to the application in marking its packets correctly, and no benefit to an application in intentionally mismarking its traffic. Thus, a useful property of nodes that support separate queues for NQB and QB flows would be that for NQB flows, the NQB queue provides better performance than the QB queue; and for QB flows, the QB queue provides better performance than the NQB queue. By adhering to these principles, there is no incentive for senders to mismark their traffic as NQB, and further, any mismarking can be identified by the network.</t>
+      <t>Along these lines, nodes that do not support the NQB PHB SHOULD treat NQB marked traffic the same as traffic marked "Default", and SHOULD preserve the NQB marking. Shallow-buffered backbone and core network switches, and nodes that do not typically experience congestion, treating NQB marked traffic the same as "Default" may be sufficient to preserve latency performance for NQB traffic.</t>
+      <section numbered="true" toc="default">
+        <name>End-to-end usage and DSCP Re-marking</name>
+        <t>In contrast to some existing standard PHBs, many of which are typically only meaningful within a DiffServ Domain (e.g. an AS or an enterprise network), this PHB is expected to be used end-to-end across the Internet, wherever suitable operator agreements apply.  Under the [RFC2474] model, this requires that the corresponding DSCP is recognized by all operators and mapped across their boundaries accordingly.</t>
+        <t>Some network operators typically bleach (zero out) the DiffServ field on ingress into their network <xref target="Custura" format="default"/><xref target="Barik" format="default"/>, and in some cases apply their own DSCP for internal usage. Bleaching the NQB DSCP is not expected to cause harm to default traffic, but it will severely limit the ability to provide NQB treatment end-to-end. Absent an explicit agreement to the contrary, networks that support the NQB PHB SHOULD preserve a DSCP marking distinction between NQB traffic and Default traffic when forwarding via an interconnect from or to another network. To facilitate the default treatment of NQB traffic in backbones and core networks, networks SHOULD remap NQB traffic (DSCP 42) to DSCP 2 prior to interconnection, unless agreed otherwise between the interconnecting partners.  The fact that this DSCP is intended for end-to-end usage does not preclude networks from mapping the NQB DSCP to a value other than 42 or 2 for internal usage, as long as the appropriate NQB DSCP is restored when forwarding to another network. Additionally, it is not precluded for interconnecting networks to negotiate (via an SLA or some other agreement) a different DSCP to use to signal NQB across the interconnect.</t>
+        <t>In order to enable interoperability with WiFi equipment (as discussed in <xref target="wifi" format="default"/>) networks SHOULD remap NQB traffic (e.g. DSCP 2) to DSCP 42 prior to a customer access link.</t>
+        <t>Reports on existing deployments of DSCP manipulation <xref target="Custura" format="default"/><xref target="Barik" format="default"/> categorize the remarking behaviors into the following six policies:  bleach all traffic (set DSCP to zero), set the top three bits (the former Precedence bits) on all traffic to 0b000, 0b001, or 0b010, set the low three bits on all traffic to 0b000, or remark all traffic to a particular (non-zero) DSCP value.</t>
+        <t>Regarding the DSCP value of 42, there were no observations of DSCP manipulation reported in which traffic was marked 42 by any of these policies.  Thus it appears that these remarking policies would be unlikely to result in QB traffic being marked as NQB (42).  In terms of the fate of NQB-marked traffic that is subjected to one of these policies, the result would be that NQB marked traffic would be indistinguishable from some subset (possibly all) of other traffic. In the policies where all traffic is remarked using the same (zero or non-zero) DSCP, the ability for a subsequent network hop to differentiate NQB traffic via DSCP would clearly be lost entirely. In the policies where the top three bits are overwritten, NQB would receive the same marking as AF41, AF31, AF21, AF11 (as well as the currently unassigned DSCPs 50 and 58), with all of these code points getting mapped to DSCP=2, AF11 or AF21 (depending on the overwrite value used). Since the recommended usage of the standardized code points in that list include high throughput data for store and forward applications (and it is impossible to predict what future use would be assigned to the currently unassigned values) it would seem inadvisable for a node to attempt to treat all such traffic as if it were NQB marked. For the policy in which the low three bits are set to 0b000, the NQB value would be mapped to CS5 and would be indistinguishable from CS5, VA, EF (and the unassigned DSCPs 41, 43, 45).  Traffic marked using the existing standardized DSCPs in this list are likely to share the same general properties as NQB traffic (non capacity-seeking, very low data rate or relatively low and consistent data rate).  Furthermore, as this remarking policy results in an overt enforcement of the IP Precedence compatibility configuration discussed in <xref target="RFC4594" format="default"/> Section 1.5.4, and to the extent that this compatibility is maintained in the future, any future recommended usages of the currently unassigned DSCPs in that list would be likely to similarly be somewhat compatible with NQB treatment.  Here there may be an opportunity for a node to provide the NQB PHB or the CS5 PHB and retain some of the benefits of NQB marking.  As a result, nodes supporting the NQB PHB MAY additionally classify CS5 marked traffic into the NQB queue.</t>
+        <t>Regarding the DSCP value of 2, some of these remappings are more problematic.  In particular, in policies where the top three bits are overwritten with 0b000, the DSCP values AF41, AF31, AF21, and AF11 (as well as the currently unassigned DSCPs 50 and 58) would all get mapped to the NQB value. </t>
+      </section>
+      <section numbered="true" toc="default">
+        <name>Aggregation of the NQB PHB with other DiffServ PHBs</name>
+        <t>Networks and nodes that aggregate service classes as discussed in <xref target="RFC5127" format="default"/> and <xref target="RFC8100" format="default"/> may not be able to provide a PDB/PHB that meets the requirements of this document. In these cases it is recommended that NQB-marked traffic be aggregated with standard, elastic, best-effort traffic, although in some cases a network operator may instead choose to aggregate NQB traffic with Real-Time traffic. Either approach comes with trade-offs: aggregating with best-effort could result in a degradation of loss/latency/jitter performance, while aggregating with Real-Time may create an incentive for mismarking of non-compliant traffic. In either case, <xref target="RFC5127" format="default"/> requires that such aggregations preserve the notion of each end-to-end service class that is aggregated, and recommends preservation of the DSCP as a way of accomplishing this.  Compliance with this recommendation would serve to limit the negative impact that such networks would have on end-to-end performance for NQB traffic.</t>
+        <t>Nodes that support the NQB PHB may choose to aggregate other service classes into the NQB queue. Candidate service classes for this aggregation would include those that carry inelastic traffic that has low to very-low tolerance for loss, latency and/or jitter as discussed in <xref target="RFC4594" format="default"/>. These could include Telephony, Signaling, Real-Time Interactive and Broadcast Video.</t>
+      </section>
+    </section>
+    <section anchor="phb_requirements" numbered="true" toc="default">
+      <name>Non-Queue-Building PHB Requirements</name>
+      <t>A node supporting the NQB PHB makes no guarantees on latency or data rate for NQB marked flows, but instead aims to provide a bound on queuing delay for as many such marked flows as it can, and shed load when needed.</t>
+      <t>A node supporting the NQB PHB MUST provide a queue for non-queue-building traffic separate from the queue used for queue-building traffic.</t>
+      <t>NQB traffic, in aggregate, SHOULD NOT be rate limited or rate policed separately from queue-building traffic of equivalent importance.</t>
+      <t>The NQB queue SHOULD be given equal priority compared to queue-building traffic of equivalent importance. The node SHOULD provide a scheduler that allows QB and NQB traffic of equivalent importance to share the link in a fair manner, e.g. a deficit round-robin scheduler with equal weights. </t>
+      <t>A node supporting the NQB PHB SHOULD treat traffic marked as Default (DSCP=0) as QB traffic having equivalent importance to the NQB marked traffic.  A node supporting the NQB DSCP MUST support the ability to configure the classification criteria that are used to identify QB and NQB traffic having equivalent importance.</t>
+      <t>The NQB queue SHOULD have a buffer size that is significantly smaller than the buffer provided for QB traffic. It is expected that most QB traffic is optimized to make use of a relatively deep buffer (e.g. on the order of tens or hundreds of ms) in nodes where support for the NQB PHB is advantageous (i.e. bottleneck nodes). Providing a similarly deep buffer for the NQB queue would be at cross purposes to providing very low queueing delay, and would erode the incentives for QB traffic to be marked correctly.</t>
+      <t>It is possible that due to an implementation error or misconfiguration, a QB flow would end up getting mismarked as NQB, or vice versa. In the case of an NQB flow that isn't marked as NQB and ends up in the QB queue, it would only impact its own quality of service, and so it seems to be of lesser concern. However, a QB flow that is mismarked as NQB would cause queuing delays and/or loss for all of the other flows that are sharing the NQB queue.</t>
+      <t>To prevent this situation from harming the performance of the real NQB flows, network elements that support differentiating NQB traffic SHOULD support a "traffic protection" function that can identify QB flows that are mismarked as NQB, and reclassify those flows/packets to the QB queue. Such a function SHOULD be implemented in an objective and verifiable manner, basing its decisions upon the behavior of the flow rather than on application-layer constructs. One example algorithm can be found in <xref target="I-D.briscoe-docsis-q-protection" format="default"/>. There are some situations where such function may not be necessary.  For example, a network element designed for use in controlled environments, e.g. enterprise LAN may not require a traffic protection function.  Similarly, flow queueing systems obviate the need for an explicit traffic protection function.  Additionally, some networks may prefer to police the application of the NQB DSCP at the ingress edge, so that in-network traffic protection is not needed.</t>
+    </section>
+    <section numbered="true" toc="default">
+      <name>Impact on Higher Layer Protocols</name>
+      <t>Network elements that support the NQB PHB and that support traffic protection as discussed in the previous section introduce the possibility that flows classified into the NQB queue could experience out of order delivery. This is particularly true if the traffic protection algorithm makes decisions on a packet-by-packet basis. In this scenario, a flow that is (mis)marked as NQB and that causes a queue to form in this bottleneck link could see some of its packets forwarded by the NQB queue, and some of them redirected to the QB queue.  Depending on the queueing latency and scheduling within the network element, this could result in packets being delivered out of order. As a result, the use of the NQB DSCP by a higher layer protocol carries some risk that out of order delivery will be experienced. </t>
+    </section>
+    <section numbered="true" toc="default">
+      <name>The NQB PHB and Tunnels</name>
+      <t><xref target="RFC2983" format="default"/> discusses tunnel models that support DiffServ. It describes a "uniform model" in which the inner DSCP is copied to the outer header at encapsulation, and the outer DSCP is copied to the inner header at decapsulation. It also describes a "pipe model" in which the outer DSCP is not copied to the inner header at decapsulation.  Both models can be used in conjunction with the NQB PHB. In the case of the pipe model, any DSCP manipulation (re-marking) of the outer header by intermediate nodes would be discarded at tunnel egress, potentially improving the possibility of achieving NQB treatment in subsequent nodes.</t>
+      <t>As is discussed in <xref target="RFC2983" format="default"/> tunnel protocols that are sensitive to reordering can result in undesirable interactions if multiple DSCP PHBs are signaled for traffic within a tunnel instance. This is true for NQB marked traffic as well. If a tunnel contains a mix of QB and NQB traffic, and this is reflected in the outer DSCP in a network that supports the NQB PHB, it would be necessary to avoid a reordering-sensitive tunnel protocol in order to avoid these undesirable interactions.</t>
+    </section>
+    <section numbered="true" toc="default">
+      <name>Relationship to L4S</name>
+      <t>Traffic flows marked with the NQB DSCP as described in this draft are intended to be compatible with <xref target="I-D.ietf-tsvwg-l4s-arch" format="default"/>, with the result being that NQB traffic and L4S traffic can share the low-latency queue in an L4S dual-queue node <xref target="I-D.ietf-tsvwg-aqm-dualq-coupled" format="default"/>. Compliance with the DualQ coupled AQM requirements is considered sufficient to enable fair allocation of bandwidth between the QB and NQB queues.</t>
+    </section>
+    <section numbered="true" toc="default">
+      <name>Configuration and Management</name>
+      <t>As required above, nodes supporting the NQB PHB provide for the configuration of classifiers that can be used to differentiate between QB and NQB traffic of equivalent importance.  The default for such classifiers is recommended to be the assigned NQB DSCP (to identify NQB traffic) and the Default (0) DSCP (to identify QB traffic).</t>
+    </section>
+    <section numbered="true" toc="default">
+      <name>Example Use Cases</name>
+      <section numbered="true" toc="default">
+        <name>DOCSIS Access Networks</name>
+        <t>Residential cable broadband Internet services are commonly configured with a single bottleneck link (the access network link) upon which the service definition is applied. The service definition, typically an upstream/downstream data rate tuple, is implemented as a configured pair of rate shapers that are applied to the user's traffic. In such networks, the quality of service that each application receives, and as a result, the quality of experience that it generates for the user is influenced by the characteristics of the access network link.</t>
+        <t> To support the NQB PHB, cable broadband services MUST be configured to provide a separate queue for NQB marked traffic. The NQB queue MUST be configured to share the service's rate shaping bandwidth with the queue for QB traffic.</t>
+      </section>
+      <section numbered="true" toc="default">
+        <name>Mobile Networks</name>
+        <t>Historically, mobile networks have been configured to bundle all flows to and from the Internet into a single "default" EPS bearer whose buffering characteristics are not compatible with low-latency traffic. The established behaviour is rooted partly in the desire to prioritise operators' voice services over competing over-the-top services and partly in the fact that the addition of bearers was prohibitive due to expense. Of late, said consideration seems to have lost momentum (e.g., with the rise in Multi-RAB (Radio Access Bearer) devices) and the incentives might now be aligned towards allowing a more suitable treatment of Internet real-time flows.</t>
+        <t>To support the NQB PHB, the mobile network SHOULD be configured to give UEs a dedicated, low-latency, non-GBR, EPS bearer, e.g. one with QCI 7, in addition to the default EPS bearer; or a Data Radio Bearer with 5QI 7 in a 5G system (see Table 5.7.4-1: Standardized 5QI to QoS characteristics mapping in <xref target="SA-5G" format="default"/>).</t>
+        <t>A packet carrying the NQB DSCP SHOULD be routed through the dedicated low-latency EPS bearer. A packet that has no associated NQB marking SHOULD be routed through the default EPS bearer.</t>
+      </section>
+      <section anchor="wifi" numbered="true" toc="default">
+        <name>WiFi Networks</name>
+        <t>WiFi networking equipment compliant with 802.11e generally supports either four or eight transmit queues and four sets of associated Enhanced Multimedia Distributed Control Access (EDCA) parameters (corresponding to the four WiFi Multimedia (WMM) Access Categories) that are used to enable differentiated media access characteristics. </t>
+        <t>While some WiFi equipment may be capable (in some cases via firmware update) of supporting the NQB PHB requirements by providing a separate queue for NQB marked traffic that shares an Access Category with default traffic, many currently deployed devices cannot be configured in this way.</t>
+        <t>Implementations typically utilize the IP DSCP field to select a transmit queue, but should be considered as Non-Differentiated Services-Compliant Nodes as described in Section 4 of <xref target="RFC2475" format="default"/> because in widely deployed WiFi networks, this transmit queue selection is a local implementation characteristic that is not part of a consistently operated DiffServ domain or region. As a result this document discusses interoperability with these existing WiFi networks, in addition to PHB compliance.</t>
+        <t>As discussed in <xref target="RFC8325" format="default"/>, most existing WiFi implementations use a default DSCP to User Priority mapping that utilizes the most significant three bits of the DiffServ Field to select "User Priority" which is then mapped to the four WMM Access Categories. In order to increase the likelihood that NQB traffic is provided a separate queue from QB traffic in existing WiFi equipment, the 42 code point is preferred for NQB. This would map NQB to UP_5 which is in the "Video" Access Category. Similarly, systems that utilize <xref target="RFC8325" format="default"/>, SHOULD map the NQB code point to UP_5 in the "Video" Access Category.</t>
+        <t>While the DSCP to User Priority mapping can enable WiFi systems to support the NQB PHB requirement for segregated queuing, many currently deployed WiFi systems may not be capable of supporting the remaining NQB PHB requirements in <xref target="phb_requirements" format="default"/>. This is discussed further below.</t>
+        <t>Existing WiFi devices are unlikely to support a traffic protection algorithm, so traffic mismarked as NQB is not likely to be detected and remedied by such devices.</t>
+        <t>Furthermore, in their default configuration, existing WiFi devices utilize EDCA parameters that result in statistical prioritization of the "Video" Access Category above the "Best Effort" Access Category. If left unchanged, this would violate the NQB PHB requirement for equal prioritization, and could erode the principle of alignment of incentives. In order to preserve the incentives principle, WiFi systems SHOULD configure the EDCA parameters for the Video Access Category to match those of the Best Effort Access Category.</t>
+        <t>In cases where a network operator is delivering traffic into an unmanaged WiFi network outside of their control (e.g. a residential ISP delivering traffic to a customer's home network), the network operator should presume that the existing WiFi equipment does not support the safeguards that are provided by the NQB PHB requirements, and thus should take precautions to prevent issues. When the data rate of the access network segment is less than the expected data rate of the WiFi network, this is unlikely to be an issue.  However, if the access network rate exceeds the expected rate of the WiFi network, the operator SHOULD deploy a policing function on NQB marked traffic that minimizes the potential for starvation of traffic marked Default, for example by limiting the rate of such traffic to a set fraction of the customer's service rate.</t>
+        <t>As an additional safeguard, and to prevent the inadvertent introduction of problematic traffic into unmanaged WiFi networks, network equipment that is intended to deliver traffic into unmanaged WiFi networks (e.g. an access network gateway for a residential ISP) MUST by default ensure that NQB traffic is marked with a DSCP that selects the "Best Effort" Access Category. Such equipment MUST support the ability to configure the remapping, so that (when appropriate safeguards are in place) traffic can be delivered as NQB-marked.</t>
+      </section>
+    </section>
+    <section anchor="Acknowledgements" numbered="true" toc="default">
+      <name>Acknowledgements</name>
+      <t>Thanks to Brian Carpenter, Bob Briscoe, Greg Skinner, Toke Hoeiland-Joergensen, Luca Muscariello, David Black, Sebastian Moeller, Ruediger Geib, Jerome Henry, Steven Blake, Jonathan Morton, Roland Bless, Kevin Smith, Martin Dolly, and Kyle Rose for their review comments.</t>
+    </section>
+    <!-- Possibly a 'Contributors' section ... -->
+
+     <section anchor="IANA" numbered="true" toc="default">
+      <name>IANA Considerations</name>
+      <t>This document requests that IANA assign the Differentiated Services Field Codepoints (DSCP) 2 ('0b000010', 0x02) and 42 ('0b101010', 0x2A) from the "Differentiated Services Field Codepoints (DSCP)" registry (https://www.iana.org/assignments/dscp-registry/) ("DSCP Pool 1 Codepoints", Codepoint Space xxxxx0, Standards Action) to denote Non-Queue-Building behavior.</t>
+    </section>
+    <section anchor="Security" numbered="true" toc="default">
+      <name>Security Considerations</name>
+      <t>There is no incentive for an application to mismark its packets as NQB (or vice versa). If a queue-building flow were to mark its packets as NQB, it could experience excessive packet loss (in the case that traffic protection is not supported by a node) or it could receive no benefit (in the case that traffic protection is supported). If a non-queue-building flow were to fail to mark its packets as NQB, it could suffer the latency and loss typical of sharing a queue with capacity seeking traffic.</t>
+      <t>In order to preserve low latency performance for NQB traffic, networks that support the NQB PHB will need to ensure that mechanisms are in place to prevent malicious NQB-marked traffic from causing excessive queue delays.  This document recommends the implementation of a traffic protection mechanism to achieve this goal, but recognizes that other options may be more desirable in certain situations.</t>
+      <t>The NQB signal is not integrity protected and could be flipped by an on-path attacker. This might negatively affect the QoS of the tampered flow. </t>
+    </section>
+  </middle>
+  <!--  *****BACK MATTER ***** -->
+
+  <back>
+    <references>
+      <name>Informative References</name>
+      <!-- Here we use entities that we defined at the beginning. -->
+     <reference anchor="RFC8085" target="https://www.rfc-editor.org/info/rfc8085" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8085.xml">
+        <front>
+          <title>UDP Usage Guidelines</title>
+          <seriesInfo name="DOI" value="10.17487/RFC8085"/>
+          <seriesInfo name="RFC" value="8085"/>
+          <seriesInfo name="BCP" value="145"/>
+          <author initials="L." surname="Eggert" fullname="L. Eggert">
+            <organization/>
+          </author>
+          <author initials="G." surname="Fairhurst" fullname="G. Fairhurst">
+            <organization/>
+          </author>
+          <author initials="G." surname="Shepherd" fullname="G. Shepherd">
+            <organization/>
+          </author>
+          <date year="2017" month="March"/>
+          <abstract>
+            <t>The User Datagram Protocol (UDP) provides a minimal message-passing transport that has no inherent congestion control mechanisms.  This document provides guidelines on the use of UDP for the designers of applications, tunnels, and other protocols that use UDP.  Congestion control guidelines are a primary focus, but the document also provides guidance on other topics, including message sizes, reliability, checksums, middlebox traversal, the use of Explicit Congestion Notification (ECN), Differentiated Services Code Points (DSCPs), and ports.</t>
+            <t>Because congestion control is critical to the stable operation of the Internet, applications and other protocols that choose to use UDP as an Internet transport must employ mechanisms to prevent congestion collapse and to establish some degree of fairness with concurrent traffic.  They may also need to implement additional mechanisms, depending on how they use UDP.</t>
+            <t>Some guidance is also applicable to the design of other protocols (e.g., protocols layered directly on IP or via IP-based tunnels), especially when these protocols do not themselves provide congestion control.</t>
+            <t>This document obsoletes RFC 5405 and adds guidelines for multicast UDP usage.</t>
+          </abstract>
+        </front>
+      </reference>
+      <reference anchor="RFC8033" target="https://www.rfc-editor.org/info/rfc8033" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8033.xml">
+        <front>
+          <title>Proportional Integral Controller Enhanced (PIE): A Lightweight Control Scheme to Address the Bufferbloat Problem</title>
+          <seriesInfo name="DOI" value="10.17487/RFC8033"/>
+          <seriesInfo name="RFC" value="8033"/>
+          <author initials="R." surname="Pan" fullname="R. Pan">
+            <organization/>
+          </author>
+          <author initials="P." surname="Natarajan" fullname="P. Natarajan">
+            <organization/>
+          </author>
+          <author initials="F." surname="Baker" fullname="F. Baker">
+            <organization/>
+          </author>
+          <author initials="G." surname="White" fullname="G. White">
+            <organization/>
+          </author>
+          <date year="2017" month="February"/>
+          <abstract>
+            <t>Bufferbloat is a phenomenon in which excess buffers in the network cause high latency and latency variation.  As more and more interactive applications (e.g., voice over IP, real-time video streaming, and financial transactions) run in the Internet, high latency and latency variation degrade application performance.  There is a pressing need to design intelligent queue management schemes that can control latency and latency variation, and hence provide desirable quality of service to users.</t>
+            <t>This document presents a lightweight active queue management design called "PIE" (Proportional Integral controller Enhanced) that can effectively control the average queuing latency to a target value. Simulation results, theoretical analysis, and Linux testbed results have shown that PIE can ensure low latency and achieve high link utilization under various congestion situations.  The design does not require per-packet timestamps, so it incurs very little overhead and is simple enough to implement in both hardware and software.</t>
+          </abstract>
+        </front>
+      </reference>
+      <reference anchor="RFC8034" target="https://www.rfc-editor.org/info/rfc8034" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8034.xml">
+        <front>
+          <title>Active Queue Management (AQM) Based on Proportional Integral Controller Enhanced PIE) for Data-Over-Cable Service Interface Specifications (DOCSIS) Cable Modems</title>
+          <seriesInfo name="DOI" value="10.17487/RFC8034"/>
+          <seriesInfo name="RFC" value="8034"/>
+          <author initials="G." surname="White" fullname="G. White">
+            <organization/>
+          </author>
+          <author initials="R." surname="Pan" fullname="R. Pan">
+            <organization/>
+          </author>
+          <date year="2017" month="February"/>
+          <abstract>
+            <t>Cable modems based on Data-Over-Cable Service Interface Specifications (DOCSIS) provide broadband Internet access to over one hundred million users worldwide.  In some cases, the cable modem connection is the bottleneck (lowest speed) link between the customer and the Internet.  As a result, the impact of buffering and bufferbloat in the cable modem can have a significant effect on user experience.  The CableLabs DOCSIS 3.1 specification introduces requirements for cable modems to support an Active Queue Management (AQM) algorithm that is intended to alleviate the impact that buffering has on latency-sensitive traffic, while preserving bulk throughput performance.  In addition, the CableLabs DOCSIS 3.0 specifications have also been amended to contain similar requirements.  This document describes the requirements on AQM that apply to DOCSIS equipment, including a description of the "DOCSIS-PIE" algorithm that is required on DOCSIS 3.1 cable modems.</t>
+          </abstract>
+        </front>
+      </reference>
+      <reference anchor="RFC8289" target="https://www.rfc-editor.org/info/rfc8289" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8289.xml">
+        <front>
+          <title>Controlled Delay Active Queue Management</title>
+          <seriesInfo name="DOI" value="10.17487/RFC8289"/>
+          <seriesInfo name="RFC" value="8289"/>
+          <author initials="K." surname="Nichols" fullname="K. Nichols">
+            <organization/>
+          </author>
+          <author initials="V." surname="Jacobson" fullname="V. Jacobson">
+            <organization/>
+          </author>
+          <author initials="A." surname="McGregor" fullname="A. McGregor" role="editor">
+            <organization/>
+          </author>
+          <author initials="J." surname="Iyengar" fullname="J. Iyengar" role="editor">
+            <organization/>
+          </author>
+          <date year="2018" month="January"/>
+          <abstract>
+            <t>This document describes CoDel (Controlled Delay) -- a general framework that controls bufferbloat-generated excess delay in modern networking environments.  CoDel consists of an estimator, a setpoint, and a control loop.  It requires no configuration in normal Internet deployments.</t>
+          </abstract>
+        </front>
+      </reference>
+      <reference anchor="RFC2119" target="https://www.rfc-editor.org/info/rfc2119" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
+        <front>
+          <title>Key words for use in RFCs to Indicate Requirement Levels</title>
+          <seriesInfo name="DOI" value="10.17487/RFC2119"/>
+          <seriesInfo name="RFC" value="2119"/>
+          <seriesInfo name="BCP" value="14"/>
+          <author initials="S." surname="Bradner" fullname="S. Bradner">
+            <organization/>
+          </author>
+          <date year="1997" month="March"/>
+          <abstract>
+            <t>In many standards track documents several words are used to signify the requirements in the specification.  These words are often capitalized. This document defines these words as they should be interpreted in IETF documents.  This document specifies an Internet Best Current Practices for the Internet Community, and requests discussion and suggestions for improvements.</t>
+          </abstract>
+        </front>
+      </reference>
+      <reference anchor="RFC8174" target="https://www.rfc-editor.org/info/rfc8174" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml">
+        <front>
+          <title>Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words</title>
+          <seriesInfo name="DOI" value="10.17487/RFC8174"/>
+          <seriesInfo name="RFC" value="8174"/>
+          <seriesInfo name="BCP" value="14"/>
+          <author initials="B." surname="Leiba" fullname="B. Leiba">
+            <organization/>
+          </author>
+          <date year="2017" month="May"/>
+          <abstract>
+            <t>RFC 2119 specifies common key words that may be used in protocol  specifications.  This document aims to reduce the ambiguity by clarifying that only UPPERCASE usage of the key words have the  defined special meanings.</t>
+          </abstract>
+        </front>
+      </reference>
+      <reference anchor="RFC8325" target="https://www.rfc-editor.org/info/rfc8325" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8325.xml">
+        <front>
+          <title>Mapping Diffserv to IEEE 802.11</title>
+          <seriesInfo name="DOI" value="10.17487/RFC8325"/>
+          <seriesInfo name="RFC" value="8325"/>
+          <author initials="T." surname="Szigeti" fullname="T. Szigeti">
+            <organization/>
+          </author>
+          <author initials="J." surname="Henry" fullname="J. Henry">
+            <organization/>
+          </author>
+          <author initials="F." surname="Baker" fullname="F. Baker">
+            <organization/>
+          </author>
+          <date year="2018" month="February"/>
+          <abstract>
+            <t>As Internet traffic is increasingly sourced from and destined to wireless endpoints, it is crucial that Quality of Service (QoS) be aligned between wired and wireless networks; however, this is not always the case by default.  This document specifies a set of mappings from Differentiated Services Code Point (DSCP) to IEEE 802.11 User Priority (UP) to reconcile the marking recommendations offered by the IETF and the IEEE so as to maintain consistent QoS treatment between wired and IEEE 802.11 wireless networks.</t>
+          </abstract>
+        </front>
+      </reference>
+      <reference anchor="RFC2474" target="https://www.rfc-editor.org/info/rfc2474" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2474.xml">
+        <front>
+          <title>Definition of the Differentiated Services Field (DS Field) in the IPv4 and IPv6 Headers</title>
+          <seriesInfo name="DOI" value="10.17487/RFC2474"/>
+          <seriesInfo name="RFC" value="2474"/>
+          <author initials="K." surname="Nichols" fullname="K. Nichols">
+            <organization/>
+          </author>
+          <author initials="S." surname="Blake" fullname="S. Blake">
+            <organization/>
+          </author>
+          <author initials="F." surname="Baker" fullname="F. Baker">
+            <organization/>
+          </author>
+          <author initials="D." surname="Black" fullname="D. Black">
+            <organization/>
+          </author>
+          <date year="1998" month="December"/>
+          <abstract>
+            <t>This document defines the IP header field, called the DS (for differentiated services) field.  [STANDARDS-TRACK]</t>
+          </abstract>
+        </front>
+      </reference>
+      <reference anchor="RFC2475" target="https://www.rfc-editor.org/info/rfc2475" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2475.xml">
+        <front>
+          <title>An Architecture for Differentiated Services</title>
+          <seriesInfo name="DOI" value="10.17487/RFC2475"/>
+          <seriesInfo name="RFC" value="2475"/>
+          <author initials="S." surname="Blake" fullname="S. Blake">
+            <organization/>
+          </author>
+          <author initials="D." surname="Black" fullname="D. Black">
+            <organization/>
+          </author>
+          <author initials="M." surname="Carlson" fullname="M. Carlson">
+            <organization/>
+          </author>
+          <author initials="E." surname="Davies" fullname="E. Davies">
+            <organization/>
+          </author>
+          <author initials="Z." surname="Wang" fullname="Z. Wang">
+            <organization/>
+          </author>
+          <author initials="W." surname="Weiss" fullname="W. Weiss">
+            <organization/>
+          </author>
+          <date year="1998" month="December"/>
+          <abstract>
+            <t>This document defines an architecture for implementing scalable service differentiation in the Internet.  This memo provides information for the Internet community.</t>
+          </abstract>
+        </front>
+      </reference>
+      <reference anchor="RFC4594" target="https://www.rfc-editor.org/info/rfc4594" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4594.xml">
+        <front>
+          <title>Configuration Guidelines for DiffServ Service Classes</title>
+          <seriesInfo name="DOI" value="10.17487/RFC4594"/>
+          <seriesInfo name="RFC" value="4594"/>
+          <author initials="J." surname="Babiarz" fullname="J. Babiarz">
+            <organization/>
+          </author>
+          <author initials="K." surname="Chan" fullname="K. Chan">
+            <organization/>
+          </author>
+          <author initials="F." surname="Baker" fullname="F. Baker">
+            <organization/>
+          </author>
+          <date year="2006" month="August"/>
+          <abstract>
+            <t>This document describes service classes configured with Diffserv and recommends how they can be used and how to construct them using Differentiated Services Code Points (DSCPs), traffic conditioners, Per-Hop Behaviors (PHBs), and Active Queue Management (AQM) mechanisms.  There is no intrinsic requirement that particular DSCPs, traffic conditioners, PHBs, and AQM be used for a certain service class, but as a policy and for interoperability it is useful to apply them consistently.  This memo provides information for the Internet community.</t>
+          </abstract>
+        </front>
+      </reference>
+      <reference anchor="RFC8100" target="https://www.rfc-editor.org/info/rfc8100" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8100.xml">
+        <front>
+          <title>Diffserv-Interconnection Classes and Practice</title>
+          <seriesInfo name="DOI" value="10.17487/RFC8100"/>
+          <seriesInfo name="RFC" value="8100"/>
+          <author initials="R." surname="Geib" fullname="R. Geib" role="editor">
+            <organization/>
+          </author>
+          <author initials="D." surname="Black" fullname="D. Black">
+            <organization/>
+          </author>
+          <date year="2017" month="March"/>
+          <abstract>
+            <t>This document defines a limited common set of Diffserv Per-Hop Behaviors (PHBs) and Diffserv Codepoints (DSCPs) to be applied at (inter)connections of two separately administered and operated networks, and it explains how this approach can simplify network configuration and operation.  Many network providers operate Multiprotocol Label Switching (MPLS) using Treatment Aggregates for traffic marked with different Diffserv Per-Hop Behaviors and use MPLS for interconnection with other networks.  This document offers a simple interconnection approach that may simplify operation of Diffserv for network interconnection among providers that use MPLS and apply the Short Pipe Model.  While motivated by the requirements of MPLS network operators that use Short Pipe Model tunnels, this document is applicable to other networks, both MPLS and non-MPLS.</t>
+          </abstract>
+        </front>
+      </reference>
+      <reference anchor="RFC5127" target="https://www.rfc-editor.org/info/rfc5127" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5127.xml">
+        <front>
+          <title>Aggregation of Diffserv Service Classes</title>
+          <seriesInfo name="DOI" value="10.17487/RFC5127"/>
+          <seriesInfo name="RFC" value="5127"/>
+          <author initials="K." surname="Chan" fullname="K. Chan">
+            <organization/>
+          </author>
+          <author initials="J." surname="Babiarz" fullname="J. Babiarz">
+            <organization/>
+          </author>
+          <author initials="F." surname="Baker" fullname="F. Baker">
+            <organization/>
+          </author>
+          <date year="2008" month="February"/>
+          <abstract>
+            <t>In the core of a high-capacity network, service differentiation may still be needed to support applications' utilization of the network. Applications with similar traffic characteristics and performance requirements are mapped into Diffserv service classes based on end- to-end behavior requirements of the applications.  However, some network segments may be configured in such a way that a single forwarding treatment may satisfy the traffic characteristics and performance requirements of two or more service classes.  In these cases, it may be desirable to aggregate two or more Diffserv service classes into a single forwarding treatment.  This document provides guidelines for the aggregation of Diffserv service classes into forwarding treatments.  This memo provides information for the Internet community.</t>
+          </abstract>
+        </front>
+      </reference>
+      <reference anchor="RFC2983" target="https://www.rfc-editor.org/info/rfc2983" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2983.xml">
+        <front>
+          <title>Differentiated Services and Tunnels</title>
+          <seriesInfo name="DOI" value="10.17487/RFC2983"/>
+          <seriesInfo name="RFC" value="2983"/>
+          <author initials="D." surname="Black" fullname="D. Black">
+            <organization/>
+          </author>
+          <date year="2000" month="October"/>
+          <abstract>
+            <t>This document considers the interaction of Differentiated Services (diffserv) with IP tunnels of various forms.  This memo provides information for the Internet community.</t>
+          </abstract>
+        </front>
+      </reference>
+      <reference anchor="I-D.ietf-tsvwg-l4s-arch" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-tsvwg-l4s-arch.xml" target="http://www.ietf.org/internet-drafts/draft-ietf-tsvwg-l4s-arch-08.txt">
+        <front>
+          <title>Low Latency, Low Loss, Scalable Throughput (L4S) Internet Service: Architecture</title>
+          <seriesInfo name="Internet-Draft" value="draft-ietf-tsvwg-l4s-arch-08"/>
+          <author initials="B" surname="Briscoe" fullname="Bob Briscoe">
+            <organization/>
+          </author>
+          <author initials="K" surname="Schepper" fullname="Koen De Schepper">
+            <organization/>
+          </author>
+          <author initials="M" surname="Bagnulo" fullname="Marcelo Bagnulo">
+            <organization/>
+          </author>
+          <author initials="G" surname="White" fullname="Greg White">
+            <organization/>
+          </author>
+          <date month="November" day="15" year="2020"/>
+          <abstract>
+            <t>This document describes the L4S architecture, which enables Internet applications to achieve Low queuing Latency, Low Loss, and Scalable throughput (L4S).  The insight on which L4S is based is that the root cause of queuing delay is in the congestion controllers of senders, not in the queue itself.  The L4S architecture is intended to enable _all_ Internet applications to transition away from congestion control algorithms that cause queuing delay, to a new class of congestion controls that induce very little queuing, aided by explicit congestion signaling from the network.  This new class of congestion control can provide low latency for capacity-seeking flows, so applications can achieve both high bandwidth and low latency.  The architecture primarily concerns incremental deployment.  It defines mechanisms that allow the new class of L4S congestion controls to coexist with 'Classic' congestion controls in a shared network.  These mechanisms aim to ensure that the latency and throughput performance using an L4S-compliant congestion controller is usually much better (and never worse) than the performance would have been using a 'Classic' congestion controller, and that competing flows continuing to use 'Classic' controllers are typically not impacted by the presence of L4S.  These characteristics are important to encourage adoption of L4S congestion control algorithms and L4S compliant network elements.  The L4S architecture consists of three components: network support to isolate L4S traffic from classic traffic; protocol features that allow network elements to identify L4S traffic; and host support for L4S congestion controls.</t>
+          </abstract>
+        </front>
+      </reference>
+      <reference anchor="I-D.ietf-tsvwg-ecn-l4s-id" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-tsvwg-ecn-l4s-id.xml" target="http://www.ietf.org/internet-drafts/draft-ietf-tsvwg-ecn-l4s-id-12.txt">
+        <front>
+          <title>Identifying Modified Explicit Congestion Notification (ECN) Semantics for Ultra-Low Queuing Delay (L4S)</title>
+          <seriesInfo name="Internet-Draft" value="draft-ietf-tsvwg-ecn-l4s-id-12"/>
+          <author initials="K" surname="Schepper" fullname="Koen De Schepper">
+            <organization/>
+          </author>
+          <author initials="B" surname="Briscoe" fullname="Bob Briscoe">
+            <organization/>
+          </author>
+          <date month="November" day="15" year="2020"/>
+          <abstract>
+            <t>This specification defines the identifier to be used on IP packets for a new network service called low latency, low loss and scalable throughput (L4S).  L4S uses an Explicit Congestion Notification (ECN) scheme that is similar to the original (or 'Classic') ECN approach. 'Classic' ECN marking was required to be equivalent to a drop, both when applied in the network and when responded to by a transport. Unlike 'Classic' ECN marking, for packets carrying the L4S identifier, the network applies marking more immediately and more aggressively than drop, and the transport response to each mark is reduced and smoothed relative to that for drop.  The two changes counterbalance each other so that the throughput of an L4S flow will be roughly the same as a non-L4S flow under the same conditions. Nonetheless, the much more frequent control signals and the finer responses to them result in much more fine-grained adjustments, so that ultra-low and consistently low queuing delay (typically sub- millisecond on average) becomes possible for L4S traffic without compromising link utilization.  Thus even capacity-seeking (TCP-like) traffic can have high bandwidth and very low delay at the same time, even during periods of high traffic load.  The L4S identifier defined in this document distinguishes L4S from 'Classic' (e.g. TCP-Reno-friendly) traffic.  It gives an incremental migration path so that suitably modified network bottlenecks can distinguish and isolate existing traffic that still follows the Classic behaviour, to prevent it degrading the low queuing delay and low loss of L4S traffic.  This specification defines the rules that L4S transports and network elements need to follow to ensure they neither harm each other's performance nor that of Classic traffic. Examples of new active queue management (AQM) marking algorithms and examples of new transports (whether TCP-like or real-time) are specified separately.</t>
+          </abstract>
+        </front>
+      </reference>
+      <reference anchor="I-D.ietf-tsvwg-aqm-dualq-coupled" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-tsvwg-aqm-dualq-coupled.xml" target="http://www.ietf.org/internet-drafts/draft-ietf-tsvwg-aqm-dualq-coupled-13.txt">
+        <front>
+          <title>DualQ Coupled AQMs for Low Latency, Low Loss and Scalable Throughput (L4S)</title>
+          <seriesInfo name="Internet-Draft" value="draft-ietf-tsvwg-aqm-dualq-coupled-13"/>
+          <author initials="K" surname="Schepper" fullname="Koen De Schepper">
+            <organization/>
+          </author>
+          <author initials="B" surname="Briscoe" fullname="Bob Briscoe">
+            <organization/>
+          </author>
+          <author initials="G" surname="White" fullname="Greg White">
+            <organization/>
+          </author>
+          <date month="November" day="15" year="2020"/>
+          <abstract>
+            <t>The Low Latency Low Loss Scalable Throughput (L4S) architecture allows data flows over the public Internet to achieve consistent low queuing latency, generally zero congestion loss and scaling of per- flow throughput without the scaling problems of standard TCP Reno- friendly congestion controls.  To achieve this, L4S data flows have to use one of the family of 'Scalable' congestion controls (TCP Prague and Data Center TCP are examples) and a form of Explicit Congestion Notification (ECN) with modified behaviour.  However, until now, Scalable congestion controls did not co-exist with existing Reno/Cubic traffic --- Scalable controls are so aggressive that 'Classic' (e.g. Reno-friendly) algorithms sharing an ECN-capable queue would drive themselves to a small capacity share.  Therefore, until now, L4S controls could only be deployed where a clean-slate environment could be arranged, such as in private data centres (hence the name DCTCP).  This specification defines `DualQ Coupled Active Queue Management (AQM)', which enables Scalable congestion controls that comply with the Prague L4S requirements to co-exist safely with Classic Internet traffic.  Analytical study and implementation testing of the Coupled AQM have shown that Scalable and Classic flows competing under similar conditions run at roughly the same rate.  It achieves this indirectly, without having to inspect transport layer flow identifiers.  When tested in a residential broadband setting, DCTCP also achieves sub-millisecond average queuing delay and zero congestion loss under a wide range of mixes of DCTCP and `Classic' broadband Internet traffic, without compromising the performance of the Classic traffic.  The solution has low complexity and requires no configuration for the public Internet.</t>
+          </abstract>
+        </front>
+      </reference>
+      <reference anchor="I-D.briscoe-docsis-q-protection" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.briscoe-docsis-q-protection.xml" target="http://www.ietf.org/internet-drafts/draft-briscoe-docsis-q-protection-00.txt">
+        <front>
+          <title>Queue Protection to Preserve Low Latency</title>
+          <seriesInfo name="Internet-Draft" value="draft-briscoe-docsis-q-protection-00"/>
+          <author initials="B" surname="Briscoe" fullname="Bob Briscoe">
+            <organization/>
+          </author>
+          <author initials="G" surname="White" fullname="Greg White">
+            <organization/>
+          </author>
+          <date month="July" day="8" year="2019"/>
+          <abstract>
+            <t>This informational document defines and explains the specification of the queue protection algorithm used in DOCSIS 3.1.  It is believed this algorithm will be useful in scenarios other than DOCSIS.  A shared low latency queue relies on the non-queue-building behaviour of every traffic flow using it.  However, some flows might not take such care, either accidentally or maliciously.  If a queue is about to exceed a threshold level of delay, the queue protection algorithm can rapidly detect the flow(s) most likely to be responsible.  It can then prevent selected packets of these flows (or whole flows) from harming the queuing delay of other traffic in the low latency queue.</t>
+          </abstract>
+        </front>
+      </reference>
+      <reference anchor="Custura">
+        <front>
+          <title>Exploring DSCP modification pathologies in mobile edge networks</title>
+          <seriesInfo name="TMA" value=""/>
+          <author initials="A." surname="Custura"/>
+          <author initials="A." surname="Venne"/>
+          <author initials="G." surname="Fairhurst"/>
+          <date year="2017"/>
+        </front>
+      </reference>
+      <reference anchor="Barik">
+        <front>
+          <title>Can WebRTC QoS Work? A DSCP Measurement Study</title>
+          <seriesInfo name="ITC" value="30"/>
+          <author initials="R." surname="Barik"/>
+          <author initials="M." surname="Welzl"/>
+          <author initials="A." surname="Elmokashfi"/>
+          <author initials="T." surname="Dreibholz"/>
+          <author initials="S." surname="Gjessing"/>
+          <date month="September" year="2018"/>
+        </front>
+      </reference>
+      <reference anchor="SA-5G">
+        <front>
+          <title>System Architecture for 5G</title>
+          <seriesInfo name="TS" value="23.501"/>
+          <author>
+            <organization>3GPP</organization>
+          </author>
+          <date year="2019"/>
+        </front>
+      </reference>
+    </references>
+  </back>
+</rfc>
+<!-- vim: ft=xml tabstop=2 expandtab:
+-->
