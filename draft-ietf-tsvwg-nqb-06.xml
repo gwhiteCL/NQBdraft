@@ -268,12 +268,6 @@ please see http://xml.resource.org/authoring/README.html. -->
             <organization/>
           </author>
           <date year="2017" month="March"/>
-          <abstract>
-            <t>The User Datagram Protocol (UDP) provides a minimal message-passing transport that has no inherent congestion control mechanisms.  This document provides guidelines on the use of UDP for the designers of applications, tunnels, and other protocols that use UDP.  Congestion control guidelines are a primary focus, but the document also provides guidance on other topics, including message sizes, reliability, checksums, middlebox traversal, the use of Explicit Congestion Notification (ECN), Differentiated Services Code Points (DSCPs), and ports.</t>
-            <t>Because congestion control is critical to the stable operation of the Internet, applications and other protocols that choose to use UDP as an Internet transport must employ mechanisms to prevent congestion collapse and to establish some degree of fairness with concurrent traffic.  They may also need to implement additional mechanisms, depending on how they use UDP.</t>
-            <t>Some guidance is also applicable to the design of other protocols (e.g., protocols layered directly on IP or via IP-based tunnels), especially when these protocols do not themselves provide congestion control.</t>
-            <t>This document obsoletes RFC 5405 and adds guidelines for multicast UDP usage.</t>
-          </abstract>
         </front>
       </reference>
       <reference anchor="RFC8033" target="https://www.rfc-editor.org/info/rfc8033" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8033.xml">
@@ -294,11 +288,7 @@ please see http://xml.resource.org/authoring/README.html. -->
             <organization/>
           </author>
           <date year="2017" month="February"/>
-          <abstract>
-            <t>Bufferbloat is a phenomenon in which excess buffers in the network cause high latency and latency variation.  As more and more interactive applications (e.g., voice over IP, real-time video streaming, and financial transactions) run in the Internet, high latency and latency variation degrade application performance.  There is a pressing need to design intelligent queue management schemes that can control latency and latency variation, and hence provide desirable quality of service to users.</t>
-            <t>This document presents a lightweight active queue management design called "PIE" (Proportional Integral controller Enhanced) that can effectively control the average queuing latency to a target value. Simulation results, theoretical analysis, and Linux testbed results have shown that PIE can ensure low latency and achieve high link utilization under various congestion situations.  The design does not require per-packet timestamps, so it incurs very little overhead and is simple enough to implement in both hardware and software.</t>
-          </abstract>
-        </front>
+       </front>
       </reference>
       <reference anchor="RFC8034" target="https://www.rfc-editor.org/info/rfc8034" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8034.xml">
         <front>
@@ -312,9 +302,6 @@ please see http://xml.resource.org/authoring/README.html. -->
             <organization/>
           </author>
           <date year="2017" month="February"/>
-          <abstract>
-            <t>Cable modems based on Data-Over-Cable Service Interface Specifications (DOCSIS) provide broadband Internet access to over one hundred million users worldwide.  In some cases, the cable modem connection is the bottleneck (lowest speed) link between the customer and the Internet.  As a result, the impact of buffering and bufferbloat in the cable modem can have a significant effect on user experience.  The CableLabs DOCSIS 3.1 specification introduces requirements for cable modems to support an Active Queue Management (AQM) algorithm that is intended to alleviate the impact that buffering has on latency-sensitive traffic, while preserving bulk throughput performance.  In addition, the CableLabs DOCSIS 3.0 specifications have also been amended to contain similar requirements.  This document describes the requirements on AQM that apply to DOCSIS equipment, including a description of the "DOCSIS-PIE" algorithm that is required on DOCSIS 3.1 cable modems.</t>
-          </abstract>
         </front>
       </reference>
       <reference anchor="RFC8289" target="https://www.rfc-editor.org/info/rfc8289" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8289.xml">
@@ -335,9 +322,6 @@ please see http://xml.resource.org/authoring/README.html. -->
             <organization/>
           </author>
           <date year="2018" month="January"/>
-          <abstract>
-            <t>This document describes CoDel (Controlled Delay) -- a general framework that controls bufferbloat-generated excess delay in modern networking environments.  CoDel consists of an estimator, a setpoint, and a control loop.  It requires no configuration in normal Internet deployments.</t>
-          </abstract>
         </front>
       </reference>
       <reference anchor="RFC2119" target="https://www.rfc-editor.org/info/rfc2119" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
@@ -350,9 +334,6 @@ please see http://xml.resource.org/authoring/README.html. -->
             <organization/>
           </author>
           <date year="1997" month="March"/>
-          <abstract>
-            <t>In many standards track documents several words are used to signify the requirements in the specification.  These words are often capitalized. This document defines these words as they should be interpreted in IETF documents.  This document specifies an Internet Best Current Practices for the Internet Community, and requests discussion and suggestions for improvements.</t>
-          </abstract>
         </front>
       </reference>
       <reference anchor="RFC8174" target="https://www.rfc-editor.org/info/rfc8174" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml">
@@ -365,9 +346,6 @@ please see http://xml.resource.org/authoring/README.html. -->
             <organization/>
           </author>
           <date year="2017" month="May"/>
-          <abstract>
-            <t>RFC 2119 specifies common key words that may be used in protocol  specifications.  This document aims to reduce the ambiguity by clarifying that only UPPERCASE usage of the key words have the  defined special meanings.</t>
-          </abstract>
         </front>
       </reference>
       <reference anchor="RFC8325" target="https://www.rfc-editor.org/info/rfc8325" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8325.xml">
@@ -385,9 +363,6 @@ please see http://xml.resource.org/authoring/README.html. -->
             <organization/>
           </author>
           <date year="2018" month="February"/>
-          <abstract>
-            <t>As Internet traffic is increasingly sourced from and destined to wireless endpoints, it is crucial that Quality of Service (QoS) be aligned between wired and wireless networks; however, this is not always the case by default.  This document specifies a set of mappings from Differentiated Services Code Point (DSCP) to IEEE 802.11 User Priority (UP) to reconcile the marking recommendations offered by the IETF and the IEEE so as to maintain consistent QoS treatment between wired and IEEE 802.11 wireless networks.</t>
-          </abstract>
         </front>
       </reference>
       <reference anchor="RFC2474" target="https://www.rfc-editor.org/info/rfc2474" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2474.xml">
@@ -408,9 +383,6 @@ please see http://xml.resource.org/authoring/README.html. -->
             <organization/>
           </author>
           <date year="1998" month="December"/>
-          <abstract>
-            <t>This document defines the IP header field, called the DS (for differentiated services) field.  [STANDARDS-TRACK]</t>
-          </abstract>
         </front>
       </reference>
       <reference anchor="RFC2475" target="https://www.rfc-editor.org/info/rfc2475" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2475.xml">
@@ -437,9 +409,6 @@ please see http://xml.resource.org/authoring/README.html. -->
             <organization/>
           </author>
           <date year="1998" month="December"/>
-          <abstract>
-            <t>This document defines an architecture for implementing scalable service differentiation in the Internet.  This memo provides information for the Internet community.</t>
-          </abstract>
         </front>
       </reference>
       <reference anchor="RFC4594" target="https://www.rfc-editor.org/info/rfc4594" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4594.xml">
@@ -457,9 +426,6 @@ please see http://xml.resource.org/authoring/README.html. -->
             <organization/>
           </author>
           <date year="2006" month="August"/>
-          <abstract>
-            <t>This document describes service classes configured with Diffserv and recommends how they can be used and how to construct them using Differentiated Services Code Points (DSCPs), traffic conditioners, Per-Hop Behaviors (PHBs), and Active Queue Management (AQM) mechanisms.  There is no intrinsic requirement that particular DSCPs, traffic conditioners, PHBs, and AQM be used for a certain service class, but as a policy and for interoperability it is useful to apply them consistently.  This memo provides information for the Internet community.</t>
-          </abstract>
         </front>
       </reference>
       <reference anchor="RFC8100" target="https://www.rfc-editor.org/info/rfc8100" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8100.xml">
@@ -474,9 +440,6 @@ please see http://xml.resource.org/authoring/README.html. -->
             <organization/>
           </author>
           <date year="2017" month="March"/>
-          <abstract>
-            <t>This document defines a limited common set of Diffserv Per-Hop Behaviors (PHBs) and Diffserv Codepoints (DSCPs) to be applied at (inter)connections of two separately administered and operated networks, and it explains how this approach can simplify network configuration and operation.  Many network providers operate Multiprotocol Label Switching (MPLS) using Treatment Aggregates for traffic marked with different Diffserv Per-Hop Behaviors and use MPLS for interconnection with other networks.  This document offers a simple interconnection approach that may simplify operation of Diffserv for network interconnection among providers that use MPLS and apply the Short Pipe Model.  While motivated by the requirements of MPLS network operators that use Short Pipe Model tunnels, this document is applicable to other networks, both MPLS and non-MPLS.</t>
-          </abstract>
         </front>
       </reference>
       <reference anchor="RFC5127" target="https://www.rfc-editor.org/info/rfc5127" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5127.xml">
@@ -494,9 +457,6 @@ please see http://xml.resource.org/authoring/README.html. -->
             <organization/>
           </author>
           <date year="2008" month="February"/>
-          <abstract>
-            <t>In the core of a high-capacity network, service differentiation may still be needed to support applications' utilization of the network. Applications with similar traffic characteristics and performance requirements are mapped into Diffserv service classes based on end- to-end behavior requirements of the applications.  However, some network segments may be configured in such a way that a single forwarding treatment may satisfy the traffic characteristics and performance requirements of two or more service classes.  In these cases, it may be desirable to aggregate two or more Diffserv service classes into a single forwarding treatment.  This document provides guidelines for the aggregation of Diffserv service classes into forwarding treatments.  This memo provides information for the Internet community.</t>
-          </abstract>
         </front>
       </reference>
       <reference anchor="RFC2983" target="https://www.rfc-editor.org/info/rfc2983" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2983.xml">
@@ -562,9 +522,6 @@ please see http://xml.resource.org/authoring/README.html. -->
             <organization/>
           </author>
           <date month="November" day="15" year="2020"/>
-          <abstract>
-            <t>This document describes the L4S architecture, which enables Internet applications to achieve Low queuing Latency, Low Loss, and Scalable throughput (L4S).  The insight on which L4S is based is that the root cause of queuing delay is in the congestion controllers of senders, not in the queue itself.  The L4S architecture is intended to enable _all_ Internet applications to transition away from congestion control algorithms that cause queuing delay, to a new class of congestion controls that induce very little queuing, aided by explicit congestion signaling from the network.  This new class of congestion control can provide low latency for capacity-seeking flows, so applications can achieve both high bandwidth and low latency.  The architecture primarily concerns incremental deployment.  It defines mechanisms that allow the new class of L4S congestion controls to coexist with 'Classic' congestion controls in a shared network.  These mechanisms aim to ensure that the latency and throughput performance using an L4S-compliant congestion controller is usually much better (and never worse) than the performance would have been using a 'Classic' congestion controller, and that competing flows continuing to use 'Classic' controllers are typically not impacted by the presence of L4S.  These characteristics are important to encourage adoption of L4S congestion control algorithms and L4S compliant network elements.  The L4S architecture consists of three components: network support to isolate L4S traffic from classic traffic; protocol features that allow network elements to identify L4S traffic; and host support for L4S congestion controls.</t>
-          </abstract>
         </front>
       </reference>
       <reference anchor="I-D.ietf-tsvwg-ecn-l4s-id" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-tsvwg-ecn-l4s-id.xml" target="http://www.ietf.org/internet-drafts/draft-ietf-tsvwg-ecn-l4s-id-12.txt">
@@ -578,9 +535,6 @@ please see http://xml.resource.org/authoring/README.html. -->
             <organization/>
           </author>
           <date month="November" day="15" year="2020"/>
-          <abstract>
-            <t>This specification defines the identifier to be used on IP packets for a new network service called low latency, low loss and scalable throughput (L4S).  L4S uses an Explicit Congestion Notification (ECN) scheme that is similar to the original (or 'Classic') ECN approach. 'Classic' ECN marking was required to be equivalent to a drop, both when applied in the network and when responded to by a transport. Unlike 'Classic' ECN marking, for packets carrying the L4S identifier, the network applies marking more immediately and more aggressively than drop, and the transport response to each mark is reduced and smoothed relative to that for drop.  The two changes counterbalance each other so that the throughput of an L4S flow will be roughly the same as a non-L4S flow under the same conditions. Nonetheless, the much more frequent control signals and the finer responses to them result in much more fine-grained adjustments, so that ultra-low and consistently low queuing delay (typically sub- millisecond on average) becomes possible for L4S traffic without compromising link utilization.  Thus even capacity-seeking (TCP-like) traffic can have high bandwidth and very low delay at the same time, even during periods of high traffic load.  The L4S identifier defined in this document distinguishes L4S from 'Classic' (e.g. TCP-Reno-friendly) traffic.  It gives an incremental migration path so that suitably modified network bottlenecks can distinguish and isolate existing traffic that still follows the Classic behaviour, to prevent it degrading the low queuing delay and low loss of L4S traffic.  This specification defines the rules that L4S transports and network elements need to follow to ensure they neither harm each other's performance nor that of Classic traffic. Examples of new active queue management (AQM) marking algorithms and examples of new transports (whether TCP-like or real-time) are specified separately.</t>
-          </abstract>
         </front>
       </reference>
       <reference anchor="I-D.ietf-tsvwg-aqm-dualq-coupled" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-tsvwg-aqm-dualq-coupled.xml" target="http://www.ietf.org/internet-drafts/draft-ietf-tsvwg-aqm-dualq-coupled-13.txt">
@@ -597,9 +551,6 @@ please see http://xml.resource.org/authoring/README.html. -->
             <organization/>
           </author>
           <date month="November" day="15" year="2020"/>
-          <abstract>
-            <t>The Low Latency Low Loss Scalable Throughput (L4S) architecture allows data flows over the public Internet to achieve consistent low queuing latency, generally zero congestion loss and scaling of per- flow throughput without the scaling problems of standard TCP Reno- friendly congestion controls.  To achieve this, L4S data flows have to use one of the family of 'Scalable' congestion controls (TCP Prague and Data Center TCP are examples) and a form of Explicit Congestion Notification (ECN) with modified behaviour.  However, until now, Scalable congestion controls did not co-exist with existing Reno/Cubic traffic --- Scalable controls are so aggressive that 'Classic' (e.g. Reno-friendly) algorithms sharing an ECN-capable queue would drive themselves to a small capacity share.  Therefore, until now, L4S controls could only be deployed where a clean-slate environment could be arranged, such as in private data centres (hence the name DCTCP).  This specification defines `DualQ Coupled Active Queue Management (AQM)', which enables Scalable congestion controls that comply with the Prague L4S requirements to co-exist safely with Classic Internet traffic.  Analytical study and implementation testing of the Coupled AQM have shown that Scalable and Classic flows competing under similar conditions run at roughly the same rate.  It achieves this indirectly, without having to inspect transport layer flow identifiers.  When tested in a residential broadband setting, DCTCP also achieves sub-millisecond average queuing delay and zero congestion loss under a wide range of mixes of DCTCP and `Classic' broadband Internet traffic, without compromising the performance of the Classic traffic.  The solution has low complexity and requires no configuration for the public Internet.</t>
-          </abstract>
         </front>
       </reference>
       <reference anchor="I-D.briscoe-docsis-q-protection" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.briscoe-docsis-q-protection.xml" target="http://www.ietf.org/internet-drafts/draft-briscoe-docsis-q-protection-00.txt">
@@ -613,9 +564,6 @@ please see http://xml.resource.org/authoring/README.html. -->
             <organization/>
           </author>
           <date month="July" day="8" year="2019"/>
-          <abstract>
-            <t>This informational document defines and explains the specification of the queue protection algorithm used in DOCSIS 3.1.  It is believed this algorithm will be useful in scenarios other than DOCSIS.  A shared low latency queue relies on the non-queue-building behaviour of every traffic flow using it.  However, some flows might not take such care, either accidentally or maliciously.  If a queue is about to exceed a threshold level of delay, the queue protection algorithm can rapidly detect the flow(s) most likely to be responsible.  It can then prevent selected packets of these flows (or whole flows) from harming the queuing delay of other traffic in the low latency queue.</t>
-          </abstract>
         </front>
       </reference>
       <reference anchor="Custura">
