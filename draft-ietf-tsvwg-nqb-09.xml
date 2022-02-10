@@ -138,7 +138,7 @@ please see http://xml.resource.org/authoring/README.html. -->
     <section numbered="true">
       <name>DSCP Marking of NQB Traffic</name>
 
-      <section numbered="true">
+      <section anchor="sender" numbered="true">
         <name>Non-Queue-Building Sender Requirements</name>
 
         <t>Non-queue-building (NQB) flows are typically UDP flows that don't seek the maximum capacity of the link (examples: online games, voice chat, DNS lookups, real-time IoT analytics data). Here the data rate is limited by the application itself rather than by network capacity - these applications send, at most, the equivalent of a few well-spaced packets per RTT, even if the packets are not actually RTT-clocked. In today's network this corresponds to an instantaneous data rate (packet size divided by packet inter-arrival time) of no more than about 1 Mbps (e.g. no more than one 1250 B packet every 10 ms), but there is no precise bound since it depends on the conditions in which the application is operating.</t>  
@@ -221,6 +221,14 @@ please see http://xml.resource.org/authoring/README.html. -->
 
         <t>There are some situations where such function may not be necessary. For example, a network element designed for use in controlled environments (e.g. enterprise LAN) may not require a traffic protection function. Additionally, some networks may prefer to police the application of the NQB DSCP at the ingress edge, so that in-network traffic protection is not needed.</t>
       </section>
+
+      <section numbered="true">
+        <name>Guidance for Very Low Rate Links</name>
+        <t>The NQB sender requirements in <xref target="sender"/> place responsibility in the hands of the application developer to determine the likelihood that the application's sending behavior could result in a queue forming along the path.  These requirements rely on application developers having a reasonable sense for the network context in which their application is to be deployed.  Even so, there will undoubtedly be networks that contain links having a data rate that is below what is considered "typical", and thus potentially below the instantaneous sending rate of certain NQB-marked applications.</t>
+
+        <t>To limit the consequences of this scenario, operators of such networks SHOULD utilize a traffic protection function that is more tolerant of burstiness (i.e. a temporary queue).  Alternatively, operators of such networks MAY choose to disable NQB support on these low speed links.  In particular, for links that are far below "typical" path rates, it is RECOMMENDED that NQB support be disabled.</t>   
+      </section>
+
     </section>
     <section numbered="true">
       <name>Impact on Higher Layer Protocols</name>
