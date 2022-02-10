@@ -147,7 +147,9 @@ please see http://xml.resource.org/authoring/README.html. -->
 
         <t>Applications that align with the description of NQB behavior in the preceding paragraphs SHOULD identify themselves to the network using a Diffserv Code Point (DSCP) of 45 (decimal) so that their packets can be queued separately from QB flows. The choice of the value 45 is motivated in part by the desire to achieve separate queuing in existing WiFi networks (see <xref target="wifi"/>). In networks where another (e.g. a local-use) codepoint is designated for NQB traffic, or where specialized PHBs are available that can meet specific application requirements (e.g. a guaranteed-latency path for voice traffic), it may be preferred to use another DSCP.</t>
         
-        <t>If the application's traffic exceeds more than a few packets per RTT, or exceeds approximately 1 Mbps on an instantaneous (inter-packet) basis, the application SHOULD NOT mark its traffic with the NQB DSCP. In such a case, the application has to instead implement a relevant congestion control mechanism, for example as described in <xref target="RFC8085" section ="3.1"/> or <xref target="I-D.ietf-tsvwg-ecn-l4s-id"/>.</t>  
+        <t>If the application's traffic exceeds more than a few packets per RTT, or exceeds the expected path capacity on an instantaneous (e.g. inter-packet or a suitably short time interval) basis, the application SHOULD NOT mark its traffic with the NQB DSCP. In such a case, the application has to instead implement a relevant congestion control mechanism, for example as described in <xref target="RFC8085" section ="3.1"/> or <xref target="I-D.ietf-tsvwg-ecn-l4s-id"/>.  At the time of writing, it is believed that 1 Mbps is a reasonable expectation of path capacity, but this value is of course subject to the context in which the application is expected to be deployed.</t>
+
+        <t>An application that marks its traffic as NQB but happens to exceed the available path capacity (even on an instantaneous basis) runs the risk of being subjected to a Traffic Protection algorithm (see <xref target="traffic_protection"/>), which could result in the excess traffic being discarded or queued separately as default traffic (and thus potentially delivered out of order).  As a result, applications that aren't clearly beneath the threshold described above would need to weigh the risk of additional loss or out-of-order delivery against the expected latency benefits of NQB treatment in determining whether or not to mark their packets as NQB.</t>
 
       </section>
 
@@ -209,7 +211,7 @@ please see http://xml.resource.org/authoring/README.html. -->
         <t>The NQB queue SHOULD have a buffer size that is significantly smaller than the buffer provided for QB traffic (e.g. single-digit milliseconds). It is expected that most QB traffic is engineered to work well when the network provides a relatively deep buffer (e.g. on the order of tens or hundreds of ms) in nodes where support for the NQB PHB is advantageous (i.e. bottleneck nodes). Providing a similarly deep buffer for the NQB queue would be at cross purposes to providing very low queueing delay, and would erode the incentives for QB traffic to be marked correctly.</t>
       </section>
 
-      <section numbered="true">
+      <section anchor="traffic_protection" numbered="true">
         <name>Traffic Protection</name>
         <t>It is possible that due to an implementation error or misconfiguration, a QB flow would end up getting mismarked as NQB, or vice versa. In the case of an NQB flow that isn't marked as NQB and ends up in the QB queue, it would only impact its own quality of service, and so it seems to be of lesser concern. However, a QB flow that is mismarked as NQB would cause queuing delays and/or loss for all of the other flows that are sharing the NQB queue.</t>
 
