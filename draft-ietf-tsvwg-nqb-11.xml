@@ -227,7 +227,7 @@ please see http://xml.resource.org/authoring/README.html. -->
         <name>Guidance for Very Low Rate Links</name>
         <t>The NQB sender requirements in <xref target="sender"/> place responsibility in the hands of the application developer to determine the likelihood that the application's sending behavior could result in a queue forming along the path.  These requirements rely on application developers having a reasonable sense for the network context in which their application is to be deployed.  Even so, there will undoubtedly be networks that contain links having a data rate that is below the lower end of what is considered "typical", and some of these links may even be below the instantaneous sending rate of some NQB-marked applications.</t>
 
-        <t>To limit the consequences of this scenario, operators of such networks SHOULD utilize a traffic protection function that is more tolerant of burstiness (i.e. a temporary queue).  Alternatively, operators of such networks MAY choose to disable NQB support on these low speed links.  In particular, for links that are far below "typical" path rates, it is RECOMMENDED that NQB support be disabled.</t>   
+        <t>To limit the consequences of this scenario, operators of such networks SHOULD utilize a traffic protection function that is more tolerant of burstiness (i.e. a temporary queue).  Alternatively, operators of such networks MAY choose to disable NQB support (and thus aggregate NQB marked traffic with Default traffic) on these low speed links.  In particular, for links that are far below "typical" path rates, it is RECOMMENDED that NQB support be disabled.</t>   
       </section>
 
     </section>
