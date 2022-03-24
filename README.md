@@ -1,5 +1,5 @@
 # NQB Draft
 
-This repo contains the master XML version of the NQB PHB draft.  It also contains an HTML version created by the [xml2rfc](https://xml2rfc.tools.ietf.org) tool.
+This repo contains the master XML version of the NQB PHB draft.  The xml can be used to generate various human-readable versions via the [xml2rfc](https://xml2rfc.tools.ietf.org) tool.
 
-[draft-ietf-tsvwg-nqb-00.html](draft-ietf-tsvwg-nqb-00.html)
+In addition, if you have xml2rfc installed on your system, you can use the include Makefile to build the html and txt versions.
