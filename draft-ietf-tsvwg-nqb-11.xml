@@ -401,7 +401,7 @@ please see http://xml.resource.org/authoring/README.html. -->
       </references>
     </references>
     <section>
-      <name>DSCP Re-marking Pathologies</name>
+      <name>DSCP Re-marking Policies</name>
 
         <t>Some network operators typically bleach (zero out) the Diffserv field on ingress into their network <xref target="I-D.ietf-tsvwg-dscp-considerations"/><xref target="Custura"/><xref target="Barik"/>, and in some cases apply their own DSCP for internal usage. Bleaching the NQB DSCP is not expected to cause harm to default traffic, but it will severely limit the ability to provide NQB treatment end-to-end. Reports on existing deployments of DSCP manipulation <xref target="Custura"/><xref target="Barik"/> categorize the re-marking behaviors into the following six policies:  bleach all traffic (set DSCP to zero), set the top three bits (the former Precedence bits) on all traffic to 0b000, 0b001, or 0b010, set the low three bits on all traffic to 0b000, or re-mark all traffic to a particular (non-zero) DSCP value.</t>
 
