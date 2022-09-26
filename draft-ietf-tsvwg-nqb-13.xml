@@ -301,7 +301,7 @@ please see http://xml.resource.org/authoring/README.html. -->
       
       <t>Notwithstanding the above, the choice of DSCP for NQB does allow existing WiFi networks to readily (and by default) support some of the PHB requirements, but without a traffic protection function, and (when left in the default state) by giving NQB traffic higher priority than QB traffic.  This does open up the NQB marking to potential abuse on these WiFi links, but since these existing WiFi networks already give one quarter of the DSCP space this same treatment, and further they give another quarter of the DSCP space even higher priority, the NQB DSCP does not seem to be of any greater risk for abuse than these others. </t>
 
-      <t>The NQB signal is not integrity protected and could be flipped by an on-path attacker. This might negatively affect the QoS of the tampered flow. </t>
+      <t>The NQB signal (DSCP) is not integrity protected and could be changed by an on-path attacker. While re-marking DSCPs is permitted for various reasons (some are discussed in this document, others can be found in <xref target="RFC2474"/> and <xref target="RFC2475"/>), if done maliciously, this might negatively affect the QoS of the tampered flow. </t>
     </section>
   </middle>
   <!--  *****BACK MATTER ***** -->
