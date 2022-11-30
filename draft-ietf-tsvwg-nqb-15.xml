@@ -203,7 +203,7 @@ please see http://xml.resource.org/authoring/README.html. -->
         
         <t>A node supporting the NQB PHB MUST provide a queue for Non-Queue-Building traffic separate from any queue used for Queue-Building traffic.</t>
         
-        <t>NQB traffic, in aggregate, SHOULD NOT be rate limited or rate policed separately from Queue-Building traffic of equivalent importance.</t>
+        <t>A node supporting the NQB PHB SHOULD NOT rate limit or rate police the aggregate of NQB traffic separately from Queue-Building traffic of equivalent importance. An exception to this recommendation is discussed in <xref target="unmanaged"/>.</t>
         
         <t>The NQB queue SHOULD be given equivalent forwarding preference compared to Queue-Building traffic of equivalent importance. The node SHOULD provide a scheduler that allows QB and NQB traffic of equivalent importance to share the link in a fair manner, e.g., a deficit round-robin scheduler with equal weights. Compliance with these recommendations helps to ensure that there are no incentives for QB traffic to be mismarked as NQB. In environments where mismarking is not a potential issue (e.g., a network where a marking policy is enforced by other means), these requirements may not be necessary. </t>
         
