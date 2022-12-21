@@ -295,6 +295,23 @@ please see http://xml.resource.org/authoring/README.html. -->
         </ul>
 
     </section>
+
+    <section numbered="true">
+      <name>Implementation Status</name>
+
+      <t>Note to RFC Editor: This section should be removed prior to publication</t>
+
+      <t>The NQB PHB is implemented in equipment compliant with the current DOCSIS 3.1
+        specification, published by CableLabs at: 
+        <eref target="https://www.cablelabs.com/specifications/search?query=&amp;category=DOCSIS&amp;subcat=DOCSIS%203.1&amp;doctype=Specifications&amp;content=false&amp;archives=false&amp;currentPage=1">CableLabs Specifications Search</eref>.</t>
+
+      <t>CableLabs maintains a list of production cable modem devices that are Certified as being compliant to the DOCSIS Specifications, this list is available at <eref target="https://www.cablelabs.com/wp-content/uploads/2013/10/cert_qual.xlsx"/>. DOCSIS 3.1 modems certified in CW 134 or greater implement the NQB PHB. This includes products from Arcadyan Technology Corporation, Arris, AVM, Castlenet, Commscope, Hitron, Motorola, Netgear, Sagemcom and Vantiva.
+      There are additional production implementations that have not been Certified as compliant to the specification, but which have been tested in non-public Interoperability Events. 
+      These implementations are all proprietary, not available as open source.</t>
+    </section>
+
+
+
     <section anchor="Security" numbered="true">
       <name>Security Considerations</name>
       <t>When the NQB PHB is fully supported in bottleneck links, there is no incentive for a Queue-Building application to mismark its packets as NQB (or vice versa). If a Queue-Building flow were to mark its packets as NQB, it would be unlikely to receive a benefit by doing so, and it could experience excessive packet loss, excessive latency variation and/or excessive out-of-order delivery (depending on the nature of the traffic protection function). If a Non-Queue-Building flow were to fail to mark its packets as NQB, it could suffer the latency and loss typical of sharing a queue with capacity seeking traffic.</t>
