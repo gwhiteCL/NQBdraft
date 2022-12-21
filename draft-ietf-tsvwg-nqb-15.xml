@@ -266,11 +266,23 @@ please see http://xml.resource.org/authoring/README.html. -->
           <name>Interoperability with Existing WiFi Networks</name>
           <t>While some existing WiFi equipment may be capable (in some cases via firmware update) of supporting the NQB PHB requirements, many currently deployed devices cannot be configured in this way. As a result, the remainder of this section discusses interoperability with these existing WiFi networks, as opposed to PHB compliance.</t> 
 
-          <t>In order to increase the likelihood that NQB traffic is provided a separate queue from QB traffic in existing WiFi equipment that uses the default mapping, the 45 codepoint is recommended for NQB. This maps NQB to UP_5, which is in the "Video" Access Category.   While this DSCP to User Priority mapping enables these WiFi systems to support the NQB PHB requirement for segregated queuing, it does not support the remaining NQB PHB requirements in <xref target="phb_requirements"/>. The ramifications of, and remedies for this are discussed further below.</t>
+          <t>Since this equipment is extremely widely deployed, and the WiFi link is commonly a bottleneck link, the performance of NQB-marked traffic across such links could have a significant impact on the viability and adoption of the NQB DSCP and PHB. Depending on the DSCP used to mark NQB traffic, existing WiFi equipment that uses the default mapping of DSCPs to Access Categories and the default EDCA parameters will support either the NQB PHB requirement for separate queuing of NQB traffic, or the recommendation to treat NQB traffic with priority equal to Default traffic, but not both.</t>
 
-          <t>Existing WiFi devices are unlikely to support a traffic protection algorithm, so traffic mismarked as NQB is not likely to be detected and remedied by such devices.</t>
+          <t>The DSCP value 45 is recommended for NQB. This maps NQB to UP_5 using the default mapping, which is in the "Video" Access Category. While this choice of DSCP enables these WiFi systems to support the NQB PHB requirement for separate queuing, existing WiFi devices generally utilize EDCA parameters that result in statistical prioritization of the "Video" Access Category above the "Best Effort" Access Category.  In addition this equipment does not support the remaining NQB PHB recommendations in <xref target="phb_requirements"/>. The rationale for this choice as well as its ramifications, and remedies for its limitations are discussed further below.</t>
 
-          <t>Furthermore, in their default configuration, existing WiFi devices utilize EDCA parameters that result in statistical prioritization of the "Video" Access Category above the "Best Effort" Access Category. If left unchanged, this would violate the NQB PHB requirement for equal prioritization, and could erode the principle of alignment of incentives. In order to preserve the incentives principle for NQB, WiFi systems SHOULD be configured such that the EDCA parameters for the Video Access Category match those of the Best Effort Access Category.  This recommendation is primarily applicable to WiFi systems deployed in a managed environment or those deployed by an ISP and is intended for situations when the vast majority of traffic that would use AC_VI is NQB.  In other situations (e.g., consumer-grade WiFi gear deployed by an ISP's customer) this configuration may not be possible, and the requirements and recommendations in <xref target="unmanaged"/> would apply.</t>
+          <t>The choice of separated queuing rather than equal priority in existing WiFi networks was motivated by the following:</t>
+            <ul>
+            <li>Separate queuing is necessary in order to provide a benefit for NQB-marked traffic. </li>
+            <li>All known WiFi gear has hardware support (albeit generally not exposed for user control) for adjusting the EDCA parameters in order to meet the equal priority recommendation. This is discussed further below.</li>
+            <li>NQB-compliant traffic is unlikely to cause more degradation to lower priority Access Categories than the existing recommended Video Access Category traffic types: Broadcast Video, Multimedia Streaming, Multimedia Conferencing from <xref target="RFC8325"/>, and AudioVideo, ExcellentEffort from <xref target="QOS_TRAFFIC_TYPE"/>.</li>
+            <li>Application instances on WiFi client devices are already free to choose any Access Category that they wish, regardless of their sending behavior, without any policing of usage. So, the choice of 45 for NQB creates no new avenues for non-NQB-compliant client applications to exploit the prioritization function in WiFi. </li>
+            <li>Several existing client applications that are compatible with the NQB sender requirements already select the Video Access Category, and thus would not see a degradation in performance by transitioning to the NQB DSCP, regardless of whether the network supported the PHB.</li>
+            <li>For application traffic that originates outside of the WiFi network, and thus is transmitted by the Access Point, opportunities exist in the upstream network components to police the usage of the NQB codepoint and potentially re-mark traffic that is considered non-compliant, as is recommended in <xref target="unmanaged"/>. Furthermore, it is very common practice for residential ISPs today to re-mark DSCP to zero for all traffic destined to customer networks, in which case, any change to this practice could be done alongside the implementation of those recommendations.</li>
+          </ul>
+
+          <t>The choice of Video Access Category rather than the Voice Access Category was motivated by the desire to minimize the potential for degradation of Best Effort Access Category traffic.  The choice of Video Access Category rather than the Background Access Category was motivated by the much greater potential of degradation to NQB traffic that would be caused by the vast majority of traffic in most WiFi networks, which utilizes the Best Effort Access Category.</t>
+
+          <t>If left unchanged, the prioritization of Video Access Category traffic (particularly in the case of traffic originating outside of the WiFi network as mentioned above) could erode the principle of alignment of incentives. In order to preserve the incentives principle for NQB, WiFi systems SHOULD be configured such that the EDCA parameters for the Video Access Category match those of the Best Effort Access Category.  This recommendation is primarily applicable to WiFi systems deployed in a managed environment or those deployed by an ISP and is intended for situations when the vast majority of traffic that would use AC_VI is NQB.  In other situations (e.g., consumer-grade WiFi gear deployed by an ISP's customer) this configuration may not be possible, and the requirements and recommendations in <xref target="unmanaged"/> would apply.</t>
 
           <t>Similarly, systems that utilize <xref target="RFC8325"/> but that are unable to fully support the PHB requirements, SHOULD map the recommended NQB codepoint 45 (or the locally determined alternative) to UP_5 in the "Video" Access Category.</t>
       </section>
@@ -425,6 +437,15 @@ please see http://xml.resource.org/authoring/README.html. -->
               <organization>Broadband Forum</organization>
             </author>
             <date year="2022" month="January"/>
+          </front>
+        </reference>
+        <reference anchor="QOS_TRAFFIC_TYPE" target="https://learn.microsoft.com/en-us/windows/win32/api/qos2/ne-qos2-qos_traffic_type">
+          <front>
+            <title>QOS_TRAFFIC_TYPE enumeration</title>
+            <author>
+              <organization>Microsoft, Corporation</organization>
+            </author>
+            <date year="2022"/>
           </front>
         </reference>
       </references>
