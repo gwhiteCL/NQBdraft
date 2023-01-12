@@ -152,7 +152,11 @@ please see http://xml.resource.org/authoring/README.html. -->
 
         <t>An application that marks its traffic as NQB but happens to exceed the available path capacity (even on an instantaneous basis) runs the risk of being subjected to a traffic protection algorithm (see <xref target="traffic_protection"/>), which could result in the excess traffic being discarded or queued separately as default traffic (and thus potentially delivered out of order).  As a result, applications that aren't clearly beneath the threshold described above would need to weigh the risk of additional loss or out-of-order delivery against the expected latency benefits of NQB treatment in determining whether to mark their packets as NQB.</t>
 
-        <todo comment="add a paragraph to talk about verifiability of behavior, possibly here"/>
+        <t>The sender requirements outlined in this section are all related to observable attributes of the packet stream, 
+          which makes it possible for network elements (including nodes implementing the PHB) to monitor for inappropriate 
+          usage of the DSCP, and re-mark traffic that does not comply. This functionality, when implemented as part of the 
+          PHB is described in <xref target="traffic_protection"/>.</t>
+
 
       </section>
 
@@ -195,7 +199,8 @@ please see http://xml.resource.org/authoring/README.html. -->
     <section anchor="phb_requirements" numbered="true">
       <name>Non-Queue-Building PHB Requirements</name>
 
-        <t>It is important that incentives are aligned correctly, i.e., that there is a benefit to the application in marking its packets correctly, and a disadvantage (or at least no benefit) to an application in intentionally mismarking its traffic. Thus, a useful property of nodes (i.e. network switches and routers) that support separate queues for NQB and QB flows is that for flows consistent with the NQB sender requirements in <xref target="sender"/>, the NQB queue provides <todo comment="use another word please to better performance performance itself is not a measurable outcome and needs to be qualified as throughput/latency/better protection from starvation/more equal sharing etc. Please say what is intended.">better performance than the QB queue; and for flows inconsistent with those requirements, the QB queue provides better performance</todo> than the NQB queue (this is discussed further in this section and <xref target="Security"/>). By adhering to these principles, there is no incentive for senders to mismark their traffic as NQB. As mentioned previously, the NQB designation and marking is intended to convey verifiable traffic behavior, as opposed to simply a desire for differentiated treatment. As a result, any mismarking can be identified by the network.</t>         
+        <t>It is important that incentives are aligned correctly, i.e., that there is a benefit to the application in marking its packets correctly, and a disadvantage (or at least no benefit) to an application in intentionally mismarking its traffic. Thus, a useful property of nodes (i.e. network switches and routers) that support separate queues for NQB and QB flows is that for flows consistent with the NQB sender requirements in <xref target="sender"/>, the NQB queue would likely be a better choice than the QB queue; and for flows inconsistent with those requirements, the QB queue would likely be a better choice than the NQB queue (this is discussed further in this section and <xref target="Security"/>). By adhering to these principles, there is no incentive for senders to mismark their traffic as NQB. As mentioned previously, the NQB designation and marking is intended to convey verifiable traffic behavior, as opposed to simply a desire for differentiated treatment. As a result, any mismarking can be identified by the network.</t>         
+
 
       <section numbered="true">
         <name>Primary Requirements</name>
