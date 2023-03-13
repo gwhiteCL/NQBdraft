@@ -79,6 +79,7 @@ please see http://xml.resource.org/authoring/README.html. -->
 
     <abstract>
       <t> This document specifies properties and characteristics of a Non-Queue-Building Per-Hop Behavior (NQB PHB). The purpose of this NQB PHB is to provide a separate queue that enables smooth, low-data-rate, application-limited traffic flows, which would ordinarily share a queue with bursty and capacity-seeking traffic, to avoid the latency, latency variation and loss caused by such traffic. This PHB is implemented without prioritization and can be implemented without rate policing, making it suitable for environments where the use of these features is restricted. The NQB PHB has been developed primarily for use by access network segments, where queuing delays and queuing loss caused by Queue-Building protocols are manifested, but its use is not limited to such segments. In particular, applications to cable broadband links, Wi-Fi links, and mobile network radio and core segments are discussed. This document recommends a specific Differentiated Services Code Point (DSCP) to identify Non-Queue-Building flows.</t>
+      <t>[NOTE (to be removed by RFC-Editor): This docuement references an ISE submission draft (I-D.briscoe-docsis-q-protection) that is approved for publication as an RFC. This draft should be held for publication until the queue protection RFC can be referenced.]</t>
     </abstract>
   </front>
   <middle>
@@ -233,7 +234,7 @@ please see http://xml.resource.org/authoring/README.html. -->
 
         <t>The traffic protection function described here requires that the network element maintain some sort of flow state. The traffic protection function MUST be designed to fail gracefully in the case that the flow state is exhausted.</t>
 
-        <t>One example traffic protection algorithm can be found in <xref target="I-D.briscoe-docsis-q-protection"/>.  This algorithm maintains per-flow state for up to 32 simultaneous "queue-building" flows, and shared state for any additional flows in excess of that number. [NOTE (to be removed by RFC-Editor): This ISE submission draft is approved for publication as an RFC, the NQB draft should be held for publication until the queue protection RFC can be referenced.]</t> 
+        <t>One example traffic protection algorithm can be found in <xref target="I-D.briscoe-docsis-q-protection"/>.  This algorithm maintains per-flow state for up to 32 simultaneous "queue-building" flows, and shared state for any additional flows in excess of that number.</t> 
 
         <t>There are some situations where such a function is potentially not necessary. For example, a network element designed for use in controlled environments (e.g., enterprise LAN). Additionally, some networks might prefer to police the application of the NQB DSCP at the ingress edge, so that per-hop traffic protection is not needed.</t>
       </section>
