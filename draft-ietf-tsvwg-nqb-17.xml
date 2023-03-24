@@ -217,15 +217,17 @@ please see http://xml.resource.org/authoring/README.html. -->
         <name>Primary Requirements</name>
         <t>A node supporting the NQB PHB makes no guarantees on latency or data rate for NQB-marked flows, but instead aims to provide an upper-bound to queuing delay for as many such marked flows as it can and shed load when needed.</t>
         
-        <t>A node supporting the NQB PHB MUST provide a queue for Non-Queue-Building traffic separate from any queue used for Queue-Building traffic.</t>
+        <t>A node supporting the NQB PHB MUST provide a queue for Non-Queue-Building traffic separate from the queue used for Default traffic.</t>
         
-        <t>A node supporting the NQB PHB SHOULD NOT rate limit or rate police the aggregate of NQB traffic separately from Queue-Building traffic of equivalent importance. An exception to this recommendation is discussed in <xref target="unmanaged"/>.</t>
+        <t>A node supporting the NQB PHB SHOULD NOT rate limit or rate police the aggregate of NQB traffic separately from Default traffic. An exception to this recommendation is discussed in <xref target="unmanaged"/>.</t>
         
-        <t>The NQB queue SHOULD be given equivalent forwarding preference compared to Queue-Building traffic of equivalent importance. The node SHOULD provide a scheduler that allows QB and NQB traffic of equivalent importance to share the link in a fair manner, e.g., a deficit round-robin scheduler with equal weights. Compliance with these recommendations helps to ensure that there are no incentives for QB traffic to be mismarked as NQB. </t>
+        <t>The NQB queue SHOULD be given equivalent forwarding preference compared to Default. The node SHOULD provide a scheduler that allows NQB and Default traffic to share the link in a fair manner, e.g., a deficit round-robin scheduler with equal weights. Compliance with these recommendations helps to ensure that there are no incentives for QB traffic to be mismarked as NQB. </t>
+
+        <t>A node supporting the NQB PHB SHOULD by default classify packets marked with the NQB DSCP 45 (decimal) into the queue for Non-Queue-Building traffic.  A node supporting the NQB PHB MUST support the ability to configure the DSCP that is used to classify packets into the queue for Non-Queue-Building traffic. A node supporting the NQB PHB SHOULD support the ability to configure multiple DSCPs that are used classify packets into the queue for Non-Queue-Building traffic.</t>
         
-        <t>A node supporting the NQB PHB SHOULD treat traffic marked as Default (DSCP=0) as QB traffic having equivalent importance to the traffic marked with the NQB DSCP.  A node supporting the NQB PHB MUST support the ability to configure the DSCPs that are used to identify QB and NQB traffic of equivalent importance.</t>
-        
-        <t>The NQB queue SHOULD have a buffer size that is significantly smaller than the buffer provided for QB traffic. It is expected that most QB traffic is engineered to work well when the network provides a relatively deep buffer (e.g., on the order of tens or hundreds of ms) in nodes where support for the NQB PHB is advantageous (i.e., bottleneck nodes). Providing a similarly deep buffer for the NQB queue would be at cross purposes to providing very low queueing delay and would erode the incentives for QB traffic to be marked correctly. An NQB buffer size less than or equal to 10 ms is RECOMMENDED.</t>
+        <t>The NQB queue SHOULD have a buffer size that is significantly smaller than the buffer provided for Default traffic. It is expected that most Default traffic is engineered to work well when the network provides a relatively deep buffer (e.g., on the order of tens or hundreds of ms) in nodes where support for the NQB PHB is advantageous (i.e., bottleneck nodes). Providing a similarly deep buffer for the NQB queue would be at cross purposes to providing very low queueing delay and would erode the incentives for QB traffic to be marked correctly. An NQB buffer size less than or equal to 10 ms is RECOMMENDED.</t>
+
+        <t>While not fully described in this document, it may be possible for network equipment to implement a separate QB/NQB pair of queues for additional service classes beyond the Default PHB / NQB PHB pair.</t>
 
         <t>In some cases, existing network gear has been deployed that cannot readily be upgraded or configured to support the PHB requirements. This equipment might however be capable of loosely supporting an NQB service – see <xref target="wifi_interop"/> for details and an example where this is particularly important. A similar approach might prove necessary in other network environments.</t>
 
