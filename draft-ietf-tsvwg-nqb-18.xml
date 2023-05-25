@@ -130,8 +130,8 @@ please see http://xml.resource.org/authoring/README.html. -->
 
       <section numbered="true">
         <name>Relationship to L4S</name>
-        <t>The NQB DSCP and PHB described in this draft have been defined to operate independently of the experimental L4S Architecture <xref target="I-D.ietf-tsvwg-l4s-arch"/>.  Nonetheless, traffic marked with the NQB DSCP is intended to be compatible with <xref target="I-D.ietf-tsvwg-l4s-arch"/>, with the result being that NQB traffic and L4S traffic can share the low-latency queue in an L4S DualQ node <xref target="I-D.ietf-tsvwg-aqm-dualq-coupled"/>. Compliance with the DualQ Coupled AQM requirements (<xref target="I-D.ietf-tsvwg-aqm-dualq-coupled" section="2.5"/>) is considered sufficient to support the NQB PHB requirement of fair allocation of bandwidth between the QB and NQB queues (<xref target="phb_requirements"/>). Note that these requirements in turn require compliance with all the requirements in <xref target="I-D.ietf-tsvwg-ecn-l4s-id" section="5"/>.</t>
-        <t>Applications that comply with both the NQB sender requirements in <xref target="sender"/> and the L4S "Prague" requirements in <xref target="I-D.ietf-tsvwg-ecn-l4s-id" section="4"/> could mark their packets both with the NQB DSCP and with the ECT(1) value. 
+        <t>The NQB DSCP and PHB described in this draft have been defined to operate independently of the experimental L4S Architecture <xref target="RFC9330"/>.  Nonetheless, traffic marked with the NQB DSCP is intended to be compatible with <xref target="RFC9330"/>, with the result being that NQB traffic and L4S traffic can share the low-latency queue in an L4S DualQ node <xref target="RFC9332"/>. Compliance with the DualQ Coupled AQM requirements (<xref target="RFC9332" section="2.5"/>) is considered sufficient to support the NQB PHB requirement of fair allocation of bandwidth between the QB and NQB queues (<xref target="phb_requirements"/>). Note that these requirements in turn require compliance with all the requirements in <xref target="RFC9331" section="5"/>.</t>
+        <t>Applications that comply with both the NQB sender requirements in <xref target="sender"/> and the L4S "Prague" requirements in <xref target="RFC9331" section="4"/> could mark their packets both with the NQB DSCP and with the ECT(1) value. 
         Packets marked with both the NQB DSCP and the ECT(1) codepoint SHOULD be treated the same as packets marked with either codepoint alone by the traffic protection function (defined in <xref target="traffic_protection"/>) and by any re-marking/traffic policing function designed to protect unmanaged networks (as described in <xref target="unmanaged"/>).</t>
       </section>
     </section>
@@ -152,7 +152,7 @@ please see http://xml.resource.org/authoring/README.html. -->
 
         <t>In networks where another (e.g., a local-use) DSCP is designated for NQB traffic, or where specialized PHBs are available that can meet specific application requirements (e.g., a guaranteed-latency path for voice traffic), it could be preferred to use another DSCP.  In end systems where the choice of using DSCP 45 (decimal) is not available to the application, the CS5 DSCP (40 decimal) could be used as a fallback.  See <xref target="aggregation"/> for rationale as to why this choice could be fruitful.</t>
         
-        <t>If the application's traffic exceeds the rate equation provided in the first paragraph of this section, the application SHOULD NOT mark its traffic with the NQB DSCP. In such a case, the application could instead consider implementing a low latency congestion control mechanism as described in <xref target="I-D.ietf-tsvwg-ecn-l4s-id"/>.  At the time of writing, it is believed that 1 Mbps is a reasonable upper bound on instantaneous traffic rate for an application marking its traffic with the NQB DSCP, but this value is of course subject to the context in which the application is expected to be deployed.</t>
+        <t>If the application's traffic exceeds the rate equation provided in the first paragraph of this section, the application SHOULD NOT mark its traffic with the NQB DSCP. In such a case, the application could instead consider implementing a low latency congestion control mechanism as described in <xref target="RFC9331"/>.  At the time of writing, it is believed that 1 Mbps is a reasonable upper bound on instantaneous traffic rate for an application marking its traffic with the NQB DSCP, but this value is of course subject to the context in which the application is expected to be deployed.</t>
 
         <t>An application that marks its traffic as NQB runs the risk of being subjected to a traffic protection algorithm (see <xref target="traffic_protection"/>) if it contributes to the formation of a queue in a node that supports the PHB. This could result in the excess traffic being discarded or queued separately as default traffic (and thus potentially delivered out of order).  As a result, applications that aren't clearly beneath the threshold described above would need to weigh the risk of additional loss or out-of-order delivery against the expected latency benefits of NQB treatment in determining whether to mark their packets as NQB.</t>
 
@@ -406,9 +406,9 @@ please see http://xml.resource.org/authoring/README.html. -->
         <?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.7893.xml"?>
         <?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.3551.xml"?>
         <?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.8083.xml"?>
-        <?rfc include="reference.I-D.ietf-tsvwg-l4s-arch.xml"?>
-        <?rfc include="reference.I-D.ietf-tsvwg-ecn-l4s-id.xml"?>
-        <?rfc include="reference.I-D.ietf-tsvwg-aqm-dualq-coupled.xml"?>
+        <?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.9330.xml"?>
+        <?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.9331.xml"?>
+        <?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.9332.xml"?>
         <?rfc include="reference.I-D.briscoe-docsis-q-protection.xml"?>
         <?rfc include="reference.I-D.ietf-tsvwg-dscp-considerations.xml"?>
 
