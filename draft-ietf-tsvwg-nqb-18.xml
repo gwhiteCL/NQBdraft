@@ -126,6 +126,8 @@ please see http://xml.resource.org/authoring/README.html. -->
         <t>Finally, some jurisdictions impose regulations that limit the ability of networks to provide differentiation of services, in large part based on the belief that doing so necessarily involves prioritization or privileged access to bandwidth, and thus a benefit to one class of traffic always comes at the expense of another. </t>
         
         <t>In contrast, the NQB PHB has been designed with the goal that it avoids many of these issues, and thus could conceivably be deployed end-to-end across the Internet. The intent of the NQB DSCP is that it signals verifiable behavior that permits the sender to request differentiated treatment. Also, the NQB traffic is to be given a separate queue with priority equal to Default traffic and given no reserved bandwidth other than the bandwidth that it shares with Default traffic.  As a result, the NQB PHB does not aim to meet specific application performance requirements. Instead, the goal of the NQB PHB is to provide statistically better loss, latency, and jitter performance for traffic that is itself only an insignificant contributor to those degradations. The PHB is also designed to minimize any incentives for a sender to mismark its traffic, since neither higher priority nor reserved bandwidth are being offered. These attributes eliminate many of the trade-offs that underlie the handling of differentiated service classes in the Diffserv architecture as it has traditionally been defined. These attributes also significantly simplify access control and admission control functions, reducing them to simple verification of behavior. </t>
+
+        <t>In regards to comparison between the NQB PHB and other standardized PHBs in the Diffserv series, the closest similarity is to the Expedited Forwarding (EF) PHB <xref target="RFC3246"/>, which also intends to enable low loss, low delay, and low jitter services. The main distinctions between NQB and EF are discussed in  </t>
       </section>
 
       <section numbered="true">
@@ -395,6 +397,7 @@ please see http://xml.resource.org/authoring/README.html. -->
       <references>
         <name>Informative References</name>
 
+        <?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.3246.xml"?>
         <?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.8033.xml"?>
         <?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.8034.xml"?>
         <?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.8289.xml"?>
@@ -484,6 +487,15 @@ please see http://xml.resource.org/authoring/README.html. -->
         <t>For the policy in which the low three bits are set to 0b000, the NQB (45) value would be re-marked to CS5 and would be indistinguishable from CS5, VA, EF (and the unassigned DSCPs 41, 42, 43).  Traffic marked using the existing standardized DSCPs in this list are likely to share the same general properties as NQB traffic (non capacity-seeking, very low data rate or relatively low and consistent data rate). Similarly, any future recommended usage for DSCPs 41, 42, 43 would likely be somewhat compatible with NQB treatment, assuming that IP Precedence compatibility (see <xref target="RFC4594" section="1.5.4"/>) is maintained in the future. Here there might be an opportunity for a node to provide the NQB PHB or the CS5 PHB to CS5-marked traffic and retain some of the benefits of NQB marking.  This could be another motivation to (as discussed in <xref target="aggregation"/>) classify CS5-marked traffic into NQB queue.</t>
         
     </section>
+    <section>
+      <name>Comparison to Expedited Forwarding</name>
+
+      <t>From a requirements perspective, the salient differences between EF and NQB PHBs are ...</t>
+
+      <t>From a practical perspective, the salient differences between EF and NQB PHBs are ...</t>
+
+    </section>
+
   </back>
 </rfc>
 <!-- vim: ft=xml tabstop=2 expandtab:
