@@ -250,12 +250,6 @@ please see http://xml.resource.org/authoring/README.html. -->
         <t>There are some situations where such a function is potentially not necessary. For example, a network element designed for use in controlled environments (e.g., enterprise LAN) where a network administrator is expected to manage the usage of DSCPs. Additionally, some networks might prefer to police the application of the NQB DSCP at the ingress edge, so that per-hop traffic protection is not needed.</t>
       </section>
 
-      <section numbered="true">
-        <name>Guidance for Very Low-Rate Links</name>
-        <t>The NQB sender requirements in <xref target="sender"/> place responsibility in the hands of the application developer to determine the likelihood that the application's sending behavior could result in a queue forming along the path.  These requirements rely on application developers having a reasonable sense for the network context in which their application is to be deployed.  Even so, there will undoubtedly be networks that contain links having a data rate that is below the lower end of what is considered "typical", and some of these links could even be below the instantaneous sending rate of some NQB-marked applications.</t>
-
-        <t>To limit the consequences of this scenario, operators of such networks SHOULD utilize a traffic protection function that is more tolerant of burstiness (i.e., a temporary queue). This will have the effect of allowing a larger set of NQB-marked flows to remain in the NQB queue, but will come at the expense of a greater potential for latency variation.  Alternatively, operators of such networks MAY choose to disable NQB support (and thus aggregate traffic marked with the NQB DSCP with Default traffic) on these low-speed links.  For links that are less than ten percent of "typical" path rates, it is RECOMMENDED that the NQB PHB be disabled and for traffic marked with the NQB DSCP to thus be carried using the Default PHB.</t>   
-      </section>
 
     </section>
     <section numbered="true">
@@ -265,6 +259,16 @@ please see http://xml.resource.org/authoring/README.html. -->
     <section numbered="true">
       <name>Configuration and Management</name>
       <t>As required above, nodes supporting the NQB PHB provide for the configuration of classifiers that can be used to differentiate between QB and NQB traffic of equivalent importance.  The default for such classifiers is recommended to be the assigned NQB DSCP (to identify NQB traffic) and the Default (0) DSCP (to identify QB traffic).</t>
+
+      <section numbered="true">
+        <name>Guidance for Lower-Rate Links</name>
+        <t>The NQB sender requirements in <xref target="sender"/> place responsibility in the hands of the application developer to determine the likelihood that the application's sending behavior could result in a queue forming along the path.  These requirements rely on application developers having a reasonable sense for the network context in which their application is to be deployed.  Even so, there will undoubtedly be networks that contain links having a data rate that is below the lower end of what is considered "typical", and some of these links could even be below the instantaneous sending rate of some NQB-marked applications.</t>
+
+        <t>To limit the consequences of this scenario, operators of networks with lower rate links SHOULD consider utilizing a traffic protection function on those links that is more tolerant of burstiness (i.e., a temporary queue). This will have the effect of allowing a larger set of NQB-marked flows to remain in the NQB queue, but will come at the expense of a greater potential for latency variation.  In implementations that support <xref target="I-D.briscoe-docsis-q-protection"/>, the burst tolerance can be configured via the CRITICALqLSCORE_us input parameter. Alternatively, operators of networks with lower rate links MAY choose to disable NQB support (and thus aggregate traffic marked with the NQB DSCP with Default traffic) on these lower rate links.  For links that have a data rate that is less than ten percent of "typical" path rates, it is RECOMMENDED that the NQB PHB be disabled and for traffic marked with the NQB DSCP to thus be carried using the Default PHB.</t>   
+      </section>
+
+
+
     </section> 
     <section numbered="true">
       <name>Example Use Cases</name>
