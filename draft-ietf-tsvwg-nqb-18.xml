@@ -249,13 +249,13 @@ please see http://xml.resource.org/authoring/README.html. -->
 
         <t>There are some situations where such a function is potentially not necessary. For example, a network element designed for use in controlled environments (e.g., enterprise LAN) where a network administrator is expected to manage the usage of DSCPs. Additionally, some networks might prefer to police the application of the NQB DSCP at the ingress edge, so that per-hop traffic protection is not needed.</t>
       </section>
-
-
     </section>
+
     <section numbered="true">
       <name>Impact on Higher Layer Protocols</name>
       <t>Network elements that support the NQB PHB and that support traffic protection as discussed in the previous section introduce the possibility that flows classified into the NQB queue could experience out of order delivery or packet loss if their behavior is not consistent with the NQB sender requirements. Out-of-order delivery could be particularly likely if the traffic protection algorithm makes decisions on a packet-by-packet basis. In this scenario, a flow that is (mis)marked as NQB and that causes a queue to form in this bottleneck link could see some of its packets forwarded by the NQB queue, and some of them either discarded or redirected to the QB queue.  In the case of redirection, depending on the queueing latency and scheduling within the network element, this could result in packets being delivered out of order.  As a result, the use of the NQB DSCP by a higher layer protocol carries some risk that an increased amount of out of order delivery or packet loss will be experienced. This characteristic provides one disincentive for incorrectly setting the NQB DSCP on traffic that doesn't comply with the NQB sender requirements.</t>
     </section>
+
     <section numbered="true">
       <name>Configuration and Management</name>
       <t>As required above, nodes supporting the NQB PHB provide for the configuration of classifiers that can be used to differentiate between QB and NQB traffic of equivalent importance.  The default for such classifiers is recommended to be the assigned NQB DSCP (to identify NQB traffic) and the Default (0) DSCP (to identify QB traffic).</t>
@@ -266,10 +266,8 @@ please see http://xml.resource.org/authoring/README.html. -->
 
         <t>To limit the consequences of this scenario, operators of networks with lower rate links SHOULD consider utilizing a traffic protection function on those links that is more tolerant of burstiness (i.e., a temporary queue). This will have the effect of allowing a larger set of NQB-marked flows to remain in the NQB queue, but will come at the expense of a greater potential for latency variation.  In implementations that support <xref target="I-D.briscoe-docsis-q-protection"/>, the burst tolerance can be configured via the CRITICALqLSCORE_us input parameter. Alternatively, operators of networks with lower rate links MAY choose to disable NQB support (and thus aggregate traffic marked with the NQB DSCP with Default traffic) on these lower rate links.  For links that have a data rate that is less than ten percent of "typical" path rates, it is RECOMMENDED that the NQB PHB be disabled and for traffic marked with the NQB DSCP to thus be carried using the Default PHB.</t>   
       </section>
-
-
-
     </section> 
+
     <section numbered="true">
       <name>Example Use Cases</name>
       <section numbered="true">
