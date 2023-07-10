@@ -250,11 +250,17 @@ please see http://xml.resource.org/authoring/README.html. -->
         <t>To prevent this situation from harming the performance of the flows that are in compliance with the requirements in <xref target="sender"/>, network elements that support the NQB PHB SHOULD support a "traffic protection" function that can identify flows that are inconsistent with the sender requirements in <xref target="sender"/>, and either re-mark those flows/packets as Default and reclassify them to the QB queue or discard the offending traffic. Such a function SHOULD base its decisions upon the behavior of each flow rather than on application-layer constructs (such as the port number used by the application or the source/destination IP address).</t>
 
         <t>This specification does not mandate a particular algorithm for traffic protection.  This is intentional, since the specifics of traffic protection could need to be different in different network equipment and in different network contexts. Instead this specification provides guidelines and some examples of traffic protection algorithms which could be employed. </t>
-          
+
         <t>One potential implementation of such a traffic protection algorithm is a per-flow rate policer, designed to identify flows that exceed the bound provided in <xref target="sender"/>, where the value R is set to 1 percent of the egress link capacity available for NQB traffic. An alternative is to use a traffic protection algorithm that bases its decisions on the detection of actual queuing (i.e. by monitoring the queuing delay experienced by packets in the NQB queue) in correlation with the arrival of packets for each flow. 
         One example traffic protection algorithm along these lines can be found in <xref target="I-D.briscoe-docsis-q-protection"/>.  This algorithm maintains per-flow state for up to 32 simultaneous "queue-building" flows, and shared state for any additional flows in excess of that number.</t> 
 
-        <t>It could be advantageous for a traffic protection function to employ hysteresis to prevent borderline flows from being reclassified capriciously.</t>
+        <t>In the case of a traffic protection algorithm that re-marks and reclassifies offending traffic, different levels of hysteresis could be considered.  
+          For example, the re-mark/reclassify decision could be made on a packet-by-packet basis, which could result in significant out-of-order delivery for offending flows as some portion of the flow's packets remain in the NQB queue and some are re-marked and reclassified to the Default queue. 
+          Alternatively, a traffic protection function could employ a certain level of hysteresis to prevent borderline flows from being reclassified capriciously, thus causing less potential for out-of-order delivery.  
+          As a third option, the decision could be made to take action on all the future packets of the flow, though sufficient logic would be needed to ensure that a future flow (e.g. with the same 5-tuple) isn't misidentified as the current offending flow.
+        </t>  
+
+        <t>In the case of a traffic protection algorithm that discards offending traffic, similar levels of hysteresis could be considered.  In this case, it is RECOMMENDED that the decision thresholds be set higher than in the case of designs that use re-mark/reclassify, since the degradation of communications caused by packet discard are likely to be greater than the degradation caused by out-of-order delivery.</t>
         
         <t>The traffic protection function described here requires that the network element maintain some sort of flow state. The traffic protection function MUST be designed such that the node implementing the NQB PHB does not fail (e.g. crash) in the case that the flow state is exhausted.</t>
 
