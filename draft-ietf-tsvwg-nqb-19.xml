@@ -228,7 +228,7 @@ please see http://xml.resource.org/authoring/README.html. -->
         
         <t>A node supporting the NQB PHB MUST provide a queue for Non-Queue-Building traffic separate from the queue used for Default traffic.</t>
         
-        <t>A node supporting the NQB PHB SHOULD NOT rate limit or rate police the aggregate of NQB traffic separately from Default traffic. An exception to this recommendation is discussed in <xref target="unmanaged"/>.</t>
+        <t>A node supporting the NQB PHB SHOULD NOT rate limit or rate police the aggregate of NQB traffic separately from Default traffic. An exception to this recommendation is discussed in <xref target="unmanaged"/>. Note also that <xref target="traffic_protection"/> discusses potential uses of per-microflow (rather than aggregate) rate policing.</t>
         
         <t>The NQB queue SHOULD be given equivalent forwarding preference compared to Default. The node SHOULD provide a scheduler that allows NQB and Default traffic to share the link in a fair manner, e.g., a deficit round-robin scheduler with equal weights. Compliance with these recommendations helps to ensure that there are no incentives for QB traffic to be mismarked as NQB. </t>
 
