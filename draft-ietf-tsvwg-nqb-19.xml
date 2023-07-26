@@ -525,6 +525,11 @@ please see http://xml.resource.org/authoring/README.html. -->
 
     </section>
 
+    <section>
+    <name>Alternate Diffserv Code Points</name>
+        <t>In networks where another (e.g., a local-use) DSCP is designated for NQB traffic, or where specialized PHBs are available that can meet specific application requirements (e.g., a guaranteed-latency path for voice traffic), it could be preferred to use another DSCP.  In end systems where the choice of using DSCP 45 (decimal) is not available to the application, the CS5 DSCP (40 decimal) could be used as a fallback.  See <xref target="aggregation2"/> for rationale as to why this choice could be fruitful.</t>
+</section>
+
   </back>
 </rfc>
 <!-- vim: ft=xml tabstop=2 expandtab:
