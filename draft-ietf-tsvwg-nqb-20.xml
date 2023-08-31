@@ -233,8 +233,8 @@ please see http://xml.resource.org/authoring/README.html. -->
         <t>The NQB queue SHOULD be given equivalent forwarding preference compared to Default. The node SHOULD provide a scheduler that allows NQB and Default traffic to share the link in a fair manner, e.g., a deficit round-robin scheduler with equal weights. Compliance with these recommendations helps to ensure that there are no incentives for QB traffic to be mismarked as NQB. </t>
 
         <t>A node supporting the NQB PHB SHOULD by default classify packets marked with the NQB DSCP 45 (decimal) into the queue for Non-Queue-Building traffic.  A node supporting the NQB PHB MUST support the ability to configure the DSCP that is used to classify packets into the queue for Non-Queue-Building traffic. A node supporting the NQB PHB SHOULD support the ability to configure multiple DSCPs that are used to classify packets into the queue for Non-Queue-Building traffic.</t>
-        
-        <t>The NQB queue SHOULD have a buffer size that is significantly smaller than the buffer provided for Default traffic. It is expected that most Default traffic is engineered to work well when the network provides a relatively deep buffer (e.g., roughly equal to the base RTT of the connection, which could be tens or hundreds of ms) in nodes where support for the NQB PHB is advantageous (i.e., bottleneck nodes). Providing a similarly deep buffer for the NQB queue would be at cross purposes to providing very low queuing delay and would erode the incentives for QB traffic to be marked correctly. An NQB buffer size less than or equal to 10 ms is RECOMMENDED.</t>
+
+        <t>Support for the NQB PHB is advantageous at bottleneck nodes. Many bottleneck nodes have a relatively deep buffer for Default traffic (e.g., roughly equal to the base RTT of the expected connections, which could be tens or hundreds of ms).  Providing a similarly deep buffer for the NQB queue would be at cross purposes to providing very low queueing delay and would erode the incentives for QB traffic to be marked correctly at such a bottleneck node.  The NQB queue SHOULD have a buffer size that is significantly smaller than the buffer provided for Default traffic. It is RECOMMENDED to configure an NQB buffer size less than or equal to 10 ms at the shared NQB/Default egress rate. </t>
 
         <t>While not fully described in this document, it may be possible for network equipment to implement a separate QB/NQB pair of queues for additional service classes beyond the Default PHB / NQB PHB pair.</t>
 
@@ -288,8 +288,9 @@ please see http://xml.resource.org/authoring/README.html. -->
     </section> 
 
     <section numbered="true">
-      <name>Example Use Cases</name>
+      <name>Mapping NQB to standards of other SDOs</name>
       <section numbered="true">
+        <t>This section provide recommendations for the support of the NQB PHB in certain use cases.  This section is not exhaustive.</t>
         <name>DOCSIS Access Networks</name>
         <t>Residential cable broadband Internet services are commonly configured with a single bottleneck link (the access network link) upon which the service definition is applied. The service definition, typically an upstream/downstream data rate tuple, is implemented as a configured pair of rate shapers that are applied to the user's traffic. In such networks, the quality of service that each application receives, and as a result, the quality of experience that it generates for the user is influenced by the characteristics of the access network link.</t>
         <t> To support the NQB PHB, cable broadband services MUST be configured to provide a separate queue for traffic marked with the NQB DSCP. The NQB queue MUST be configured to share the service's rate shaped bandwidth with the queue for QB traffic.</t>
