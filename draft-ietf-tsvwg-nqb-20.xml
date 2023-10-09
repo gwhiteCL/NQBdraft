@@ -228,7 +228,8 @@ please see http://xml.resource.org/authoring/README.html. -->
         
         <t>A node supporting the NQB PHB MUST provide a queue for Non-Queue-Building traffic separate from the queue used for Default traffic.</t>
         
-        <t>A node supporting the NQB PHB SHOULD NOT rate limit or rate police the aggregate of NQB traffic separately from Default traffic. An exception to this recommendation is discussed in <xref target="unmanaged"/>. Note also that <xref target="traffic_protection"/> discusses potential uses of per-microflow (rather than aggregate) rate policing.</t>
+        <t>A node supporting the NQB PHB SHOULD NOT rate limit or rate police the aggregate of NQB traffic separately from Default traffic. An exception to this recommendation is discussed in <xref target="unmanaged"/>. Note also that <xref target="traffic_protection"/> discusses potential uses of per-microflow (rather than aggregate) rate policing.
+        A node supporting the NQB PHB SHOULD NOT provide a bandwidth guarantee or reservation for the aggregate of NQB traffic that is separate from that which is provided for Default traffic. Any rate limit or reserved rate that is configured for Default traffic SHOULD be shared with NQB-marked traffic.</t>
         
         <t>The NQB queue SHOULD be given equivalent forwarding preference compared to Default. The node SHOULD provide a scheduler that allows NQB and Default traffic to share the link in a fair manner, e.g., a deficit round-robin scheduler with equal weights. Compliance with these recommendations helps to ensure that there are no incentives for QB traffic to be mismarked as NQB. </t>
 
@@ -522,7 +523,9 @@ please see http://xml.resource.org/authoring/README.html. -->
       <t>The Expedited Forwarding definition <xref target="RFC3246"/> provides the following intuitive description of the EF PHB: "the rate at which EF
    traffic is served at a given output interface should be at least the
    configured rate R, over a suitably defined interval, independent of
-   the offered load of non-EF traffic to that interface."  This differs from the definition of the NQB PHB, in which NQB traffic is treated as being the same forwarding preference (and hence the same likelihood of being deferred if other traffic is being served) as Default traffic.  As a result there is no rate R that can be configured for the NQB PHB, and moreover the NQB PHB does not guarantee any serving rate for NQB-marked traffic, let alone one that is independent of the offered load of non-NQB-marked traffic. This difference additionally makes the NQB PHB suitable for implementation in networks where link capacity is not guaranteed.</t>
+   the offered load of non-EF traffic to that interface."  This differs from the definition of the NQB PHB, in which NQB traffic is treated as being the same forwarding preference (and hence the same likelihood of being deferred if other traffic is being served) as Default traffic.
+   As a result any rate R that is configured for the NQB PHB is shared equally with Default traffic. Thus, the NQB PHB does not guarantee any serving rate for NQB-marked traffic that is independent of the offered load of Default traffic.
+ This difference additionally makes the NQB PHB suitable for implementation in networks where link capacity is not guaranteed.</t>
 
       <t>The formal definition of the EF PHB <xref target="RFC3246" section="2.2"/> requires support for the configured rate R as well as a guarantee on departure times of EF-marked packets within a characterizable bound (E_a), as described by a pair of equations (eq_1 and eq_2).  Since the NQB PHB cannot be configured with a rate R, these equations cannot be complied with, except for the degenerate cases where R equals 0 and/or E_a equals infinity.</t>
 
