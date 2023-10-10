@@ -187,7 +187,9 @@ please see http://xml.resource.org/authoring/README.html. -->
 
       <section numbered="true" anchor="aggregation2">
         <name>Aggregation of other DSCPs in the NQB PHB</name>
-        <t>Operators of nodes that support the NQB PHB could choose to aggregate other service classes into the NQB queue. This is particularly useful in cases where specialized PHBs for these other service classes are not provided. Candidate service classes for this aggregation would include those that carry low-data-rate inelastic traffic that has low to very-low tolerance for loss, latency and/or jitter. Operators would need to use their own judgment based on the actual traffic characteristics in their networks in deciding whether or not to aggregate other service classes / DSCPs with NQB. For networks that use the <xref target="RFC4594"/> service class definitions, this could include Telephony (EF/VA), Signaling (CS5), and possibly Real-Time Interactive (CS4) (depending on data rate). In some networks, equipment limitations may necessitate aggregating a range of DSCPs (e.g. traffic marked with DSCPs 40-47 (decimal), i.e., those whose three MSBs are 0b101). As noted in <xref target="sender"/>, the choice of the DSCP value 45 (decimal) is motivated in part by the desire to make this aggregation simpler in network equipment that can classify packets via comparing the DSCP value to a range of configured values.</t>
+        <t>Operators of nodes that support the NQB PHB could choose to aggregate other service classes into the NQB queue. This is particularly useful in cases where specialized PHBs for these other service classes are not provided. Candidate service classes for this aggregation would include those that carry low-data-rate inelastic traffic that has low to very-low tolerance for loss, latency and/or jitter. Operators would need to use their own judgment based on the actual traffic characteristics in their networks in deciding whether or not to aggregate other service classes / DSCPs with NQB. For networks that use the <xref target="RFC4594"/> service class definitions, this could include Telephony (EF/VA), Signaling (CS5), and possibly Real-Time Interactive (CS4) (depending on data rate). In some networks, equipment limitations may necessitate aggregating a range of DSCPs (e.g. traffic marked with DSCPs 40-47 (decimal), i.e., those whose three MSBs are 0b101). As noted in <xref target="sender"/>, the choice of the DSCP value 45 (decimal) is motivated in part by the desire to make this aggregation simpler in network equipment that can classify packets via comparing the DSCP value to a range of configured values.</t> 
+
+        <t>An operator only deploying an NQB and a Default Queue may obtain an NQB performance similar to that of EF, as described by <xref target="RFC2598"/> with the following caveats.  EF is typically expected to be a managed service where the arriving rate of traffic into the EF PHB doesn't exceed the forwarding rate configured for the PHB, whereas NQB is not a managed service, and hence the aggregate of traffic arriving to the NQB PHB queue could exceed the forwarding rate available to the PHB. <xref target="traffic_protection"/> discusses the recommended handling of excess traffic in the NQB PHB, which differs from the handling expected in the EF PHB.</t>
       </section>
 
       <section anchor="end-to-end" numbered="true">
@@ -227,10 +229,10 @@ please see http://xml.resource.org/authoring/README.html. -->
         <t>A node supporting the NQB PHB makes no guarantees on latency or data rate for NQB-marked microflows, but instead aims to provide an upper-bound to queuing delay for as many such marked microflows as it can and shed load when needed.</t>
         
         <t>A node supporting the NQB PHB MUST provide a queue for Non-Queue-Building traffic separate from the queue used for Default traffic.</t>
-        
+
         <t>A node supporting the NQB PHB SHOULD NOT rate limit or rate police the aggregate of NQB traffic separately from Default traffic. An exception to this recommendation is discussed in <xref target="unmanaged"/>. Note also that <xref target="traffic_protection"/> discusses potential uses of per-microflow (rather than aggregate) rate policing.</t>
         
-        <t>The NQB queue SHOULD be given equivalent forwarding preference compared to Default. The node SHOULD provide a scheduler that allows NQB and Default traffic to share the link in a fair manner, e.g., a deficit round-robin scheduler with equal weights. Compliance with these recommendations helps to ensure that there are no incentives for QB traffic to be mismarked as NQB. </t>
+        <t>The NQB queue SHOULD be given equivalent forwarding preference compared to Default. The node SHOULD provide a scheduler that allows NQB and Default traffic to share the link in a manner that treats the two classes equally, e.g., a deficit round-robin scheduler with equal weights. A node that provides rate limits or rate guarantees for Default traffic SHOULD ensure that such limits and/or guarantees are shared with NQB traffic in a manner that treats the two classes equally. This could be supported using a hierarchical scheduler where the rate limits and guarantees are configured on a parent class, and the two queues (Default and NQB) are arranged as the children of the parent class and given equal access to the capacity configured for the parent class (e.g. with equal DRR scheduling). Compliance with these recommendations helps to ensure that there are no incentives for QB traffic to be mismarked as NQB. </t>
 
         <t>A node supporting the NQB PHB SHOULD by default classify packets marked with the NQB DSCP 45 (decimal) into the queue for Non-Queue-Building traffic.  A node supporting the NQB PHB MUST support the ability to configure the DSCP that is used to classify packets into the queue for Non-Queue-Building traffic. A node supporting the NQB PHB SHOULD support the ability to configure multiple DSCPs that are used to classify packets into the queue for Non-Queue-Building traffic.</t>
 
@@ -383,6 +385,8 @@ please see http://xml.resource.org/authoring/README.html. -->
       
       <t>Notwithstanding the above, the choice of DSCP for NQB does allow existing Wi-Fi networks to readily (and by default) support some of the PHB requirements, but without a traffic protection function, and (when left in the default state) by giving NQB traffic higher priority than QB traffic. This is not considered to be a compliant implementation of the PHB. These existing Wi-Fi networks currently provide priority to half of the DSCP space, including the NQB DSCP.  While the NQB DSCP value could be abused to gain priority on such links, the potential presence of traffic protection functions in other hops along the path (which likely act on the NQB DSCP value alone) would make it less attractive for such abuse than any of the other 31 DSCP values that are provided priority.</t>
 
+      <t>This draft discusses the potential use of the NQB DSCP and NQB PHB in network technologies that are standardized in other SDOs. The details of any security considerations that relate to deployment and operation of NQB in these network technologies are not discussed here.</t>
+
       <t>NQB uses the Diffserv field. The design of Diffserv does not include integrity protection for the DSCP, and thus it is possible for the DSCP to be changed by an on-path attacker. The NQB PHB and associated DSCP don't change this. While re-marking DSCPs is permitted for various reasons (some are discussed in this document, others can be found in <xref target="RFC2474"/> and <xref target="RFC2475"/>), if done maliciously, this might negatively affect the QoS of the tampered microflow. </t>
     </section>
   </middle>
@@ -442,6 +446,7 @@ please see http://xml.resource.org/authoring/README.html. -->
         <?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.9332.xml"?>
         <?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.9435.xml"?>
         <?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.8622.xml"?>
+        <?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2598.xml"?>
         <?rfc include="reference.I-D.briscoe-docsis-q-protection.xml"?>
 
         <reference anchor="Custura">
@@ -519,14 +524,18 @@ please see http://xml.resource.org/authoring/README.html. -->
     <section anchor="EF">
       <name>Comparison to Expedited Forwarding</name>
 
-      <t>The Expedited Forwarding definition <xref target="RFC3246"/> provides the following intuitive description of the EF PHB: "the rate at which EF
-   traffic is served at a given output interface should be at least the
-   configured rate R, over a suitably defined interval, independent of
-   the offered load of non-EF traffic to that interface."  This differs from the definition of the NQB PHB, in which NQB traffic is treated as being the same forwarding preference (and hence the same likelihood of being deferred if other traffic is being served) as Default traffic.  As a result there is no rate R that can be configured for the NQB PHB, and moreover the NQB PHB does not guarantee any serving rate for NQB-marked traffic, let alone one that is independent of the offered load of non-NQB-marked traffic. This difference additionally makes the NQB PHB suitable for implementation in networks where link capacity is not guaranteed.</t>
+      <t>The Expedited Forwarding definition <xref target="RFC3246"/> provides the following text to describe the EF PHB: "This specification defines a PHB in which EF
+     packets are guaranteed to receive service at or above a configured rate" and "the rate at which EF
+     traffic is served at a given output interface should be at least the
+     configured rate R, over a suitably defined interval, independent of
+     the offered load of non-EF traffic to that interface."  
+     Notably, this description is true of any class of traffic that is configured with a guaranteed minimum rate, including the Default PHB if configured per the guidelines in <xref target="RFC4594" section="1.5.1"/>. <xref target="RFC3246"/> goes on to formalize the definition of EF by requiring that an EF node be characterizable in terms of the fidelity with which it is able to provide a guaranteed rate.</t>
 
-      <t>The formal definition of the EF PHB <xref target="RFC3246" section="2.2"/> requires support for the configured rate R as well as a guarantee on departure times of EF-marked packets within a characterizable bound (E_a), as described by a pair of equations (eq_1 and eq_2).  Since the NQB PHB cannot be configured with a rate R, these equations cannot be complied with, except for the degenerate cases where R equals 0 and/or E_a equals infinity.</t>
+     <t>The NQB PHB is not required to be configured with a guaranteed minimum rate. Though, if Default traffic is provided a guaranteed minimum rate, it is recommended (<xref target="phb_requirements"/>) that NQB traffic share and be given equal access to that rate. In such cases, the NQB PHB could be described as having a rate guarantee that is 50% of the rate guaranteed to the combined NQB/Default class.</t>
 
-      <t>From a practical perspective, EF-marked traffic may be treated with high priority in networks where the DSCP is supported, even if the EF PHB requirements aren't fully met (e.g. as discussed in <xref target="RFC8325"/>).</t>
+     <t>Given that the EF PHB cannot, at least in some cases, be distinguished from the NQB PHB (or from the Default PHB) simply by virtue of its forwarding behavior, the distinction becomes one of intended usage as described in <xref target="RFC4594"/> and actual usage in practice in the Internet. In <xref target="RFC4594" section="1.5.3"/>, EF is described as generally being used to carry voice or data that requires "wire like" behavior through the network, and it is recommended that EF traffic be policed at various points in the network to ensure that configured EF forwarding rates aren't overrun.  The NQB PHB, in contrast, is described here as being useful for any traffic that is sent at a low and/or consistent rate and for which the application would be negatively affected by excessive packet delay and delay variation, and there is no recommendation for policing of NQB traffic to a certain rate in general (<xref target="unmanaged"/> notwithstanding). In actual practice, EF traffic is oftentimes prioritized over Default traffic, and sometimes EF is treated as a specialized traffic class that is subject to additional carriage agreements, tariffs, etc. This contrasts with NQB traffic which is to be treated with the same forwarding priority as Default (and sometimes aggregated with Default), and is intended to be a Best Effort service.</t>        
+     
+     <t>In addition, the lack of a requirement of a guaranteed minimum rate, and the lack of a recommendation to police incoming traffic to such a rate, makes the NQB PHB suitable for implementation in networks where link capacity is not or cannot be guaranteed.</t>
 
     </section>
 
