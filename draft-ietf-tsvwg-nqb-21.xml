@@ -59,6 +59,13 @@ please see http://xml.resource.org/authoring/README.html. -->
         <email>thomas.fossati@linaro.org</email>
       </address>
     </author>
+    <author fullname="Rüdiger Geib" initials="R." surname="Geib">
+      <organization>Deutsche Telekom</organization>
+      <address>
+        <email>Ruediger.Geib@telekom.de</email>
+      </address>
+    </author>
+
     <date year="2023"/>
     <!-- If the month and year are both specified and are the current ones, xml2rfc will fill 
         in the current day for you. If only the current year is specified, xml2rfc will fill 
@@ -344,7 +351,7 @@ please see http://xml.resource.org/authoring/README.html. -->
     </section>
     <section anchor="Acknowledgements" numbered="true">
       <name>Acknowledgements</name>
-      <t>Thanks to Gorry Fairhurst, Diego Lopez, Stuart Cheshire, Brian Carpenter, Bob Briscoe, Greg Skinner, Toke Hoeiland-Joergensen, Luca Muscariello, David Black, Sebastian Moeller, Ruediger Geib, Jerome Henry, Steven Blake, Jonathan Morton, Roland Bless, Kevin Smith, Martin Dolly, and Kyle Rose for their review comments.  Thanks also to Gorry Fairhurst, Ana Custura, and Ruediger Geib for their input on selection of appropriate DSCPs.</t>
+      <t>Thanks to Gorry Fairhurst, Diego Lopez, Stuart Cheshire, Brian Carpenter, Bob Briscoe, Greg Skinner, Toke Hoeiland-Joergensen, Luca Muscariello, David Black, Sebastian Moeller, Jerome Henry, Steven Blake, Jonathan Morton, Roland Bless, Kevin Smith, Martin Dolly and Kyle Rose for their review comments.  Thanks also to Gorry Fairhurst and Ana Custura for their input on selection of appropriate DSCPs.</t>
     </section>
     <!-- Possibly a 'Contributors' section ... -->
 
