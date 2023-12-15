@@ -284,7 +284,7 @@ please see http://xml.resource.org/authoring/README.html. -->
 
     <section numbered="true">
       <name>Configuration and Management</name>
-      <t>As required in <xref target="phb_requirements"/>, nodes supporting the NQB PHB provide for the configuration of classifiers that can be used to differentiate between QB and NQB traffic of equivalent importance.  The default for such classifiers is recommended to be the assigned NQB DSCP (to identify NQB traffic) and the Default (0) DSCP (to identify QB traffic).</t>
+      <t>As required in <xref target="phb_requirements"/>, nodes supporting the NQB PHB provide for the configuration of classifiers that can be used to differentiate between QB and NQB traffic of equivalent importance.  The default classifier to distinguish NQB traffic from traffic classified as Default (DSCP 0) is recommended to be the assigned NQB DSCP (45 decimal).</t>
 
       <t>Additionally, <xref target="aggregation"/> contains configuration recommendations for nodes that do not support the NQB PHB, and <xref target="unmanaged"/> contains configuration recommentations for networks that interconnect with non-DS-capable domains.</t> 
 
@@ -293,7 +293,7 @@ please see http://xml.resource.org/authoring/README.html. -->
         <t>The NQB sender requirements in <xref target="sender"/> place responsibility in the hands of the application developer to determine the likelihood that the application's sending behavior could result in a queue forming along the path.  These requirements rely on application developers having a reasonable sense for the network context in which their application is to be deployed.  Even so, there will undoubtedly be networks that contain links having a data rate that is below the lower end of what is considered "typical", and some of these links could even be below the instantaneous sending rate of some NQB-marked applications.</t>
 
         <t>To limit the consequences of this scenario, operators of networks with lower rate links SHOULD consider utilizing a traffic protection function on those links that is more tolerant of burstiness (i.e., a temporary queue). This will have the effect of allowing a larger set of NQB-marked microflows to remain in the NQB queue, but will come at the expense of a greater potential for latency variation.  In implementations that support <xref target="I-D.briscoe-docsis-q-protection"/>, the burst tolerance can be configured via the CRITICALqLSCORE_us input parameter.</t> 
-        <t>Alternatively, operators of networks with lower rate links MAY choose to disable NQB support (and thus aggregate traffic marked with the NQB DSCP with Default traffic) on these lower rate links.  For links that have a data rate that is less than ten percent of "typical" path rates, it is RECOMMENDED that the NQB PHB be disabled and for traffic marked with the NQB DSCP to thus be carried using the Default PHB.</t>   
+        <t>Alternatively, operators of networks with lower rate links MAY choose to disable NQB support (and thus aggregate traffic marked with the NQB DSCP with Default traffic) on these lower rate links.  For links that have a data rate that is less than ten percent of "typical" path rates, it is RECOMMENDED that the NQB PHB be disabled and for traffic marked with the NQB DSCP to thus be carried using the Default PHB. However, the NQB DSCP SHOULD NOT be re-marked to the Default DSCP (0).</t>   
       </section>
     </section> 
 
