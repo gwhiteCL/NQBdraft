@@ -304,14 +304,14 @@ please see http://xml.resource.org/authoring/README.html. -->
       <section numbered="true">
         <name>DOCSIS Access Networks</name>
         <t>Residential cable broadband Internet services are commonly configured with a single bottleneck link (the access network link) upon which the service definition is applied. The service definition, typically an upstream/downstream data rate tuple, is implemented as a configured pair of rate shapers that are applied to the user's traffic. In such networks, the quality of service that each application receives, and as a result, the quality of experience that it generates for the user is influenced by the characteristics of the access network link.</t>
-        <t> To support the NQB PHB, cable broadband services MUST be configured to provide a separate queue for traffic marked with the NQB DSCP. The NQB queue MUST be configured to share the service's rate shaped bandwidth with the queue for QB traffic.</t>
+        <t> To support the NQB PHB, cable broadband services MUST be configured to provide a separate queue for traffic marked with the NQB DSCP. The NQB queue MUST be configured to share the service's rate shaped bandwidth with the queue for QB traffic. Further discussion about support of the NQB PHB in DOCSIS networks can be found in <xref target="LOW_LATENCY_DOCSIS"/>.</t>
       </section>
       <section numbered="true">
         <name>Mobile Networks</name>
         <t>Historically, 3GPP mobile networks have utilized "bearers" to encapsulate each user's user plane traffic through the radio and core networks. A "dedicated bearer" can be allocated a Quality of Service (QoS) to apply any prioritisation to its microflows at queues and radio schedulers. Typically, an LTE operator provides a dedicated bearer for IMS VoLTE (Voice over LTE) traffic, which is prioritized in order to meet regulatory obligations for call completion rates; and a "best effort" default bearer, for Internet traffic. The "best effort" bearer provides no guarantees, and hence its buffering characteristics are not compatible with low-latency traffic. The 5G radio and core systems offer more flexibility over bearer allocation, meaning bearers can be allocated per  traffic type (e.g., loss-tolerant, low-latency etc.) and hence support more suitable treatment of Internet real-time microflows.</t>
 
         <t>To support the NQB PHB, the mobile network SHOULD be configured to give User Equipment a dedicated, low-latency, non-GBR, EPS bearer, e.g., one with QCI 7, in addition to the default EPS bearer; or a Data Radio Bearer with 5QI 7 in a 5G system (see Table 5.7.4-1: Standardized 5QI to QoS characteristics mapping in <xref target="SA-5G"/>).</t>
-        <t>A packet carrying the NQB DSCP SHOULD be routed through the dedicated low-latency EPS bearer. A packet that has no associated NQB marking SHOULD NOT be routed through the  dedicated low-latency EPS bearer.</t>
+        <t>A packet carrying the NQB DSCP SHOULD be routed through the dedicated low-latency EPS bearer. A packet that has no associated NQB marking SHOULD NOT be routed through the dedicated low-latency EPS bearer.</t>
       </section>
       <section anchor="wifi" numbered="true">
         <name>Wi-Fi Networks</name>
@@ -325,18 +325,18 @@ please see http://xml.resource.org/authoring/README.html. -->
           <name>Interoperability with Existing Wi-Fi Networks</name>
           <t>While some existing Wi-Fi equipment might be capable (in some cases via firmware update) of supporting the NQB PHB requirements, many currently deployed devices cannot be configured in this way. As a result, the remainder of this section discusses interoperability with these existing Wi-Fi networks, as opposed to PHB compliance.</t> 
 
-          <t>Since this equipment is widely deployed, and the Wi-Fi link is commonly a bottleneck link, the performance of traffic marked with the NQB DSCP across such links could have a significant impact on the viability and adoption of the NQB DSCP and PHB. Depending on the DSCP used to mark NQB traffic, existing Wi-Fi equipment that uses the default mapping of DSCPs to Access Categories and the default EDCA parameters will support either the NQB PHB requirement for separate queuing of NQB traffic, or the recommendation to treat NQB traffic with priority equal to Default traffic, but not both.</t>
+          <t>Since this equipment is widely deployed, and the Wi-Fi link can become a bottleneck link, the performance of traffic marked with the NQB DSCP across such links could have a significant impact on the viability and adoption of the NQB DSCP and PHB. Depending on the DSCP used to mark NQB traffic, existing Wi-Fi equipment that uses the default mapping of DSCPs to Access Categories and the default EDCA parameters will support either the NQB PHB requirement for separate queuing of NQB traffic from Default, or the recommendation to treat NQB traffic with priority equal to Default traffic, but not both.</t>
 
           <t>The DSCP value 45 (decimal) is recommended for NQB. This maps NQB to UP_5 using the default mapping, which is in the "Video" Access Category. While this choice of DSCP enables these Wi-Fi systems to support the NQB PHB requirement for separate queuing, existing Wi-Fi devices generally utilize EDCA parameters that result in statistical prioritization of the "Video" Access Category above the "Best Effort" Access Category.  In addition this equipment does not support the remaining NQB PHB recommendations in <xref target="phb_requirements"/>. The rationale for the choice of DSCP 45 (decimal) as well as its ramifications, and remedies for its limitations are discussed further below.</t>
 
           <t>The choice of separated queuing rather than equal priority in existing Wi-Fi networks was motivated by the following:</t>
             <ul>
             <li>Separate queuing is necessary in order to provide a benefit for traffic marked with the NQB DSCP. </li>
-            <li>Wi-Fi gear typically has hardware support (albeit generally not exposed for user control) for adjusting the EDCA parameters in order to meet the equal priority recommendation. This is discussed further below.</li>
+            <li>The arrangement of queues in Wi-Fi gear is typically fixed, whereas the relative priority of the Access Category queues is configurable. Most Wi-Fi gear has hardware support (albeit generally not exposed for user control) which could be used to adjust the EDCA parameters in order to meet the equal priority recommendation. This is discussed further below.</li>
             <li>Traffic that is compliant with the NQB sender requirements <xref target="sender"/> is unlikely to cause more degradation to lower priority Access Categories than the existing recommended Video Access Category traffic types: Broadcast Video, Multimedia Streaming, Multimedia Conferencing from <xref target="RFC8325"/>, and AudioVideo, ExcellentEffort from <xref target="QOS_TRAFFIC_TYPE"/>.</li>
-            <li>Application instances on Wi-Fi client devices are already free to choose any Access Category that they wish, regardless of their sending behavior, without any policing of usage. So, the choice of using DSCP 45 (decimal) for NQB creates no new avenues for non-NQB-compliant client applications to exploit the prioritization function in Wi-Fi. </li>
             <li>Several existing client applications that are compatible with the NQB sender requirements already select the Video Access Category, and thus would not see a degradation in performance by transitioning to the NQB DSCP, regardless of whether the network supported the PHB.</li>
-            <li>For application traffic that originates outside of the Wi-Fi network, and thus is transmitted by the Access Point, opportunities exist in the network components upstream of the Wi-Fi Access Point to police the usage of the NQB DSCP and potentially re-mark traffic that is considered non-compliant, as is recommended in <xref target="unmanaged"/>. A residential ISP that re-marks the Diffserv field to zero, bleaches all DSCPs and hence would not be impacted by the introduction of traffic marked as NQB. Furthermore, any change to this practice ought to be done alongside the implementation of those recommendations in the current document.</li>
+            <li>Application instances on Wi-Fi client devices are already free to choose any Access Category that they wish, regardless of their sending behavior, without any policing of usage. So, the choice of using DSCP 45 (decimal) for NQB creates no new avenues for non-NQB-compliant client applications to exploit the prioritization function in Wi-Fi. </li>
+            <li>For application traffic that originates outside of the Wi-Fi network, and thus is transmitted by the Access Point, the choice of DSCP 45 does create a potential for abuse by non-compliant applications.  But, opportunities exist in the network components upstream of the Wi-Fi Access Point to police the usage of the NQB DSCP and potentially re-mark traffic that is considered non-compliant, as is recommended in <xref target="unmanaged"/>. Furthermore, it is a common practice for residential ISPs to re-mark the Diffserv field to zero on all traffic destined to their customers' networks, and any change to this practice done to enable the NQB DSCP to pass through could be done alongside the implementation of those recommendations in the current document.</li>
           </ul>
 
           <t>The choice of Video Access Category rather than the Voice Access Category was motivated by the desire to minimize the potential for degradation of Best Effort Access Category traffic.  The choice of Video Access Category rather than the Background Access Category was motivated by the much greater potential of degradation to NQB traffic that would be caused by the vast majority of traffic in most Wi-Fi networks, which utilizes the Best Effort Access Category.</t>
@@ -517,6 +517,15 @@ please see http://xml.resource.org/authoring/README.html. -->
               <organization>Microsoft, Corporation</organization>
             </author>
             <date year="2022"/>
+          </front>
+        </reference>
+        <reference anchor="LOW_LATENCY_DOCSIS" target="https://cablela.bs/low-latency-docsis-technology-overview-february-2019">
+          <front>
+            <title>Low Latency DOCSIS: Technology Overview</title>
+            <author>
+              <organization>CableLabs</organization>
+            </author>
+            <date year="2019" month="February"/>
           </front>
         </reference>
       </references>
