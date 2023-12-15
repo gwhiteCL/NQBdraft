@@ -180,6 +180,8 @@ please see http://xml.resource.org/authoring/README.html. -->
         <name>Aggregation of the NQB DSCP into another Diffserv PHB</name>
         <t>It is RECOMMENDED that networks and nodes that do not support the NQB PHB be configured to treat traffic marked with the NQB DSCP the same as traffic with the "Default" DSCP.  This includes networks and nodes that aggregate service classes as discussed in <xref target="RFC5127"/> and <xref target="RFC8100"/>, in which case this recommendation would result in traffic marked with the NQB DSCP being aggregated into the Elastic Treatment Aggregate (for <xref target="RFC5127"/> networks) or the Default / Elastic Treatment Aggregate (for <xref target="RFC8100"/> networks). </t> 
 
+        <t>Networks and nodes that do not support the NQB PHB should only classify packets with the NQB DSCP value into the appropriate treatment aggregate, or encapsulate such packets for purposes of aggregation, and SHOULD NOT re-mark them with a different DSCP. This preservation of the NQB DSCP value enables hops further along the path to provide the NQB PHB successfully. This aligns with recommendations in <xref target="RFC5127"/>.</t>
+
         <t>In nodes that do not typically experience congestion (for example, many backbone and core network switches), forwarding packets with the NQB DSCP using the Default treatment might be sufficient to preserve loss/latency/jitter performance for NQB traffic. </t>
           
         <t>In nodes that do experience congestion, forwarding packets with the NQB DSCP using the Default treatment could result in degradation of loss/latency/jitter performance but nonetheless preserves the incentives described in <xref target="phb_requirements"/>. </t> 
@@ -189,11 +191,10 @@ please see http://xml.resource.org/authoring/README.html. -->
         presence of congestion, but would need to be done with consideration of the risk of creating 
         an incentive for non-compliant traffic to be mis-marked as NQB.</t>
 
-        <t>Networks and nodes that do not support the NQB PHB should only classify packets with the NQB DSCP value into the appropriate treatment aggregate, or encapsulate such packets for purposes of aggregation, and SHOULD NOT re-mark them with a different DSCP. This preservation of the NQB DSCP value enables hops further along the path to provide the NQB PHB successfully. This aligns with recommendations in <xref target="RFC5127"/>.</t>
       </section>
 
       <section numbered="true" anchor="aggregation2">
-        <name>Aggregation of other DSCPs in the NQB PHB</name>
+        <name>Aggregation of other DSCPs into the NQB PHB</name>
         <t>Operators of nodes that support the NQB PHB could choose to aggregate other service classes into the NQB queue. This is particularly useful in cases where specialized PHBs for these other service classes are not provided. Candidate service classes for this aggregation would include those that carry low-data-rate inelastic traffic that has low to very-low tolerance for loss, latency and/or jitter. Operators would need to use their own judgment based on the actual traffic characteristics in their networks in deciding whether or not to aggregate other service classes / DSCPs with NQB. For networks that use the <xref target="RFC4594"/> service class definitions, this could include Telephony (EF/VA), Signaling (CS5), and possibly Real-Time Interactive (CS4) (depending on data rate). In some networks, equipment limitations may necessitate aggregating a range of DSCPs (e.g. traffic marked with DSCPs 40-47 (decimal), i.e., those whose three MSBs are 0b101). As noted in <xref target="sender"/>, the choice of the DSCP value 45 (decimal) is motivated in part by the desire to make this aggregation simpler in network equipment that can classify packets via comparing the DSCP value to a range of configured values.</t> 
 
         <t>A node providing only a NQB queue and a Default queue may obtain an NQB performance similar to that of EF, as described by <xref target="RFC2598"/>. Some caveats and differences are discussed in <xref target="EF"/>.</t>
