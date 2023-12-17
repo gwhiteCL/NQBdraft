@@ -102,7 +102,7 @@ please see http://xml.resource.org/authoring/README.html. -->
 
       <t>The NQB PHB supports differentiating between these two classes of traffic in bottleneck links and queuing them separately so that both classes can deliver satisfactory quality of experience for their applications. In particular, the NQB PHB provides a shallow-buffered, best-effort service as a complement to a Default deep-buffered best-effort service. This PHB is primarily applicable for high-speed broadband access network links, where there is minimal aggregation of traffic, and deep buffers are common. The applicability of this PHB to lower-speed links is discussed in <xref target="phb_requirements"/>. </t>
 
-      <t>To be clear, a network implementing the NQB PHB solely provides isolation for traffic classified as behaving in conformance with the NQB DSCP (and optionally enforces that behavior). A node supporting the NQB PHB makes no guarantees on latency or data rate for NQB-marked microflows. It is the NQB senders' behavior itself which results in low latency and low loss.</t>
+      <t>To be clear, a network implementing the NQB PHB solely provides isolation for traffic classified as behaving in conformance with the NQB DSCP (and optionally enforces that behavior). A node supporting the NQB PHB makes no guarantees on latency or data rate for NQB-marked microflows, it is the NQB senders' behavior itself which results in low latency and low loss.</t>
 
 
 
