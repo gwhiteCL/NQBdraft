@@ -485,7 +485,7 @@ please see http://xml.resource.org/authoring/README.html. -->
         <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.5681.xml"/>
         <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.4301.xml"/>
         <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2661.xml"/>
-        <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.draft-briscoe-docsis-q-protection-06.xml"/>
+        <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.draft-briscoe-docsis-q-protection-07.xml"/>
 
 
         <reference anchor="Custura">
