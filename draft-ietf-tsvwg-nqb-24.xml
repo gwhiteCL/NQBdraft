@@ -118,7 +118,7 @@ please see http://xml.resource.org/authoring/README.html. -->
         <name>Non-Queue-Building Behavior</name>
         <t>There are many applications that send traffic at relatively low data rates and/or in a fairly smooth and consistent manner such that they are highly unlikely to exceed the available capacity of the network path between source and sink even at an inter-packet timescale. Some of these applications are transactional in nature, and might only send one packet (or a few packets) per RTT.  These applications might themselves only cause very small, transient queues to form in network buffers, but nonetheless they can be subjected to packet delay and delay variation as a result of sharing a network buffer with applications that tend to cause large and/or standing queues to form. These applications typically implement a response to network congestion that consists of discontinuing (or significantly reducing) transmissions.  Many of these applications are negatively affected by excessive packet delay and delay variation. Such applications are ideal candidates to be queued separately from the applications that are the cause of queue build-up, latency and loss.</t>
 
-        <t>In contrast, Queue-Building (QB) microflows include those that use TCP or QUIC, with Cubic, Reno or other TCP congestion control algorithms that probe for the link capacity and induce latency and loss as a result.  Other types of QB microflows include those that send at a high burst rate even if the long-term average data rate is much lower.</t>
+        <t>In contrast, Queue-Building (QB) microflows include those that probe for the link capacity and induce latency and loss as a result, for example microflows that use Cubic, Reno or other TCP/QUIC congestion control algorithms in a capacity-seeking manner.  Other types of QB microflows include those that send at a high burst rate even if the long-term average data rate is much lower.</t>
 
       </section>      
 
@@ -138,7 +138,7 @@ please see http://xml.resource.org/authoring/README.html. -->
 
         <t>The NQB PHB is therefore intended for the prevalent situation where the performance requirements of applications cannot be assured across the whole sender-to-receiver path, and as a result, applications cannot feasibly place requirements on the network. Instead, many applications have evolved to make the best out of the network environment that they find themselves in. In this context, the NQB PHB provides a better network environment for many applications that send data at relatively low and smooth data rates.</t>
 
-        <t>In regards to comparison between the NQB PHB and other standardized PHBs in the Diffserv series, the closest similarity is to the Expedited Forwarding (EF) PHB <xref target="RFC3246"/>, which also intends to enable low loss, low delay, and low jitter services. Unlike EF, NQB has no requirement for a guaranteed minimum rate, nor to police incoming traffic to such a rate, and NQB is expected to be treated with the same priority as Default (see <xref target="EF"/> for details).</t>
+        <t>In regards to comparison between the NQB PHB and other standardized PHBs in the Diffserv series, the closest similarity is to the Expedited Forwarding (EF) PHB <xref target="RFC3246"/>, which also intends to enable low loss, low delay, and low jitter services. Unlike EF, NQB has no requirement for a guaranteed minimum rate, nor to police incoming traffic to such a rate, and NQB is expected to be given the same forwarding preference as Default (see <xref target="EF"/> for details).</t>
 
         <t>In nodes that support multiple DiffServ Service Classes, NQB traffic is to be treated as a part of the Default treatment.  Capacity assigned to this class is not prioritized with respect to other classes, AFxx, EF, etc. Of course, traffic marked as NQB could (like other Default traffic) be prioritized with respect to Lower-Effort (LE) <xref target="RFC8622"/> (i.e. the NQB queue would be emptied in a priority sequence before the LE queue).</t>
       </section>
@@ -160,7 +160,7 @@ please see http://xml.resource.org/authoring/README.html. -->
       <section anchor="sender" numbered="true">
         <name>Non-Queue-Building Sender Requirements</name>
 
-        <t>Microflows that are eligible to be marked with the NQB DSCP are typically UDP microflows that send traffic at a low data rate relative to typical network path capacities.  Here the data rate is limited by the application itself rather than by network capacity - these microflows send at a data rate of no more than about 1 percent of the "typical" network path capacity.  For example, in today's Internet, where access network data rates are typically on the order of 50 Mbps or more (and see <xref target="low-rate-links"/> for a discussion of cases where this isn't true), this implies 500 kbps as an upper limit.  In addition, these microflows are required to be sent in a smooth (i.e. paced) manner, where the number of IP bytes sent in any time interval "T" is less than or equal to R * T + 1 MTU, where "R" is the maximum rate described above.</t>  
+        <t>Microflows that are eligible to be marked with the NQB DSCP are ones that send traffic at a low data rate relative to typical network path capacities.  Here the data rate is limited by the application itself rather than by network capacity - these microflows send at a data rate of no more than about 1 percent of the "typical" network path capacity.  For example, in today's Internet, where access network data rates are typically on the order of 50 Mbps or more (and see <xref target="low-rate-links"/> for a discussion of cases where this isn't true), this implies 500 kbps as an upper limit.  In addition, these microflows are required to be sent in a smooth (i.e. paced) manner, where the number of IP bytes sent in any time interval "T" is less than or equal to R * T + 1 MTU, where "R" is the maximum rate described above.</t>  
 
         <t>Microflows marked with the NQB DSCP are expected to comply with existing guidance for safe deployment on the Internet, including the guidance around response to network congestion, for example the requirements in <xref target="RFC8085"/> and <xref target="RFC3551" section="2"/> (also see the circuit breaker limits in <xref target="RFC8083" section="4.3"/> and the description of inelastic pseudowires in <xref target="RFC7893" section="4"/>). The fact that a microflow's data rate is low relative to typical network capacities is no guarantee that sufficient capacity exists in any particular network, and it is the responsibility of the application to detect and react appropriately if the network capacity is insufficient.  To be clear, the description of NQB-marked microflows in this document is not to be interpreted as suggesting that applications generating such microflows are in any way exempt from this responsibility.  One way that an application marking its traffic as NQB can handle this is to implement a low latency congestion control mechanism as described in <xref target="RFC9331"/>.</t> 
 
@@ -200,7 +200,7 @@ please see http://xml.resource.org/authoring/README.html. -->
         <t>Operators of nodes that support the NQB PHB could choose to aggregate other service classes into the NQB queue. This is particularly useful in cases where specialized PHBs for these other service classes had not been provided at a potential bottleneck, perhaps because it was too complex to manage traffic contracts and conditioning. Candidate service classes for this aggregation would include those that carry low-data-rate inelastic traffic that has low to very-low tolerance for loss, latency and/or jitter. Operators would need to use their own judgment based on the actual traffic characteristics in their networks in deciding whether or not to aggregate other service classes / DSCPs with NQB. For networks that use the <xref target="RFC4594"/> service class definitions, this could include Telephony (EF/VA), Signaling (CS5), and possibly Real-Time Interactive (CS4) (depending on data rate). In some networks, equipment limitations may necessitate aggregating a range of DSCPs (e.g. traffic marked with DSCPs 40-47 (decimal), i.e., those whose three MSBs are 0b101). As noted in <xref target="sender"/>, the choice of the DSCP value 45 (decimal) is motivated in part by the desire to make this aggregation simpler in network equipment that can classify packets via comparing the DSCP value to a range of configured values.</t> 
 
         <t>A node providing only a NQB queue and a Default queue may obtain an NQB performance similar to that of EF, for example as described by <xref target="RFC2598" section="A.3.1"/>. Some caveats and differences are discussed in <xref target="EF"/>.</t>
-        <t>[NOTE (to be removed by RFC-Editor): this section references the obsoleted RFC2598 instead of its replacement RFC3246, because the former contains the description of EF performance.]</t>
+        <t>[NOTE: this section references the obsoleted RFC2598 instead of its replacement RFC3246, because the former contains the description of EF performance.]</t>
 
       </section>
 
@@ -380,6 +380,40 @@ please see http://xml.resource.org/authoring/README.html. -->
           In other situations (e.g., consumer-grade Wi-Fi gear deployed by an ISP's customer) this configuration might not be possible, and the requirements and recommendations in <xref target="unmanaged"/> would apply.</t>
 
           <t>Similarly, systems that utilize <xref target="RFC8325"/> but that are unable to fully support the PHB requirements, SHOULD map the recommended NQB DSCP 45 (decimal) (or the locally determined alternative) to UP_5 in the "Video" Access Category.</t>
+      </section>
+
+      <section anchor="updates_to_8325" numbered="true">
+        <name>The Updates to RFC 8325</name>
+
+<t><xref target="RFC8325" section="4.2.9"/> describes the recommendation for the handling of Standard service class traffic that carries the Default DSCP.  This update to <xref target="RFC8325"/> changes the title of <xref target="RFC8325" section="4.2.9"/> from "Standard" to "Standard and Non-Queue-Building".  This update additionally adds a paragraph at the end of <xref target="RFC8325" section="4.2.9"/> as follows:</t>
+
+<t indent="4" keepWithPrevious="true">RFCXXXX defines a shallow-buffered best-effort service for traffic marked with the NQB DSCP (45 decimal) and recommends the following treatment in Wi-Fi equipment. 
+It is RECOMMENDED that Wi-Fi equipment map the NQB DSCP 45 (decimal) into a separate queue in the same Access Category as the queue that carries Default traffic (i.e. the Best Effort Access Category).
+It is RECOMMENDED that Wi-Fi equipment provide a separate queue in UP 0, and map the NQB DSCP 45 (decimal) to that queue. 
+If a separate queue in UP 0 cannot be provided (due to hardware limitations, etc.) a Wi-Fi device MAY map the NQB DSCP 45 (decimal) to UP 3. If neither of these options provides a separate queue from Default traffic, it is RECOMMENDED that Wi-Fi equipment map the NQB DSCP 45 (decimal) to UP 5 (which corresponds to the default mapping described in Section 2.3).  RFCXXXX provides additional recommendations and requirements for support of the NQB PHB that aren't available in the QoS model described in Section 6, but nonetheless could be supported in implementations.</t>
+
+
+<t>This update to <xref target="RFC8325"/> inserts a new row for "Non-Queue-Building" traffic between the existing "Low-Latency Data" and "OAM" rows in its Figure 1 as follows:</t>
+<artwork type="ascii-art" name="fig1_update.txt">
+   <![CDATA[
+  +---------------+------+----------+-------------+--------------------+
+  |    Low-       | AF21 |          |             |                    |
+  |    Latency    | AF22 | RFC 2597 |     3       | AC_BE (Best Effort)|
+  |    Data       | AF23 |          |             |                    |
+  +---------------+------+----------+-------------+--------------------+
+  |  Non-Queue-   | NQB  | RFC XXXX |  0, 3 OR 5  | AC_BE (Best Effort)|
+  |   Building    |      |          |             |                    |
+  +---------------+------+----------+-------------+--------------------+
+  |     OAM       | CS2  | RFC 2474 |     0       | AC_BE (Best Effort)|
+  +---------------+------+----------+-------------+--------------------+
+   ]]>
+</artwork>
+
+<t>This update adds the following sentence to the end of the first paragraph in <xref target="RFC8325" section="5.3"/>:  "An exception to this is the NQB DSCP 45 (decimal) which encodes for best-effort service."</t>
+
+
+
+
       </section>
       </section>
     </section>
