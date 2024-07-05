@@ -550,12 +550,12 @@ If a separate queue in UP 0 cannot be provided (due to hardware limitations, etc
         <reference anchor="SA-5G">
           <front>
             <title>System Architecture for 5G</title>
-            <seriesInfo name="TS" value="23.501"/>
             <author>
               <organization>3GPP</organization>
             </author>
-            <date year="2019"/>
+            <date month="June" year="2024"/>
           </front>
+          <refcontent>TS 23.501 V18.6.0</refcontent> 
         </reference>
         <reference anchor="IEEE802-11" target="https://standards.ieee.org/standard/802_11-2020.html">
           <front>
