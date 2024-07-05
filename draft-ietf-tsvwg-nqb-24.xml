@@ -402,8 +402,10 @@ If a separate queue in UP 0 cannot be provided (due to hardware limitations, etc
   |    Latency    | AF22 | RFC 2597 |     3       | AC_BE (Best Effort)|
   |    Data       | AF23 |          |             |                    |
   +---------------+------+----------+-------------+--------------------+
-  |  Non-Queue-   | NQB  | RFC XXXX |  0, 3 OR 5  | AC_BE (Best Effort)|
-  |   Building    |      |          |             |                    |
+  |     Non-      |      |          |    0, 3     | AC_BE (Best Effort)|
+  |    Queue-     | NQB  | RFC XXXX |            OR                    |
+  |   Building    |      |          |     5       |    AC_VI (Video)   |
+  |               |      |          |      See Section 4.2.9           |
   +---------------+------+----------+-------------+--------------------+
   |     OAM       | CS2  | RFC 2474 |     0       | AC_BE (Best Effort)|
   +---------------+------+----------+-------------+--------------------+
@@ -411,8 +413,6 @@ If a separate queue in UP 0 cannot be provided (due to hardware limitations, etc
 </artwork>
 
 <t>This update adds the following sentence to the end of the first paragraph in <xref target="RFC8325" section="5.3"/>:  "An exception to this is the NQB DSCP 45 (decimal) which encodes for best-effort service."</t>
-
-
 
 
       </section>
