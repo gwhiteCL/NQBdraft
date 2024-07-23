@@ -631,7 +631,7 @@ If a separate queue in UP 0 cannot be provided (due to hardware limitations, etc
       <t>The lack of a requirement of a guaranteed minimum rate, and the lack of a requirement to police incoming traffic to such a rate, makes the NQB PHB suitable for implementation in networks where link capacity is not or cannot be guaranteed.</t>
 
       <t>There are additional distinctions between EF and NQB arising from the intended usage as described in <xref target="RFC4594"/> and the actual usage in practice in the Internet. In <xref target="RFC4594" section="1.5.3"/>, EF is described as generally being used to carry voice or data that requires "wire like" behavior through the network.  
-      The NQB PHB similarly is useful to carry application traffic requiring wire like performance, characterized by low packet delay and delay variation, but places a pre-condition that each microflow be relatively low data rate and sent in a smooth (non-bursty) manner. In actual practice, EF traffic is oftentimes prioritized over Default traffic. This contrasts with NQB traffic which is to be treated with the same forwarding priority as Default (and sometimes aggregated with Default).</t>        
+      The NQB PHB similarly is useful to carry application traffic requiring wire like performance, characterized by low packet delay and delay variation, but places a pre-condition that each microflow be relatively low data rate and sent in a smooth (non-bursty) manner. In actual practice, EF traffic is oftentimes prioritized over Default traffic. This contrasts with NQB traffic which is to be treated with the same forwarding precedence as Default (and sometimes aggregated with Default).</t>        
 
     </section>
 
