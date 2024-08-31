@@ -505,7 +505,7 @@ If a separate queue in UP 0 cannot be provided (due to hardware limitations, etc
       microflow contributed to queue formation. As discussed elsewhere in
       this draft, those negative effects serve to discourage misuse and abuse of
       NQB by QB traffic, but the negative side effects on NQB traffic that
-      is using NQB (and the associated shallow buffer) as intended make it
+      is using NQB (and the associated shallow buffer) as intended 
       motivates limiting the effects of shallow buffer overrun via per-user provisioning limits
       that prevent queue overrun effects from affecting other users (see <xref target="primary"/>).</t>
 
