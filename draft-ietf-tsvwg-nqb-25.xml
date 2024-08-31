@@ -152,7 +152,7 @@ please see http://xml.resource.org/authoring/README.html. -->
         In nodes that support both the NQB PHB and L4S, the L4S network functions SHOULD treat packets marked with the NQB DSCP and ECT(1) or CE the same as packets marked with the Default DSCP and the same ECN value. Here, L4S network functions means the L4S Network Node functions (<xref target="RFC9331" section="5"/>), and any mechanisms designed to protect the L4S queue (such as those discussed in <xref target="RFC9330" section="8.2"/>). The processing by an L4S node of an ECT(0) packet that is classified to the L queue (e.g. as a result of being marked with a NQB DSCP) is specified in <xref target="RFC9331" section="5.4.1.1"/> and <xref target="RFC9332" section="2.5.1.1"/>.</t>
       </section>
 
-      <section numbered="true">
+      <section numbered="true" anchor="applicability">
         <name>Applicability</name>
         <t>This PHB is primarily applicable for high-speed broadband access network links, where there is minimal aggregation of traffic, and deep buffers are common. In nodes that do not typically experience congestion (for example, many backbone and core network switches), or in highly aggregated links (links designed to carry a large number of simultaneous microflows) where individual microflow burstiness is averaged out and thus is unlikely to cause much actual delay, forwarding NQB-marked packets using the Default treatment might be sufficient to preserve loss/latency/jitter performance for NQB traffic. </t> 
       </section>
@@ -272,6 +272,17 @@ please see http://xml.resource.org/authoring/README.html. -->
         <t>Support for the NQB PHB is advantageous at bottleneck nodes. Many bottleneck nodes have a relatively deep buffer for Default traffic (e.g., roughly equal to the base RTT of the expected connections, which could be tens or hundreds of ms).  Providing a similarly deep buffer for the NQB queue would be at cross purposes to providing very low queueing delay and would erode the incentives for QB traffic to be marked correctly at such a bottleneck node.  The NQB queue MUST have a buffer size that is significantly smaller than the buffer provided for Default traffic. It is RECOMMENDED to configure an NQB buffer size less than or equal to 10 ms at the shared NQB/Default egress rate. </t>
 
         <t>In order to enable network operators to monitor the usage of the NQB PHB, and in particular to monitor for potential mis-marking of QB traffic, a node supporting the NQB PHB MUST provide statistics that can be used by the network operator to detect whether abuse is occurring (e.g. packet and drop counters). Support for such counters ensures that operators who configure the NQB PHB have the ability to track the amount of packet drop that is occurring due to traffic overrunning the shallow buffer, and then take action if they believe the PHB is causing more issues than it is solving in their environment. Those actions could include disabling the PHB, identifying and dealing with the sources of malicious traffic directly, enabling traffic protection (<xref target="traffic_protection"/>) if it is available, or pursuing a feature request with the equipment manufacturer to add a traffic protection function if it isn't currently available.</t> 
+
+        <t>To prevent propagation of degradation of service for NQB traffic caused by potential mis-marking of QB traffic,
+        network equipment that supports this PHB and handles traffic for
+        multiple users (e.g., subscribers) SHOULD support provisioning
+        of bandwidth and related forwarding resources on a per-user (e.g.,
+        subscriber) basis and SHOULD support enforcement of the resulting
+        per-user limits on the aggregate of NQB and QB traffic for each user. 
+        This functionality is commonly available in the class of network equipment 
+        for which this PHB is primarily applicable (see <xref target="applicability"/>).  
+        Provisioning methodology as well as decisions on whether and how to enforce the
+        resulting limits may vary by network operator.  </t>
 
         <t>While not fully described in this document, it may be possible for network equipment to implement a separate QB/NQB pair of queues for additional service classes beyond the Default PHB / NQB PHB pair.</t>
 
