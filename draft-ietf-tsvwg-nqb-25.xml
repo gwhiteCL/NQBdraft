@@ -257,7 +257,7 @@ please see http://xml.resource.org/authoring/README.html. -->
 
         <t>This principle of incentive alignment ensures a system is robust to the behavior of the large majority of individuals and organizations who can be expected to act in their own interests (including application developers and service providers who act in the interests of their users). Malicious behavior is not necessarily based on rational self-interest, so incentive alignment is not a sufficient defense, but the large majority of users do not act out of malice. Protection against malicious attacks (and accidents) is addressed in <xref target="traffic_protection"/> and summarized in <xref target="Security"/>. As mentioned previously, the NQB designation and marking is intended to convey verifiable traffic behavior, as opposed to simply a desire for differentiated treatment. As a result, any mismarking can be identified by the network.</t>
 
-      <section numbered="true">
+      <section numbered="true" anchor="primary">
         <name>Primary Requirements</name>
         
         <t>A node supporting the NQB PHB MUST provide a queue for Non-Queue-Building traffic separate from the queue used for Default traffic.</t>
@@ -497,6 +497,18 @@ If a separate queue in UP 0 cannot be provided (due to hardware limitations, etc
 
       <t>To preserve low latency performance for NQB traffic, networks that support the NQB PHB will need to ensure that mechanisms are in place to prevent malicious traffic marked with the NQB DSCP from causing excessive queue delays.  <xref target="traffic_protection"/> recommends the implementation of a traffic protection mechanism to achieve this goal.  The recommendations on traffic protection mechanisms in this document presume that some type of "flow" state be maintained in order to differentiate between microflows that are causing queuing delay and those that aren't.  Since this flow state is likely finite, this opens up the possibility of flow-state exhaustion attacks.  While this document requires that traffic protection mechanisms be designed with this possibility in mind, the outcomes of flow-state exhaustion would depend on the implementation.</t>
       
+      <t>If traffic protection is not implemented or is not able to
+      prevent queue formation in the NQB shallow buffer, the limited size
+      of that buffer will cause a growing queue to overrun that buffer,
+      resulting in negative effects (e.g., reforwarding as Default, discarding)
+      that potentially impact multiple NQB-marked microflows, independent of whether each affected
+      microflow contributed to queue formation. As discussed elsewhere in
+      this draft, those negative effects serve to discourage misuse and abuse of
+      NQB by QB traffic, but the negative side effects on NQB traffic that
+      is using NQB (and the associated shallow buffer) as intended make it
+      motivates limiting the effects of shallow buffer overrun via per-user provisioning limits
+      that prevent queue overrun effects from affecting other users (see <xref target="primary"/>).</t>
+
       <t>Notwithstanding the above, the choice of DSCP for NQB does allow existing Wi-Fi networks to readily (and by default) support some of the PHB requirements, but without a traffic protection function, and (when left in the default state) by giving NQB traffic higher priority than QB traffic. This is not considered to be a compliant implementation of the PHB. These existing Wi-Fi networks currently provide priority to half of the DSCP space, whether or not 45 is assigned to the NQB DSCP.  While the NQB DSCP value could also be abused to gain priority on such links, the potential presence of traffic protection functions in other hops along the path (which likely act on the NQB DSCP value alone) would make it less attractive for such abuse than any of the other 31 DSCP values that are given priority.</t>
 
       <t>This document discusses the potential use of the NQB DSCP and NQB PHB in network technologies that are standardized in other SDOs. Any security considerations that relate to deployment and operation of NQB solely in specific network technologies are not discussed here.</t>
