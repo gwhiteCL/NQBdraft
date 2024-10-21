@@ -418,7 +418,7 @@ please see http://xml.resource.org/authoring/README.html. -->
 
           <t>In the case of traffic originating outside of the Wi-Fi network, the prioritization of traffic marked with the NQB DSCP via the Video Access Category (if left unchanged) could potentially erode the principle of alignment of incentives discussed in <xref target="phb_requirements"/>. In order to preserve the incentives principle for NQB, Wi-Fi systems MAY be configured such that the EDCA parameters for the Video Access Category match those of the Best Effort Access Category, which will mean AC_VI is at the same priority level as AC_BE. These changes might not be possible on all Access Points, and in any case the requirements and recommendations in <xref target="unmanaged"/> would apply in this situation.</t>
 
-          <t>Similarly, systems that utilize <xref target="RFC8325"/> but cannot provide a separate AC_BE queue for NQB traffic, SHOULD map the recommended NQB DSCP 45 (decimal) (or the locally determined alternative) to UP_5 in the "Video" Access Category (see <xref target="updates_to_8325"/>).
+          <t>Systems that utilize <xref target="RFC8325"/> but cannot provide a separate AC_BE queue for NQB traffic, SHOULD map the recommended NQB DSCP 45 (decimal) (or the locally determined alternative) to UP_5 in the "Video" Access Category as well (see <xref target="updates_to_8325"/>).</t>
       </section>
 
       <section anchor="updates_to_8325" numbered="true">
