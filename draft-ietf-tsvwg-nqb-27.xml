@@ -701,7 +701,7 @@ If a separate queue in UP 0 cannot be provided (due to hardware limitations, etc
 
     <section anchor="Acknowledgements" numbered="false">
       <name>Acknowledgements</name>
-      <t>Thanks to Gorry Fairhurst, Diego Lopez, Stuart Cheshire, Brian Carpenter, Bob Briscoe, Greg Skinner, Toke Hoeiland-Joergensen, Luca Muscariello, David Black, Sebastian Moeller, Jerome Henry, Steven Blake, Jonathan Morton, Roland Bless, Kevin Smith, Martin Dolly and Kyle Rose for their review comments.  Thanks also to Gorry Fairhurst and Ana Custura for their input on selection of appropriate DSCPs.</t>
+      <t>Thanks to Gorry Fairhurst, Diego Lopez, Stuart Cheshire, Brian Carpenter, Bob Briscoe, Greg Skinner, Toke Hoeiland-Joergensen, Luca Muscariello, David Black, Jerome Henry, Steven Blake, Jonathan Morton, Roland Bless, Kevin Smith, Martin Dolly and Kyle Rose for their review comments.  Thanks also to Gorry Fairhurst and Ana Custura for their input on selection of appropriate DSCPs.</t>
     </section>
     <!-- Possibly a 'Contributors' section ... -->
 
