@@ -488,6 +488,9 @@ If a separate queue in UP 0 cannot be provided (due to hardware limitations, etc
 
     <section anchor="Security" numbered="true">
       <name>Security Considerations</name>
+
+      <t>The security considerations for the NQB PHB relate to the potential to impact the capacity available or latency experienced by other flows that share a bottleneck on the path with traffic that is marked with the recommended NQB DSCP.</t>
+
       <t>Full support for the NQB PHB in bottleneck links limits the
       incentives for a Queue-Building application to mismark its packets as
       NQB, particularly for implementations that support traffic protection.
