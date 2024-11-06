@@ -422,6 +422,8 @@ please see http://xml.resource.org/authoring/README.html. -->
       <section anchor="updates_to_8325" numbered="true">
         <name>The Updates to RFC 8325</name>
 
+        <t>[XXX RFC Editor please replace RFCXXXX with this RFC number when published XXX]</t>
+
 <t><xref target="RFC8325" section="4.2.9"/> describes the recommendation for the handling of Standard service class traffic that carries the Default DSCP.  This update to <xref target="RFC8325"/> changes the title of <xref target="RFC8325" section="4.2.9"/> from "Standard" to "Standard and Non-Queue-Building".  This update additionally adds a paragraph at the end of <xref target="RFC8325" section="4.2.9"/> as follows:</t>
 
 <t indent="4" keepWithPrevious="true">RFCXXXX defines a shallow-buffered best-effort service for traffic marked with the NQB DSCP (45 decimal) and recommends the following treatment in Wi-Fi equipment. 
