@@ -235,7 +235,7 @@ please see http://xml.resource.org/authoring/README.html. -->
 
 
 
-          <t>The recommendation to limit NQB traffic to 5% is based on an assumption that internal links in the downstream domain could have data rates as low as one tenth of the interconnect rate, in which case if the entire aggregate of NQB traffic traversed a single instance of such a link, the aggregate would consume no more than 50% of that link's capacity.  This SHOULD be adjusted based on any knowledge of the local network environment that is available.</t> 
+          <t>The recommendation to limit NQB traffic to 5% is based on an assumption that internal links in the downstream domain could have data rates as low as one tenth of the interconnect rate, in which case if the entire aggregate of NQB traffic traversed a single instance of such a link, the aggregate would consume no more than 50% of that link's capacity.  The limit for NQB traffic SHOULD be adjusted based on any knowledge of the local network environment that is available.</t> 
 
         </section>
       </section>
