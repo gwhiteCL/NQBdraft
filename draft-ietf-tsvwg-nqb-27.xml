@@ -104,7 +104,7 @@ please see http://xml.resource.org/authoring/README.html. -->
 
       <t>To be clear, a network implementing the NQB PHB solely provides isolation for traffic classified as behaving in conformance with the NQB DSCP. A node supporting the NQB PHB makes no guarantees on latency or data rate for NQB-marked microflows (beyond the latency bound provided by the shallow buffer), it is the NQB senders' behavior itself which results in low latency and low loss.</t>
 
-
+      <t><xref target="dscp"/> and <xref target="sdos"/> of this document provide guidance for network operators that might forward traffic marked with the NQB DSCP. Networks that do not currently implement support for the NQB PHB are described in <xref target="dscp"/> regarding treatment of the recommended DSCP for NQB traffic, and in particular <xref target="aggregation"/>, which provides specific recommendations for this case.  In addition, <xref target="re-marking"/> provides recommendations around interconnection with networks that do support the NQB PHB.</t>
 
     </section>
     <section numbered="true">
@@ -160,7 +160,7 @@ please see http://xml.resource.org/authoring/README.html. -->
 
 
 
-    <section numbered="true">
+    <section numbered="true" anchor="dscp">
       <name>DSCP Marking of NQB Traffic</name>
 
       <section anchor="sender" numbered="true">
@@ -367,7 +367,7 @@ please see http://xml.resource.org/authoring/README.html. -->
       </section>
     </section> 
 
-    <section numbered="true">
+    <section numbered="true" anchor="sdos">
       <name>Mapping NQB to standards of other SDOs</name>
       <t>This section provide recommendations for the support of the NQB PHB in certain use cases.  This section is not exhaustive.</t>
 
