@@ -154,7 +154,9 @@ please see http://xml.resource.org/authoring/README.html. -->
 
       <section numbered="true" anchor="applicability">
         <name>Applicability</name>
-        <t>This PHB is primarily applicable for high-speed broadband access network links, where there is minimal aggregation of traffic, and deep buffers are common. In nodes that do not typically experience congestion (for example, many backbone and core network switches), or in highly aggregated links (links designed to carry a large number of simultaneous microflows) where individual microflow burstiness is averaged out and thus is unlikely to cause much actual delay, forwarding NQB-marked packets using the Default treatment might be sufficient to preserve loss/latency/jitter performance for NQB traffic. </t> 
+        <t>This PHB is primarily applicable for high-speed broadband access network links, where there is minimal aggregation of traffic, and deep buffers are common. </t>
+        
+        <t>In many other links, forwarding NQB-marked packets using the Default treatment might be sufficient to preserve loss/latency/jitter performance for NQB traffic.  This is generally true in links that do not typically experience congestion (for example, many backbone and core network links), and in highly aggregated links (links designed to carry a large number of simultaneous microflows) where individual microflow burstiness is averaged out and thus is unlikely to cause much actual delay. </t>
       </section>
     </section>
 
