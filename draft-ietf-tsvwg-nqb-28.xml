@@ -92,15 +92,15 @@ please see http://xml.resource.org/authoring/README.html. -->
   <middle>
     <section numbered="true">
       <name>Introduction</name>
-      <t>This document defines a Differentiated Services per-hop behavior (PHB) called the "Non-Queue-Building Per-Hop Behavior" (NQB PHB), which isolates traffic microflows (application-to-application flows, see <xref target="RFC2475"/>) that are relatively low data rate and that do not themselves materially contribute to queuing delay and loss, allowing them to avoid the queuing delays and losses caused by other traffic. Such Non-Queue-Building microflows (for example: interactive voice, game sync packets, certain machine-to-machine applications, DNS lookups, and some real-time IoT analytics data) are low-data-rate application-limited microflows that are distinguished from bursty traffic microflows and high-data-rate traffic microflows managed by a classic congestion control algorithm, both of which cause queuing delay and loss. The term "classic congestion control" is defined in <xref target="RFC9330"/> to mean one that coexists with standard Reno congestion control <xref target="RFC5681"/>.</t>
+      <t>This document defines a Differentiated Services per-hop behavior (PHB) called the "Non-Queue-Building Per-Hop Behavior" (NQB PHB), which isolates traffic microflows (application-to-application flows, see <xref target="RFC2475"/>) that are relatively low data rate and that do not themselves materially contribute to queuing delay and loss, allowing them to avoid the queuing delays and losses caused by other traffic. Such Non-Queue-Building microflows (for example: interactive voice, game sync packets, certain machine-to-machine applications, DNS lookups, and some real-time IoT analytics data) are low-data-rate application-limited microflows that are distinguished from bursty traffic microflows and high-data-rate traffic microflows managed by a classic congestion control algorithm, both of which cause queuing delay and loss. The term "classic congestion control" is defined in <xref target="RFC9330"/> to mean one that coexists with standard Reno congestion control <xref target="RFC5681"/>. In this document we will use the term Queue-Building (QB) to refer to microflows that cause queuing delay and loss. </t>
 
-      <t>In accordance with IETF guidance in <xref target="RFC2914"/> and <xref target="RFC8085"/>, most packets carried by broadband access networks are managed by an end-to-end congestion control algorithm. Many of the commonly-deployed congestion control algorithms, such as <xref target="RFC5681">Reno</xref>, <xref target="RFC9438">Cubic</xref> or <xref target="I-D.ietf-ccwg-bbr">BBR</xref>, are designed to seek the available capacity of the path from sender to receiver (which can frequently be the access network link capacity), and in doing so generally overshoot the available capacity, causing a queue to build up at the bottleneck link. This queue build-up results in delay (variable latency) and packet loss that can affect all the applications that are sharing the bottleneck link. Moreover, many bottleneck links implement a relatively deep buffer (100 ms or more) in order to enable these congestion control algorithms to use the link efficiently, which exacerbates the latency and latency variation experienced.</t>
+      <t>In accordance with IETF guidance in <xref target="RFC2914"/> and <xref target="RFC8085"/>, most packets carried by  access networks are managed by an end-to-end congestion control algorithm. Many of the commonly-deployed congestion control algorithms, such as <xref target="RFC5681">Reno</xref>, <xref target="RFC9438">Cubic</xref> or <xref target="I-D.ietf-ccwg-bbr">BBR</xref>, are designed to seek the available capacity of the path from sender to receiver (which can frequently be the access network link capacity), and in doing so generally overshoot the available capacity, causing a queue to build up at the bottleneck link. This queue build-up results in delay (variable latency) and packet loss that can affect all the applications that are sharing the bottleneck link. Moreover, many bottleneck links implement a relatively deep buffer (100 ms or more) <xref target="Gettys2012"/><xref target="Cardwell2017"/><xref target="WikipediaBufferbloat"/><xref target="I-D.ietf-ccwg-bbr"/> in order to enable these congestion control algorithms to use the link efficiently, which exacerbates the latency and latency variation experienced.</t>
 
       <t>In contrast to applications that frequently cause queuing delay, there are a variety of relatively low data rate applications that do not materially contribute to queuing delay and loss but are nonetheless subjected to it by sharing the same bottleneck link in the access network. Many of these applications can be sensitive to latency or latency variation, as well as packet loss, and thus produce a poor quality of experience in such conditions.</t>
 
       <t>Active Queue Management (AQM) mechanisms intended for single queues (such as <xref target="RFC8033">PIE</xref>, <xref target="RFC8034">DOCSIS-PIE</xref>, <xref target="RFC9332">PI2</xref>, or <xref target="RFC8289">CoDel</xref>) can improve the quality of experience for latency sensitive applications, but there are practical limits to the amount of improvement that can be achieved without impacting the throughput of capacity-seeking applications. For example, AQMs generally allow a significant amount of queue depth variation to accommodate the behaviors of congestion control algorithms such as Reno and Cubic.  If the AQM attempted to control the queue depth much more tightly, applications using those algorithms would not fully utilize the link.  Alternatively, flow queuing systems, such as <xref target="RFC8290">fq_codel</xref> can be employed to isolate microflows from one another, but they are not appropriate for all bottleneck links due to reasons that include complexity. </t>
 
-      <t>The NQB PHB supports differentiating between these two classes of traffic in bottleneck links and queuing them separately so that both classes can deliver satisfactory quality of experience for their applications. In particular, the NQB PHB provides a shallow-buffered, best-effort service as a complement to a Default (see <xref target="RFC2474"/>) deep-buffered best-effort service. This PHB is primarily applicable for high-speed broadband access network links, where there is minimal aggregation of traffic, and deep buffers are common. The applicability of this PHB to lower-speed links is discussed in <xref target="phb_requirements"/>. </t>
+      <t>The NQB PHB supports differentiating between these two classes of traffic in bottleneck links and queuing them separately so that both classes can deliver satisfactory quality of experience for their applications. In particular, the NQB PHB provides a shallow-buffered, best-effort service as a complement to a Default (see <xref target="RFC2474"/>) deep-buffered best-effort service. This PHB is primarily applicable for broadband access network links, where there is minimal aggregation of traffic, and deep buffers are common. The applicability of this PHB to lower-speed links is discussed in <xref target="phb_requirements"/>. </t>
 
       <t>To be clear, a network implementing the NQB PHB solely provides isolation for traffic classified as behaving in conformance with the NQB DSCP. A node supporting the NQB PHB makes no guarantees on latency or data rate for NQB-marked microflows (beyond the latency bound provided by the shallow buffer), it is the NQB senders' behavior itself which results in low latency and low loss.</t>
 
@@ -136,9 +136,9 @@ please see http://xml.resource.org/authoring/README.html. -->
 
         <t>The NQB PHB is therefore intended for the situation where the performance requirements of applications cannot be assured across the whole sender-to-receiver path, and as a result, applications cannot feasibly place requirements on the network. Instead, many applications have evolved to make the best out of the network environment that they find themselves in. In this context, the NQB PHB provides a better network environment for applications that send data at relatively low and non-bursty data rates.</t>
 
-        <t>In regards to comparison between the NQB PHB and other standardized PHBs in the Diffserv series, the closest similarity is to the Expedited Forwarding (EF) PHB <xref target="RFC3246"/>, which also intends to enable low loss, low delay, and low jitter services. Unlike EF, NQB has no requirement for a guaranteed minimum rate, nor to police incoming traffic to such a rate, and NQB is expected to be given the same forwarding preference as Default (see <xref target="EF"/> for details).</t>
+        <t>In regards to comparison between the NQB PHB and other standardized PHBs in the Diffserv series, the closest similarity is to the Expedited Forwarding (EF) PHB <xref target="RFC3246"/>, which also intends to enable low loss, low delay, and low jitter services. Unlike EF, NQB has no requirement for a guaranteed minimum rate, nor to police incoming traffic to such a rate, and NQB is expected to be given the same forwarding preference as Default traffic. See <xref target="EF"/> for a more detailed comparison of the NQB and EF PHBs.</t>
 
-        <t>In nodes that support multiple DiffServ Service Classes, NQB traffic is intended to be treated as a part of the Default treatment. Traffic assigned to this class does not receive better forwarding treatment (e.g., prioritization) with respect to other classes, AFxx, EF, etc. Of course, traffic marked as NQB could(like other Default traffic) could receive better forwarding treatment with respect to Lower-Effort (LE) <xref target="RFC8622"/> (e.g. the NQB queue could be emptied in a priority sequence before the LE queue).</t>
+        <t>In nodes that support multiple DiffServ Service Classes, NQB traffic is intended to be treated as a part of the Default treatment. Traffic assigned to this class does not receive better forwarding treatment (e.g., prioritization) with respect to other classes, AFxx, EF, etc. Of course, traffic marked as NQB could (like other Default traffic) could receive better forwarding treatment with respect to Lower-Effort (LE) <xref target="RFC8622"/> (e.g. the NQB queue could be emptied in a priority sequence before the LE queue).</t>
       </section>
 
       <section numbered="true">
@@ -147,7 +147,7 @@ please see http://xml.resource.org/authoring/README.html. -->
 
         <t>Applications that comply with both the NQB sender requirements in <xref target="sender"/> and the L4S "Prague" requirements in <xref target="RFC9331" section="4"/> could mark their packets both with the NQB DSCP and with the ECT(1) value. </t>
 
-        <t>NQB network functions SHOULD treat packets marked with the NQB DSCP uniformly, regardless of the value of the ECN field. Here, NQB network functions refers to the traffic protection function (defined in <xref target="traffic_protection"/>) and any re-marking/traffic policing function designed to protect unmanaged networks (as described in <xref target="unmanaged"/>).</t>
+        <t>NQB network functions MUST treat packets marked with the NQB DSCP uniformly, regardless of the value of the ECN field. Here, NQB network functions refers to the traffic protection function (defined in <xref target="traffic_protection"/>) and any re-marking/traffic policing function designed to protect unmanaged networks (as described in <xref target="unmanaged"/>).</t>
 
         <t>In nodes that support both the NQB PHB and L4S, the L4S network functions SHOULD treat packets marked with the NQB DSCP and ECT(1) or CE the same as packets marked with the Default DSCP and the same ECN value. Here, L4S network functions refers to the L4S Network Node functions (<xref target="RFC9331" section="5"/>), and any mechanisms designed to protect the L4S queue (such as those discussed in <xref target="RFC9330" section="8.2"/>). The processing by an L4S node of an ECT(0) packet that is classified to the L queue (e.g. as a result of being marked with a NQB DSCP) is specified in <xref target="RFC9331" section="5.4.1.1"/> and <xref target="RFC9332" section="2.5.1.1"/>.</t>
       </section>
@@ -163,19 +163,21 @@ please see http://xml.resource.org/authoring/README.html. -->
 
 
     <section numbered="true" anchor="dscp">
-      <name>DSCP Marking of NQB Traffic</name>
+      <name>DSCP Marking of NQB Traffic, Aggregation and Tunnelling</name>
 
+      <t>This section describes how NQB traffic is identified, marked, and handled in networks. It outlines eligibility criteria for marking, aggregation behaviors, and special considerations in unmanaged and inter-network scenarios.</t>
+      
       <section anchor="sender" numbered="true">
         <name>Non-Queue-Building Sender Requirements</name>
 
-        <t>Microflows that are eligible to be marked with the NQB DSCP are ones that send traffic at a low data rate relative to typical network path capacities.  Here the data rate is limited by the application itself rather than by network capacity - these microflows send at a data rate of no more than about 1 percent of the "typical" network path capacity.  For example, in today's Internet, where access network data rates are typically on the order of 50 Mbps or more (and see <xref target="low-rate-links"/> for a discussion of cases where this isn't true), this implies 500 kbps as an upper limit.  In addition, these microflows are required to be sent in a smooth (i.e. paced) manner, where the number of IP bytes sent in any time interval "T" is less than or equal to R * T + 1 MTU, where "R" is the maximum rate described above.</t>  
+        <t>Microflows that are eligible to be marked with the NQB DSCP are ones that send non-bursty traffic at a low data rate relative to typical network path capacities.  Here the data rate is limited by the application itself rather than by network capacity - these microflows send at a data rate of no more than about 1 percent of the "typical" network path capacity.  For example, in today's Internet, where access network data rates are typically on the order of 50 Mbps or more (and see <xref target="low-rate-links"/> for a discussion of cases where this isn't true), this implies 500 kbps as an upper limit.  In addition, these microflows are required to be sent in a smooth (i.e. paced) manner, where the number of IP bytes sent in any time interval "T" is less than or equal to R * T + 1 MTU, where "R" is the maximum rate described above.</t>  
 
         <t>Microflows marked with the NQB DSCP are expected to comply with existing guidance for safe deployment on the Internet, including the guidance around response to network congestion, for example the requirements in <xref target="RFC8085"/> and <xref target="RFC3551" section="2"/> (also see the circuit breaker limits in <xref target="RFC8083" section="4.3"/> and the description of inelastic pseudowires in <xref target="RFC7893" section="4"/>). The fact that a microflow's data rate is low relative to typical network capacities is no guarantee that sufficient capacity exists in any particular network, and it is the responsibility of the application to detect and react appropriately if the network capacity is insufficient.  To be clear, the description of NQB-marked microflows in this document is not to be interpreted as suggesting that applications generating such microflows are in any way exempt from this responsibility.  One way that an application marking its traffic as NQB can handle this is to implement a low latency congestion control mechanism as described in <xref target="RFC9331"/>.</t> 
 
         <t>Microflows that are marked with the NQB DSCP align with the description of behavior in the preceding paragraphs in this section. Applications are RECOMMENDED to use the Diffserv Code Point (DSCP) 45 (decimal)  to mark microflows as NQB. 
         The choice of the DSCP value 45 (decimal) is motivated in part by the desire to achieve separate queuing in existing Wi-Fi networks (see <xref target="wifi"/>) and by the desire to make implementation of the PHB simpler in network gear that has the ability to classify traffic based on ranges of DSCP values (see <xref target="aggregation2"/> for further discussion). </t>
 
-        <t>The two primary considerations for whether an application chooses to mark its traffic as NQB involve the risks of being subjected to a traffic protection algorithm (see <xref target="traffic_protection"/>) and/or to the consequences of overrunning the NQB shallow buffer if (in either case) the traffic contributes to the formation of a queue in a node that supports the PHB. In both cases, the result could be that excess traffic is discarded or queued separately as default traffic (and thus potentially delivered out of order). To avoid these risks, if a microflow's traffic exceeds the rate equation provided in the first paragraph of this section, the application SHOULD NOT mark this traffic with the NQB DSCP. In such a case, the application could instead consider implementing a low latency congestion control mechanism as described in <xref target="RFC9331"/>.</t>
+        <t>The two primary considerations for whether an application chooses to mark its traffic as NQB involve the risks of being subjected to a traffic protection algorithm (see <xref target="traffic_protection"/>) and/or to the consequences of overrunning the NQB shallow buffer if (in either case) the traffic contributes to the formation of a queue in a node that supports the PHB. In both cases, the result could be that excess traffic is discarded or queued separately as Default traffic (and thus potentially delivered out of order). To avoid these risks, if a microflow's traffic exceeds the rate equation provided in the first paragraph of this section, the application SHOULD NOT mark this traffic with the NQB DSCP. In such a case, the application could instead consider implementing a low latency congestion control mechanism as described in <xref target="RFC9331"/>.</t>
 
         <t>The sender requirements outlined in this section are all related to observable attributes of the packet stream, 
           which makes it possible for network elements (including nodes implementing the PHB) to monitor for inappropriate 
@@ -188,7 +190,7 @@ please see http://xml.resource.org/authoring/README.html. -->
 
       <section anchor="aggregation" numbered="true">
         <name>Aggregation of the NQB DSCP into another Diffserv PHB</name>
-        <t>It is RECOMMENDED that networks and nodes that do not support the NQB PHB be configured to treat traffic marked with the NQB DSCP the same as traffic with the "Default" DSCP.  This includes networks and nodes that aggregate service classes as discussed in <xref target="RFC5127"/> and <xref target="RFC8100"/>, in which case this recommendation would result in traffic marked with the NQB DSCP being aggregated into the Elastic Treatment Aggregate (for <xref target="RFC5127"/> networks) or the Default / Elastic Treatment Aggregate (for <xref target="RFC8100"/> networks). </t> 
+        <t>It is RECOMMENDED that networks and nodes that do not support the NQB PHB be configured to treat traffic marked with the NQB DSCP the same as traffic with the Default DSCP.  This includes networks and nodes that aggregate service classes as discussed in <xref target="RFC5127"/> and <xref target="RFC8100"/>, in which case this recommendation would result in traffic marked with the NQB DSCP being aggregated into the Elastic Treatment Aggregate (for <xref target="RFC5127"/> networks) or the Default / Elastic Treatment Aggregate (for <xref target="RFC8100"/> networks). </t> 
 
         <t>Networks and nodes that do not support the NQB PHB ought to only classify packets with the NQB DSCP value into the appropriate treatment aggregate, or encapsulate such packets for purposes of aggregation, and SHOULD NOT re-mark them with a different DSCP. This preservation of the NQB DSCP value enables hops further along the path to provide the NQB PHB successfully. This aligns with recommendations in <xref target="RFC5127"/>.</t>
 
@@ -197,7 +199,7 @@ please see http://xml.resource.org/authoring/README.html. -->
         <t>In nodes that do experience congestion, forwarding packets with the NQB DSCP using the Default treatment could result in degradation of loss/latency/jitter performance but nonetheless preserves the incentives described in <xref target="phb_requirements"/>. </t> 
 
         <t>Aggregating traffic marked with the NQB DSCP into a PHB designed for real-time, latency sensitive traffic 
-        (e.g. the (Bulk) Real-Time Treatment Aggregate), might better preserve loss/latency/jitter performance in the 
+        (e.g. the Real-Time Treatment Aggregate <xref target="RFC5127"/> or the Bulk Real-Time Treatment Aggregate <xref target="RFC8100"/>), might better preserve loss/latency/jitter performance in the 
         presence of congestion, but would need to be done with consideration of the risk of creating 
         an incentive for non-compliant traffic to be mis-marked as NQB.</t>
 
@@ -222,23 +224,21 @@ please see http://xml.resource.org/authoring/README.html. -->
           <name>Interoperability with Non-DS-Capable Domains </name>
           <t>As discussed in <xref target="RFC2475" section="4"/>, there may be cases where a network operator that supports Diffserv is delivering traffic to another network domain (e.g. a network outside of their administrative control), where there is an understanding that the downstream domain does not support Diffserv or there is no knowledge of the traffic management capabilities of the downstream domain, and no agreement in place.  In such cases, <xref target="RFC2475" section="4"/> suggests that the upstream domain opportunistically re-mark traffic with a Class Selector codepoint or DSCP 0 (Default) under the assumption that traffic so marked would be handled in a predictable way by the downstream domain.</t>
 
-          <t>In the case of a network that supports the NQB PHB (and carries traffic marked with the recommended NQB DSCP value) the same concerns apply. In particular, since the recommended NQB DSCP value could be given high priority in some non-DS-compliant network gear (e.g., legacy Wi-Fi APs as described in <xref target="wifi_interop"/>), it is RECOMMENDED that the operator of the upstream domain implement the following safeguards before delivering traffic into a non-DS-capable domain.</t>  
+          <t>In the case of a network that supports the NQB PHB (and carries traffic marked with the recommended NQB DSCP value) the same concerns apply. In particular, since the recommended NQB DSCP value could be given high priority in some non-DS-compliant network gear (e.g., legacy Wi-Fi APs as described in <xref target="wifi_interop"/>), it is RECOMMENDED that the operator of the upstream domain implement one of the following safeguards before delivering traffic into a non-DS-capable domain.</t>  
 
           <ol>
           <li><t>One option for such a safeguard is to re-mark NQB traffic to DSCP 0 (Default) (or another Class Selector DSCP) before delivering traffic into a non-DS-capable domain, in accordance with the suggestion in <xref target="RFC2475" section="4"/>.
-          Network equipment designed for such environments, SHOULD by default re-mark NQB traffic to DSCP 0, and SHOULD support the ability to change and disable this re-marking. 
-          Re-marking NQB traffic to Default could be considered the "safest" approach since the upstream domain can thereby ensure that NQB traffic is not given inappropriate treatment in the non-DS-capable domain.
+          Network equipment designed for such environments, SHOULD by default re-mark NQB traffic to DSCP 0 (Default), and SHOULD support the ability to change and disable this re-marking. 
+          Re-marking NQB traffic to DSCP 0 (Default) could be considered the "safest" approach since the upstream domain can thereby ensure that NQB traffic is not given inappropriate treatment in the non-DS-capable domain.
           That said, it comes with the downside that the re-marking ruins any possibility of NQB isolation in any further downstream domain (not just the immediate neighbor).</t></li>
 
           <li><t>As an alternative to re-marking all NQB traffic, such an operator could deploy a traffic protection (see <xref target="traffic_protection"/>) or a shaping/policing function on traffic marked with the NQB DSCP that minimizes the potential for negative impacts on Default traffic, should the downstream domain treat traffic with the NQB DSCP as high priority.</t>
-          <t>In the case that a traffic protection function is used, it SHOULD either re-mark offending traffic to DSCP 0 or discard it. 
+          <t>In the case that a traffic protection function is used, it MUST either re-mark offending traffic to DSCP 0 (or another Class Selector DSCP) or discard it. 
           Note that a traffic protection function as defined in this document might only provide protection from issues occurring in subsequent network hops if the device implementing the traffic protection function is the bottleneck link on the path, so it might not be a solution for all situations. </t>
           <t>In the case that a traffic policing function or a rate shaping function is applied to the aggregate of NQB traffic destined to such a downstream domain, the policer/shaper rate SHOULD be set to either 5% of the interconnection data rate, or 5% of the typical rate for such interconnections, whichever is greater, with excess traffic being re-marked and classified for Default forwarding (or dropped, as a last resort).
           A traffic policing function SHOULD allow approximately 100 ms of burst tolerance (e.g. a token bucket depth equal to 100 ms multiplied by the policer rate).
           A traffic shaping function SHOULD allow approximately 10 ms of burst tolerance, and no more than 50 ms of buffering.
-          The burst tolerance values recommended here are intended to reduce the degradation that could be introduced to latency and loss sensitive traffic marked NQB without significantly degrading Default traffic.</t>
-
-
+          The burst tolerance values recommended here are intended to reduce the degradation that could be introduced to latency and loss sensitive traffic marked NQB without significantly degrading Default traffic, and could be adjusted based on local network policy. Increasing the burst tolerance would further reduce the potential for degradation (increased loss or increased delay) of traffic marked NQB, but would come at the cost of an increased risk of degradation (increased loss or increased delay) of Default traffic. </t>
 
           <t>The recommendation to limit NQB traffic to 5% is based on an assumption that internal links in the downstream domain could have data rates as low as one tenth of the interconnect rate, in which case if the entire aggregate of NQB traffic traversed a single instance of such a link, the aggregate would consume no more than 50% of that link's capacity.  The limit for NQB traffic SHOULD be adjusted based on any knowledge of the local network environment that is available.</t> </li>
 
@@ -268,11 +268,11 @@ please see http://xml.resource.org/authoring/README.html. -->
 
         <t>A node supporting the NQB PHB SHOULD NOT rate limit or rate police the aggregate of NQB traffic separately from Default traffic. An exception to this recommendation for traffic sent towards a non-DS-capable domain is discussed in <xref target="unmanaged"/>. Note also that <xref target="traffic_protection"/> discusses potential uses of per-microflow (rather than aggregate) rate policing.</t>
         
-        <t>The NQB queue SHOULD be given equivalent forwarding preference compared to Default. The node SHOULD provide a scheduler that allows NQB and Default traffic to share the link in a manner that treats the two classes equally, e.g., a deficit round-robin (DRR) scheduler with equal weights, or two Wireless Multimedia Access Categories with the same channel access (EDCA) parameters. The use of equal weights for DRR is given as a reasonable example, and is not intended to preclude other scheduling weights (see below for details). A node that provides rate limits or rate guarantees for Default traffic SHOULD ensure that such limits and/or guarantees are shared with NQB traffic in a manner that treats the two classes equally. This could be supported using a hierarchical scheduler where the rate limits and guarantees are configured on a parent class, and the two queues (Default and NQB) are arranged as the children of the parent class and given equal access to the capacity configured for the parent class (e.g. with equal DRR scheduling). Compliance with these recommendations reduces the incentives for QB traffic to be mismarked as NQB. </t>
+        <t>The NQB queue SHOULD be given equivalent forwarding preference compared to Default. The node SHOULD provide a scheduler that allows NQB and Default traffic to share the link in a manner that treats the two classes equally, e.g., a deficit round-robin (DRR) scheduler with equal weights, or two Wireless Multimedia Access Categories with the same channel access (EDCA) parameters. The use of equal weights for DRR is given as a reasonable example, and is not intended to preclude other scheduling weights (see below for details). A node that provides rate limits or rate guarantees for Default traffic SHOULD ensure that such limits and/or guarantees are shared with NQB traffic in a manner that treats the two classes equally. This could be supported using a hierarchical scheduler where the rate limits and guarantees are configured on a parent class, and the two queues (Default and NQB) are arranged as the children of the parent class and given equal access to the capacity configured for the parent class (e.g. with equal DRR scheduling). Compliance with these recommendations reduces the incentives for QB traffic to be mismarked as NQB, and is most important in nodes that are likely bottlenecks, where deviation from them could result in a discernible benefit for mismarked traffic (to the detriment of other traffic). In network nodes that are rarely bottlenecks, these recommendations are less critical.  </t>
 
         <t>In the DRR example above, equal scheduling weights was only an example. Ideally the DRR weight would be chosen to match the highest fraction of capacity that NQB compliant flows are likely to use on a particular network segment. Given that NQB compliant flows are not capacity-seeking (in contrast to QB flows, which can be), and since DRR allows unused capacity in one class to be used by traffic in the other, providing a higher-than-necessary NQB scheduler weight could be considered less problematic than the reverse.  That said, providing a higher-than-needed NQB scheduler weight does increase the likelihood that a non-compliant microflow mismarked as NQB is able to use more than its fair share of network capacity.  NQB microflows are expected to each consume no more than 1% of the link capacity, and in low stat-mux environments (such as at the edge of the network) would be unlikely in aggregate to consume 50% of the link capacity. Thus, 50% seems a reasonable upper bound on the weight for the NQB PHB in these environments.</t>
 
-        <t>A node supporting the NQB PHB SHOULD by default classify packets marked with the NQB DSCP 45 (decimal) into the queue for Non-Queue-Building traffic.  A node supporting the NQB PHB MUST support the ability to configure the DSCP that is used to classify packets into the queue for Non-Queue-Building traffic. A node supporting the NQB PHB SHOULD support the ability to configure multiple DSCPs that are used to classify packets into the queue for Non-Queue-Building traffic.</t>
+        <t>A node supporting the NQB PHB SHOULD by default classify packets marked with the NQB DSCP 45 (decimal) into the queue for Non-Queue-Building traffic.  A node supporting the NQB PHB MUST support the ability to configure the DSCP that is used to classify packets into the queue for Non-Queue-Building traffic. A node supporting the NQB PHB MAY support the ability to configure multiple DSCPs that are used to classify packets into the queue for Non-Queue-Building traffic.</t>
 
         <t>Support for the NQB PHB is advantageous at bottleneck nodes. Many bottleneck nodes have a relatively deep buffer for Default traffic (e.g., roughly equal to the base RTT of the expected connections, which could be tens or hundreds of ms).  Providing a similarly deep buffer for the NQB queue would be at cross purposes to providing very low queueing delay and would erode the incentives for QB traffic to be marked correctly at such a bottleneck node.  The NQB queue MUST have a buffer size that is significantly smaller than the buffer provided for Default traffic. It is RECOMMENDED to configure an NQB buffer size less than or equal to 10 ms at the shared NQB/Default egress rate. </t>
 
@@ -358,7 +358,7 @@ please see http://xml.resource.org/authoring/README.html. -->
 
     <section numbered="true">
       <name>Configuration and Management</name>
-      <t>As required in <xref target="phb_requirements"/>, nodes supporting the NQB PHB provide for the configuration of classifiers that can be used to differentiate between QB and NQB traffic of equivalent importance.  The default classifier to distinguish NQB traffic from traffic classified as Default (DSCP 0) is recommended to be the assigned NQB DSCP (45 decimal).</t>
+      <t>As required in <xref target="phb_requirements"/>, nodes supporting the NQB PHB provide for the configuration of classifiers that can be used to differentiate between QB and NQB traffic of equivalent importance.  The default classifier to distinguish NQB traffic from traffic classified as Default (DSCP 0) is recommended to be the assigned NQB DSCP (45 decimal) (see <xref target="sender"/> and <xref target="primary"/>).</t>
 
       <t>Additionally, <xref target="aggregation"/> contains configuration recommendations for nodes that do not support the NQB PHB, and <xref target="unmanaged"/> contains configuration recommentations for networks that interconnect with non-DS-capable domains.</t> 
 
@@ -367,7 +367,7 @@ please see http://xml.resource.org/authoring/README.html. -->
         <t>The NQB sender requirements in <xref target="sender"/> place responsibility in the hands of the application developer to determine the likelihood that the application's sending behavior could result in a queue forming along the path.  These requirements rely on application developers having a reasonable sense for the network context in which their application is to be deployed.  Even so, there will undoubtedly be networks that contain links having a data rate that is below the lower end of what is considered "typical", and some of these links could even be below the instantaneous sending rate of some NQB-marked applications.</t>
 
         <t>To limit the consequences of this scenario, operators of networks with lower rate links SHOULD consider utilizing a traffic protection function on those links that is more tolerant of burstiness (i.e., a temporary queue). This will have the effect of allowing a larger set of NQB-marked microflows to remain in the NQB queue, but will come at the expense of a greater potential for latency variation.  In implementations that support <xref target="I-D.briscoe-docsis-q-protection"/>, the burst tolerance can be configured via the CRITICALqLSCORE_us input parameter.</t> 
-        <t>Alternatively, operators of networks with lower rate links MAY choose to disable NQB support (and thus aggregate traffic marked with the NQB DSCP with Default traffic) on these lower rate links.  For links that have a data rate that is less than ten percent of "typical" path rates, it is RECOMMENDED that the NQB PHB be disabled and for traffic marked with the NQB DSCP to thus be carried using the Default PHB. However, the NQB DSCP SHOULD NOT be re-marked to the Default DSCP (0).</t>   
+        <t>Alternatively, operators of networks with lower rate links MAY choose to disable NQB support (and thus aggregate traffic marked with the NQB DSCP with Default traffic) on these lower rate links.  For links that have a data rate that is less than ten percent of "typical" path rates, it is RECOMMENDED that the NQB PHB be disabled and that traffic marked with the NQB DSCP is therefore carried using the Default PHB (without being re-marked to the Default DSCP (0)).</t>   
       </section>
     </section> 
 
@@ -378,14 +378,14 @@ please see http://xml.resource.org/authoring/README.html. -->
       <section numbered="true">
         <name>DOCSIS Access Networks</name>
         <t>Residential cable broadband Internet services are commonly configured with a single bottleneck link (the access network link) upon which the service definition is applied. The service definition, typically an upstream/downstream data rate tuple, is implemented as a configured pair of rate shapers that are applied to the user's traffic. In such networks, the quality of service that each application receives, and as a result, the quality of experience that it generates for the user is influenced by the characteristics of the access network link.</t>
-        <t> To support the NQB PHB, cable broadband services MUST be configured to provide a separate queue for traffic marked with the NQB DSCP. The NQB queue MUST be configured to share the service's rate shaped capacity with the queue for QB traffic. Further discussion about support of the NQB PHB in DOCSIS networks can be found in <xref target="LOW_LATENCY_DOCSIS"/>.</t>
+        <t> To support the NQB PHB, cable broadband services would need to be configured to provide a separate queue for traffic marked with the NQB DSCP. The NQB queue would need to be configured to share the service's rate shaped capacity with the queue for QB traffic. Further discussion about support of the NQB PHB in DOCSIS networks can be found in <xref target="LOW_LATENCY_DOCSIS"/>.</t>
       </section>
       <section numbered="true">
         <name>Mobile Networks</name>
         <t>Historically, 3GPP mobile networks have utilized "bearers" to encapsulate each user's user plane traffic through the radio and core networks. A "dedicated bearer" can be allocated a Quality of Service (QoS) to apply any prioritisation to its microflows at queues and radio schedulers. Typically, an LTE operator provides a dedicated bearer for IMS VoLTE (Voice over LTE) traffic, which is prioritized in order to meet regulatory obligations for call completion rates; and a "best effort" default bearer, for Internet traffic. The "best effort" bearer provides no guarantees, and hence its buffering characteristics are not compatible with low-latency traffic. The 5G radio and core systems offer more flexibility over bearer allocation, meaning bearers can be allocated per  traffic type (e.g., loss-tolerant, low-latency etc.) and hence support more suitable treatment of Internet real-time microflows.</t>
 
-        <t>To support the NQB PHB, the mobile network SHOULD be configured to give User Equipment a dedicated, low-latency, non-GBR, EPS bearer, e.g., one with QCI 7, in addition to the default EPS bearer; or a Data Radio Bearer with 5QI 7 in a 5G system (see Table 5.7.4-1: Standardized 5QI to QoS characteristics mapping in <xref target="SA-5G"/>).</t>
-        <t>A packet carrying the NQB DSCP SHOULD be routed through the dedicated low-latency EPS bearer. A packet that has no associated NQB marking SHOULD NOT be routed through the dedicated low-latency EPS bearer.</t>
+        <t>To support the NQB PHB, the mobile network could be configured to give User Equipment a dedicated, low-latency, non-GBR, EPS bearer, e.g., one with QCI 7, in addition to the default EPS bearer; or a Data Radio Bearer with 5QI 7 in a 5G system (see Table 5.7.4-1: Standardized 5QI to QoS characteristics mapping in <xref target="SA-5G"/>).</t>
+        <t>A packet carrying the NQB DSCP could then be routed through this dedicated low-latency EPS bearer, while a packet that has no associated NQB marking would be routed through the default EPS bearer.</t>
       </section>
       <section anchor="wifi" numbered="true">
         <name>Wi-Fi Networks</name>
@@ -399,9 +399,12 @@ please see http://xml.resource.org/authoring/README.html. -->
           <name>Interoperability with Existing Wi-Fi Networks</name>
           <t>While some existing Wi-Fi equipment might be capable (in some cases via firmware update) of supporting the NQB PHB requirements, many currently deployed devices cannot be configured in this way. As a result, the remainder of this section discusses interoperability with these existing Wi-Fi networks, as opposed to PHB compliance.</t> 
 
-          <t>Since this equipment is widely deployed, and the Wi-Fi link can become a bottleneck link, the performance of traffic marked with the NQB DSCP across such links could have a significant impact on the viability and adoption of the NQB DSCP and PHB. Depending on the DSCP used to mark NQB traffic, existing Wi-Fi equipment that uses the default mapping of DSCPs to Access Categories and the default EDCA parameters will support either the NQB PHB requirement for separate queuing of NQB traffic from Default, or the recommendation to treat NQB traffic with forwarding preference equal to Default traffic, but not both.</t>
+          <t>Since this equipment is widely deployed, and the Wi-Fi link can become a bottleneck link, the performance of traffic marked with the NQB DSCP across such links could have a significant impact on the viability and adoption of the NQB DSCP and PHB. Depending on the DSCP used to mark NQB traffic, existing Wi-Fi equipment that uses the default mapping of DSCPs to Access Categories (<xref target="RFC8325" section="2.3"/>) and the default EDCA parameters will support either (but not both) of the following characteristics:</t> 
+          <ul><li>the NQB PHB requirement for separate queuing of NQB traffic from Default traffic (<xref target="primary"/>) </li> 
+          <li>the recommendation to treat NQB traffic with forwarding preference equal to that used for Default traffic (<xref target="primary"/>)</li></ul>
 
-          <t>The DSCP value 45 (decimal) is recommended for NQB. This maps NQB to UP_5 using the default mapping, which is in the "Video" Access Category. While this choice of DSCP enables these Wi-Fi systems to support the NQB PHB requirement for separate queuing, existing Wi-Fi devices generally utilize EDCA parameters that result in statistical prioritization of the "Video" Access Category above the "Best Effort" Access Category.  In addition this equipment does not support the remaining NQB PHB recommendations in <xref target="phb_requirements"/>. The rationale for the choice of DSCP 45 (decimal) as well as its ramifications, and remedies for its limitations are discussed further below.</t>
+
+          <t>The DSCP value 45 (decimal) is recommended for NQB (see <xref target="sender"/>). This maps NQB to UP_5 using the default mapping, which is in the "Video" Access Category. While this choice of DSCP enables these Wi-Fi systems to support the NQB PHB requirement for separate queuing, existing Wi-Fi devices generally utilize EDCA parameters that result in statistical prioritization of the "Video" Access Category above the "Best Effort" Access Category.  In addition this equipment does not support the remaining NQB PHB recommendations in <xref target="phb_requirements"/>. The rationale for the choice of DSCP 45 (decimal) as well as its ramifications, and remedies for its limitations are discussed further below.</t>
 
           <t>The choice of separated queuing rather than equal forwarding preference in existing Wi-Fi networks was motivated by the following:</t>
             <ul>
@@ -422,7 +425,7 @@ please see http://xml.resource.org/authoring/README.html. -->
 
           <t>In the case of traffic originating outside of the Wi-Fi network, the prioritization of traffic marked with the NQB DSCP via the Video Access Category (if left unchanged) could potentially erode the principle of alignment of incentives discussed in <xref target="phb_requirements"/>. In order to preserve the incentives principle for NQB, Wi-Fi systems MAY be configured such that the EDCA parameters for the Video Access Category match those of the Best Effort Access Category, which will mean AC_VI is at the same priority level as AC_BE. These changes might not be possible on all Access Points, and in any case the requirements and recommendations in <xref target="unmanaged"/> would apply in this situation.</t>
 
-          <t>Systems that utilize <xref target="RFC8325"/> but cannot provide a separate AC_BE queue for NQB traffic, SHOULD map the recommended NQB DSCP 45 (decimal) (or the locally determined alternative) to UP_5 in the "Video" Access Category as well (see <xref target="updates_to_8325"/>).</t>
+          <t>Systems that utilize <xref target="RFC8325"/> but cannot provide a separate AC_BE queue for NQB traffic, SHOULD map the NQB DSCP 45 (decimal) (or the locally determined alternative) to UP_5 in the "Video" Access Category as well (see <xref target="updates_to_8325"/>).</t>
       </section>
 
       <section anchor="updates_to_8325" numbered="true">
@@ -440,7 +443,7 @@ If a separate queue in UP 0 cannot be provided (due to hardware limitations, etc
 
 <t>This update to <xref target="RFC8325"/> inserts a new row for "Non-Queue-Building" traffic between the existing "Low-Latency Data" and "OAM" rows in its Figure 1 as follows:</t>
 <artwork type="ascii-art" name="fig1_update.txt">
-   <![CDATA[
+  <![CDATA[
   +---------------+------+----------+-------------+--------------------+
   |    Low-       | AF21 |          |             |                    |
   |    Latency    | AF22 | RFC 2597 |     3       | AC_BE (Best Effort)|
@@ -453,7 +456,7 @@ If a separate queue in UP 0 cannot be provided (due to hardware limitations, etc
   +---------------+------+----------+-------------+--------------------+
   |     OAM       | CS2  | RFC 2474 |     0       | AC_BE (Best Effort)|
   +---------------+------+----------+-------------+--------------------+
-   ]]>
+  ]]>
 </artwork>
 
 <t>This update adds the following sentence to the end of the first paragraph in <xref target="RFC8325" section="5.3"/>:  "An exception to this is the NQB DSCP 45 (decimal) which encodes for best-effort service."</t>
@@ -590,7 +593,7 @@ If a separate queue in UP 0 cannot be provided (due to hardware limitations, etc
         <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2661.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.draft-briscoe-docsis-q-protection-07.xml"/>
         <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.9438.xml"/>
-        <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.draft-ietf-ccwg-bbr-01.xml"/>
+        <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.draft-ietf-ccwg-bbr-02.xml"/>
         <reference anchor="Custura">
           <front>
             <title>Exploring DSCP modification pathologies in mobile edge networks</title>
@@ -658,6 +661,43 @@ If a separate queue in UP 0 cannot be provided (due to hardware limitations, etc
             <date year="2019" month="February"/>
           </front>
         </reference>
+
+        <reference anchor="Gettys2012">
+          <front>
+            <title>Bufferbloat: Dark Buffers in the Internet</title>
+            <author initials="J." surname="Gettys" />
+            <author initials="K." surname="Nichols" />
+            <date month="January" year="2012" />
+          </front>
+          <seriesInfo name="Communications of the ACM" value="Vol. 55, No. 1, pp. 57–65" />
+          <seriesInfo name="DOI" value="10.1145/2063166.2071893"/>
+        </reference>
+
+        <reference anchor="Cardwell2017">
+          <front>
+            <title>BBR: Congestion-Based Congestion Control</title>
+            <author initials="N." surname="Cardwell" />
+            <author initials="Y." surname="Cheng" />
+            <author initials="V." surname="Jacobson" />
+            <author initials="J." surname="Iyengar" />
+            <author initials="I." surname="Swett" />
+            <author initials="B." surname="Yan" />
+            <date month="February" year="2017" />
+          </front>
+          <seriesInfo name="Communications of the ACM" value="Vol. 60, No. 2, pp. 58–66" />
+          <seriesInfo name="DOI" value="10.1145/3009824"/>
+        </reference>
+
+        <reference anchor="WikipediaBufferbloat" target="https://en.wikipedia.org/wiki/Bufferbloat">
+          <front>
+            <title>Bufferbloat</title>
+            <author>
+              <organization>Wikipedia Contributors</organization>
+            </author>
+            <date day="23" month="May" year="2025" />
+          </front>
+        </reference>
+
       </references>
     </references>
     <section>
