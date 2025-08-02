@@ -467,7 +467,7 @@ If a separate queue in UP 0 cannot be provided (due to hardware limitations, etc
     </section>
      <section anchor="IANA" numbered="true">
       <name>IANA Considerations</name>
-      <t>This document requests that IANA assign the Differentiated Services Field Codepoint (DSCP) 45 ('0b101101', 0x2D) from the "Differentiated Services Field Codepoints (DSCP)" registry (https://www.iana.org/assignments/dscp-registry/) ("DSCP Pool 3 Codepoints", Codepoint Space xxxx01, Standards Action) as the RECOMMENDED codepoint for Non-Queue-Building behavior.</t>
+      <t>This document requests that IANA assign the Differentiated Services Field Codepoint (DSCP) 45 ('0b101101', 0x2D) from the "Differentiated Services Field Codepoints (DSCP)" registry (https://www.iana.org/assignments/dscp-registry/) ("DSCP Pool 3 Codepoints", Codepoint Space xxxx01, Standards Action) as the recommended codepoint for Non-Queue-Building behavior.</t>
 
       <t>IANA should update this registry as follows:</t>
         <ul>
