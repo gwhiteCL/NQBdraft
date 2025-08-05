@@ -67,12 +67,7 @@ please see http://xml.resource.org/authoring/README.html. -->
     </author>
 
     <date year="2025"/>
-    <!-- If the month and year are both specified and are the current ones, xml2rfc will fill 
-        in the current day for you. If only the current year is specified, xml2rfc will fill 
-	 in the current day and month for you. If the year is not the current one, it is 
-	 necessary to specify at least a month (xml2rfc assumes day="1" if not specified for the 
-	 purpose of calculating the expiry date).  With drafts it is normally sufficient to 
-	 specify just the year. -->
+
 
   <!-- Meta-data Declarations -->
 
@@ -596,7 +591,7 @@ If a separate queue in UP 0 cannot be provided (due to hardware limitations, etc
         <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2661.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.draft-briscoe-docsis-q-protection-07.xml"/>
         <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.9438.xml"/>
-        <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.draft-ietf-ccwg-bbr-02.xml"/>
+        <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.draft-ietf-ccwg-bbr-03.xml"/>
         <reference anchor="Custura">
           <front>
             <title>Exploring DSCP modification pathologies in mobile edge networks</title>
