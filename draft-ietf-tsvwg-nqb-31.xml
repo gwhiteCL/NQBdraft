@@ -219,7 +219,7 @@ please see http://xml.resource.org/authoring/README.html. -->
 
         <t>While not fully described in this document, it may be possible for network equipment to implement a separate QB/NQB pair of queues for additional service classes beyond the Default PHB / NQB PHB pair.</t>
 
-        <t>In some cases, existing network gear has been deployed that cannot readily be upgraded or configured to support the PHB requirements. This equipment might however be capable of loosely supporting an NQB service – see <xref target="wifi_interop"/> for details and an example where this is particularly important. A similar approach might prove to be useful in other network environments.</t>
+        <t>In some cases, existing network gear has been deployed that cannot readily be upgraded or configured to support the PHB requirements. This equipment might however be capable of loosely supporting an NQB service - see <xref target="wifi_interop"/> for details and an example where this is particularly important. A similar approach might prove to be useful in other network environments.</t>
 
 
 
@@ -360,7 +360,7 @@ please see http://xml.resource.org/authoring/README.html. -->
         <name>The NQB DSCP and Tunnels</name>
         <t><xref target="RFC2983"/> discusses tunnel models that support Diffserv. It describes a "uniform model" in which the inner DSCP is copied to the outer header at encapsulation, and the outer DSCP is copied to the inner header at decapsulation. It also describes a "pipe model" in which the outer DSCP is not copied to the inner header at decapsulation.  Both models can be used in conjunction with the NQB PHB. In the case of the pipe model, any DSCP manipulation (re-marking) of the outer header by intermediate nodes would be discarded at tunnel egress. In some cases, this could improve the possibility of achieving NQB treatment in subsequent nodes, but in other cases it could degrade that possibility (e.g. if the re-marking was designed specifically to preserve NQB treatment in downstream domains).</t>
 
-        <t>As is discussed in <xref target="RFC2983"/>, tunnel protocols that are sensitive to reordering (such as IPSec <xref target="RFC4301"/> or L2TP <xref target="RFC2661"/>) can result in undesirable interactions if multiple DSCP PHBs are signaled for traffic within a tunnel instance. This is true for tunnels containing a mix of QB and NQB traffic as well. Additionally, since networks supporting the NQB PHB could implement a traffic protection mechanism (see <xref target="traffic_protection"/>) and/or responses to NQB buffer overrun that result in out-of-order delivery for traffic marked with the NQB DSCP, even tunnels solely containing NQB traffic could have issues if they are sensitive to reordering and the outer header retains the NQB DSCP. As a result, the use of a reordering-sensitive tunnel protocol to carry NQB traffic, or a mix of QB and NQB traffic, necessitates that the outer tunnel header be re-marked with a non-NQB DSCP (e.g. Default), in which case the “pipe” model is preferable because it preserves the marking differentiation at tunnel decapsulation.</t>
+        <t>As is discussed in <xref target="RFC2983"/>, tunnel protocols that are sensitive to reordering (such as IPSec <xref target="RFC4301"/> or L2TP <xref target="RFC2661"/>) can result in undesirable interactions if multiple DSCP PHBs are signaled for traffic within a tunnel instance. This is true for tunnels containing a mix of QB and NQB traffic as well. Additionally, since networks supporting the NQB PHB could implement a traffic protection mechanism (see <xref target="traffic_protection"/>) and/or responses to NQB buffer overrun that result in out-of-order delivery for traffic marked with the NQB DSCP, even tunnels solely containing NQB traffic could have issues if they are sensitive to reordering and the outer header retains the NQB DSCP. As a result, the use of a reordering-sensitive tunnel protocol to carry NQB traffic, or a mix of QB and NQB traffic, necessitates that the outer tunnel header be re-marked with a non-NQB DSCP (e.g. Default), in which case the "pipe" model is preferable because it preserves the marking differentiation at tunnel decapsulation.</t>
       </section>
 
 
@@ -672,7 +672,7 @@ If a separate queue in UP 0 cannot be provided (due to hardware limitations, etc
             <author initials="K." surname="Nichols" />
             <date month="January" year="2012" />
           </front>
-          <seriesInfo name="Communications of the ACM" value="Vol. 55, No. 1, pp. 57–65" />
+          <seriesInfo name="Communications of the ACM" value="Vol. 55, No. 1, pp. 57-65" />
           <seriesInfo name="DOI" value="10.1145/2063166.2071893"/>
         </reference>
 
@@ -687,7 +687,7 @@ If a separate queue in UP 0 cannot be provided (due to hardware limitations, etc
             <author initials="B." surname="Yan" />
             <date month="February" year="2017" />
           </front>
-          <seriesInfo name="Communications of the ACM" value="Vol. 60, No. 2, pp. 58–66" />
+          <seriesInfo name="Communications of the ACM" value="Vol. 60, No. 2, pp. 58-66" />
           <seriesInfo name="DOI" value="10.1145/3009824"/>
         </reference>
 
