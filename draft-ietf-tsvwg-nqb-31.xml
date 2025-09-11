@@ -99,7 +99,7 @@ please see http://xml.resource.org/authoring/README.html. -->
 
       <t>To be clear, a network implementing the NQB PHB solely provides isolation for traffic classified as behaving in conformance with the behaviors discussed in <xref target="behaviors"/>. A node supporting the NQB PHB makes no guarantees on delay or data rate for NQB-marked microflows (beyond the delay bound provided by the shallow buffer), it is the NQB senders' behavior itself which results in low delay and low loss.</t>
 
-      <t><xref target="dscp"/> and <xref target="sdos"/> of this document provide guidance for network operators that might forward traffic marked with the NQB DSCP. Networks that do not currently implement support for the NQB PHB are described in <xref target="dscp"/> regarding treatment of the recommended DSCP for NQB traffic, and in particular <xref target="aggregation"/>, which provides specific recommendations for this case.  In addition, <xref target="re-marking"/> provides recommendations around interconnection with networks that do support the NQB PHB.</t>
+      <t><xref target="dscp"/> and <xref target="sdos"/> of this document provide guidance for network operators regarding appropriate forwarding of traffic marked with the NQB DSCP.  The guidance includes recommendations for the configuration of network nodes that support the NQB PHB as well as for network nodes that do not support the PHB, to allow NQB traffic to be forwarded in a way that aligns with the goals for NQB treatment and supports the use of this code point by other nodes and other networks.</t>
 
     </section>
     <section numbered="true">
@@ -149,7 +149,7 @@ please see http://xml.resource.org/authoring/README.html. -->
         <name>Applicability</name>
         <t>This PHB is primarily applicable for high-speed broadband access network links, where there is minimal aggregation of traffic, and deep buffers are common. </t>
         
-        <t>In many other links, forwarding NQB-marked packets using the Default treatment might be sufficient to preserve the loss, delay and delay-variation performance for NQB traffic.  This is generally true in links that do not typically experience congestion (for example, many backbone and core network links), and in highly aggregated links (links designed to carry a large number of simultaneous microflows) where individual microflow burstiness is averaged out and thus is unlikely to cause much actual delay. </t>
+        <t>In many other links, forwarding NQB-marked packets using the Default treatment might be sufficient to preserve the loss, delay and delay-variation performance for NQB traffic.  This is generally true in links that do not typically experience congestion (for example, many backbone and core network links), and in highly aggregated links (links designed to carry a large number of simultaneous microflows) where individual microflow burstiness is averaged out and thus is unlikely to cause much actual delay. <xref target="aggregation"/> provides recommendations for configuration of network nodes in such cases.</t>
       </section>
     </section>
 
