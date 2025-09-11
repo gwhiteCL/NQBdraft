@@ -27,7 +27,7 @@ please see http://xml.resource.org/authoring/README.html. -->
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-tsvwg-nqb-31" ipr="trust200902" obsoletes="" updates="8325" submissionType="IETF" xml:lang="en" tocInclude="true" tocDepth="4" symRefs="true" sortRefs="true" version="3" consensus="true">
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-tsvwg-nqb-32" ipr="trust200902" obsoletes="" updates="8325" submissionType="IETF" xml:lang="en" tocInclude="true" tocDepth="4" symRefs="true" sortRefs="true" version="3" consensus="true">
   <!-- xml2rfc v2v3 conversion 2.39.0 -->
   <!-- category values: std, bcp, info, exp, and historic
     ipr values: trust200902, noModificationTrust200902, noDerivativesTrust200902,
@@ -42,7 +42,7 @@ please see http://xml.resource.org/authoring/README.html. -->
    full title is longer than 39 characters -->
 
    <title abbrev="Non-Queue-Building PHB">A Non-Queue-Building Per-Hop Behavior (NQB PHB) for Differentiated Services</title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-tsvwg-nqb-31"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-tsvwg-nqb-32"/>
     <!-- add 'role="editor"' below for the editors if appropriate -->
 
    <!-- Another author who claims to be an editor -->
