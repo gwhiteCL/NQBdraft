@@ -1,4 +1,4 @@
-DOC := draft-ietf-tsvwg-nqb-33
+DOC := rfc9956
 XML := $(DOC).xml
 TXT := $(DOC).txt
 HTML := $(DOC).html
